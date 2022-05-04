@@ -1,0 +1,213 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{makeidx}
+\usepackage{graphicx}
+\usepackage[normalem]{ulem}
+\usepackage[singlespacing]{setspace}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{longtable}
+\usepackage{titlesec}
+\usepackage[margin=1in]{geometry}
+\usepackage{ntheorem}
+\usepackage{booktabs}
+\usepackage{dcolumn}
+\usepackage[stable]{footmisc}
+\usepackage{hyperref}
+\usepackage{ntheorem}
+\newtheorem{hyp}{Hypothesis} 
+\newtheorem{subhyp}{Hypothesis}[hyp]
+\renewcommand\thesubhyp{\thehyp.\alph{subhyp}}
+\usepackage[round]{natbib}
+\bibpunct{(}{)}{;}{a}{}{,~}
+\usepackage[space]{grffile}
+\graphicspath{{../figures/}}
+\usepackage[affil-it]{authblk}
+\makeatletter
+
+\def\@maketitle{%
+	\newpage
+	\null
+	\vskip 2em%
+	\begin{center}%
+		\let \footnote \thanks
+		{\Large\bfseries \@title \par}
+		\vskip 1.5em
+		{\normalsize
+			\lineskip .5em
+			\begin{tabular}[t]{c}
+				\@author
+			\end{tabular}\par}
+		{\normalsize \@date}
+	\end{center}%
+	\par
+	}
+\makeatother
+
+\title{One, if by land, and two, if by sea: Introducing a Dataset on the Domains of International Crisis Behavior}
+
+\author{J Andr\'{e}s Gannon%
+	\thanks{Electronic address: \texttt{jagannon@ucsd.edu} \\ This paper introduces a dataset that is the labor of many scholars. Erik Gartzke, Jon R. Lindsay, and Michael Nacht motivated the theoretical work behind the study of domains as part of the Cross-Domain Deterrence Initiative. Rex Douglass is responsible for the underlying ontology that created the dataset. Past and present heads of the ICB project, including Jonathan Wilkenfeld, David Quinn, and Kyle Beardsley oversaw the coding effort and provided invaluable feedback on streamlining the process. The author also wishes to thank Austin Carson,  Casey Crisman-Cox, Charles Doran, Brian Lai, David Lake, Saadia Pekkanen, Branislav Slantchev, Barbara Walter, and workshop participants at UC San Diego and the Cross-Domain Deterrence workshops for feedback on alternate projects involving the same data. This research was sponsored by Office of Naval Research Grant N00014-14-1-0071 and the Department of Defense Minerva Research Initiative. Any opinions, findings, and conclusions or recommendations expressed in this publication are those of the author and do not necessarily reflect the view of the Office of Naval Research.}}
+\affil{Center for Peace and Security Studies (cPASS) \\ Department of Political Science \\ University of California, San Diego}
+
+\begin{document}
+\maketitle
+	
+\begin{abstract}
+The military capabilities a nation employs during a crisis -- known as domains -- is widely believed to be important in the study of international relations, yet scholarly research on this topic remains limited. This paper introduces a new dataset on the military domains and units employed by state actors during 455 international crises from 1918 to 2007. It discusses the coding procedures, describes global trends, and provides one empirical application of the dataset to show how the study of the means used during international crises contributes to our understanding of international relations. We provide preliminary evidence that crisis outcomes are more likely to favor actors that deploy naval units.
+\end{abstract}
+
+\section{Introduction}
+The sea bordering the northern shores of Libya is known as the Gulf of Sidra. Gaddafi, who seized control of Libya in 1969, claimed this Gulf was an ``internal sea", meaning its territorial waters extended from the Gulf into the Mediterranean. The United States disagreed, arguing the Gulf was international waters. The US and Libya twice clashed over the Gulf of Sidra; once in 1981 and again in 1986. In 1981, the United States announced its Sixth Fleet would hold naval training exercises in the Gulf of Sidra, crossing Gaddafi's self-proclaimed ``line of death". Libya went onto full alert and after sent in two SU-22 fighter jets that were promptly shot down by US F-14's and the crisis ended. In 1986 the United States again held naval exercises in the Gulf of Sidra. This time, Gaddafi responded by firing SAM-5 missiles at the US, prompting retaliatory US strikes on Libyan ships and radar installations. The US warned that it would take further action against Libya if necessary.
+
+Both of these crises contain a number of similarities. They involve the same actors (Libya and the United States) during the same decade (1980's) in the same place (Gulf of Sidra) and began with the same move (US naval training exercises). Yet the first incident, when Syria responded by deploying fighter jets, experienced only one exchange of fire and no casualties while the latter, when they responded by firing missiles, was more prolonged and ended with the destruction of Libyan ships and facilities. Unfortunately, much of the nuance in the conduct of how these conflicts were fought is lost by the inattention that quantitative scholars of international conflict give to the means countries employ to resolve international disputes. The two Gulf of Sidra incidents are just one example of a set of cases where the domains deployed by each actor provide important information about crisis escalation that is rarely examined outside of detailed case studies about a particular international conflict. Despite recognition that the domains used during conflict are important, we lack a comprehensive dataset including information about the process and conduct of conflict.
+
+This paper seeks to fill that gap by producing the first dataset that includes information about the military domains and units used during international conflict. Introduces a new cross-national dataset on military domains during international crises from 1918 to 2007, this study analyzes variation in the means used during international conflict. To our knowledge, this is the first attempt to collect information on not just what actors are involved in international disputes, but \textit{how} did they interact over the span of over 450 international crises. Our motivation in gathering data on the conduct of conflict is driven by the view that the means used to fight are a reflection of actors' goals, priorities, resolve, and capability.
+
+This paper will proceed in six parts. The second section will explain the purpose of the dataset and the value-added of information about the domains of conflict. The third section explains the coding procedures used to construct a new dataset on the domains of international conflict. The fourth section engages in an exploratory analysis of the data to demonstrate its characteristics and the type of innovative information created. The fifth section provides an empirical application of the dataset to demonstrate how the study of crisis domains can contribute to our understanding of international conflict and the final section concludes.
+
+\section{Purpose of the dataset}
+ Previous analysis has noted the importance of looking at the conduct of war, but the current data is limited. The domains countries use during conflict -- traditionally understood as land, air, sea, space, and cyber -- are important in understanding the causes and consequences of war. Regarding its causes, if, as Clausewitz noted, war is the continuation of politics with other means, then the tools used for war are the tools used for the continuation of politics with other means. The wide body of literature studying the causes of war has recognize the importance of \textit{how} nations fight in specific contexts like conflict initiation \citep{beckley_emergingmilitarybalance_2017}, the balance of power \citep{horowitz_diffusionmilitarypower_2010}, whether a show of force is a deterrent to conflict or encourages a spiral \citep{glaser_politicalconsequencesmilitary_1992}, when and why treaties are chosen instead of war \citep{allison_armamentsarmscontrol_1975}, when coups against autocratic leaders are successful \citep{talmadge_differentthreatsdifferent_2016}, and the type of negotiated settlement a country is able to get given how an opponent feels about the prospect of winning that war. It goes without saying that the consequences of war also depend on its conduct including who wins \citep{rosen_winningnextwar_1994,lyall_ragemachinesexplaining_2009} and the costs in treasure and in blood \citep{caverley_2014}.
+
+An important contribution of this paper is to help bridge the gap between formal models and our rich datasets so that they can speak to one another in a more productive and empirically-oriented manner \citep{fearon_signaling_1994}. But such an empirical test requires very fine-grained and disaggregated information about the types of signals sent during a crisis. When Doran first published his research on leading indicators of conflict (including military mobilization) in a case study of the Six-Day War, his hope was that ``additional research will have to determine the actual probability that these leading indicators will provide accurate forecasts. Given enough cases, such probability could be assessed" \citep{doran_leading_1980}. We now have enough cases to discern what types of military mobilization precede conflict to help theoretically explain why this occurs and under what conditions.
+
+This crisis-domain dataset represents -- to the best of our knowledge --  the most extensive data collection available on the means used during conflict. The means of conflict can be used as either a dependent or independent variable in the study of international relations. Our contribution to the research is twofold. First, the military domains used during a crisis can influence its outcome and whether a crisis escalates or it resolved peacefully. In the first Gulf of Sidra incident, Libya responding to US aircraft carriers by deploying their own fighter aircraft which was predictably met with a similar fighter aircraft response that resolved the situation rather quickly. But when Syria responded to aircraft carriers with surface-to-air missiles in the second incident, the crisis escalated to a higher level of intensity and resulted in damage to Libyan military installations.
+
+Our dataset allows scholars to test theories about how countries respond to different means of attack and what those responses mean for the propensity of a crisis to escalate. We draw from an existing international relations dataset, the International Crisis Behavior (ICB) dataset, which makes it easy for conflict scholars to use. The list of crises used to populate our dataset comes from the ICB data and the ICB crisis narratives provided the text needed to code what military domains and units were used by each actor during each crisis. This increases the utility of our dataset since it can be used alongside current datasets; much scholarly work has already tested theories about international conflict using the previously published ICB data. Second, many studies about the conduct of international conflict have looked at particular cases like the Korean War \citep{slantchev_feigningweakness_2010} or nuclear alerts during the Vietnam War \citep{sagan_madman_2003}. In contrast, this project is about the means used during all international crises from 1918 to 2007 which allows scholars to examine the degree to which the conduct of particular international crises can by generalized to validate or disprove broader theories of international relations.
+
+Our exploratory analysis sheds light on what domains actors mobilize during a crisis and which of those domains are present in conflicts that escalate as opposed to those that have relatively low levels of violence. This dataset potentially plays a central role in answering fundamental questions about international relations like how the conduct of war is changing over time, how responses to particular forms of aggression are met, which responses to particular forms of warfare are successful, and how can international actors dissuade adversaries from employing particular tools during conflict.
+
+\section{Coding crisis domains}
+We extend the ICB dataset by gathering extensive data on the tools utilized during crises. The dataset introduced here contains data on the military domains and units used by each actor during these international crises. As such, the unit of analysis is the crisis-actor and the newly coded variables are binary true/false values representing whether that actor employed that domain and unit during the crisis. The distribution of ICB crises is shown in figure \ref{fig:icb_distrib}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\textwidth]{icb_timeseries.png}
+	\caption{Distribution of ICB Crises}
+	\label{fig:icb_distrib}
+\end{figure} 
+
+The data source used by the coders was the ICB crisis narratives that provide qualitative descriptions of the crises. This has a few benefits over other events datasets. First, the ICB crisis narratives are written in a systematic fashion. They are all approximately the same length, contain the same level of detail, and were written by the same research team at the University of Maryland. This reduces concerns that variation among crisis variables is due to variation in the data generating process. For example, more recent crises do not have more detailed crisis narratives which is not the case for the reporting of militarized interstate disputes captured by scraping news sources. Second, the ICB narratives are accompanied by the more commonly used ICB dataset that codes important international relations variables in the dataset. This helps verify the coding effort since the information that coders extract from the crisis narratives should be consistent with previous codings that populate the quantitative ICB dataset.
+
+The first set of codings were done by graduate students at the University of Maryland that were overseen by the ICB directors who helped construct the original ICB datasets and narratives. For each crisis, two research assistants coded the ICB crisis narratives at the sentence level for a series of variables created by the Cross-Domain Deterrence Initiative. A third coder was used to break ties or when there were discrepancies about how to code the events in a sentence. Undergraduate political science students at the University of California, San Diego also coded the crisis narratives for course credit. Coders could not make reference to the existing codings and the raw coding includes a measure of uncertainty for each coder. The data collection process took approximately two years which included the development of a Graphic User Interface (GUI) for data entry, the development of an ontology for the actors, actions, and supporting details to describe each event, the data entry itself, and pre-processing of the raw coder data. An example of the GUI the coders used to enter the data is shown in figure \ref{fig:coding_gui}. Coders selected one of the 455 ICB crises and for each individual sentence in the corresponding ICB crisis narrative, they coded the events that occurred as a series of actions undertaken by an actor along with supporting details like when the action took place, where, and to what effect. The final version of the data includes an aggregation of the multiple different codings that exist for each case. This paper only focuses on the military domains and units used during these crises since the other variables concerning the sequence of international crises and non-military moves are still being processed. This represents an improvement over current efforts to analyze aggregate analysis of crisis behavior by including fine-grained information about how actors behaved as well as capturing the sequence and timing of their behavior. In this way, theories like deterrence and the spiral models of conflict that rely on action-reaction cycles can be tested in more thorough ways.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{gui_example.jpg}
+	\caption{ICB Graphic User Interface (GUI)}
+	\subcaption*{Example for coding a sentence describing an event during the Cuban Missile Crisis}
+	\label{fig:coding_gui}
+\end{figure} 
+
+The two sets of variables coded here, military domains and units, concern escalatory interactions. Table \ref{tab:variable_summary} describes the newly created variables. Escalatory interactions involve another actor, possibly as a target, and are hostile and risk an increase in the degree or probability of violence. This includes preparations for war (mobilizations, exercises, weapons tests), maneuvers (deployment, show of force, blockade), and/or combat (battles, bombardments, invasions, occupations). When a coder indicated that an escalatory interaction had occurred in a crisis, they specified the type of escalatory interaction and then coded the military domains and units that were involved in that escalatory interaction. This version of the data does not specify what kind of escalatory interaction the domains and units were since that information is still being processed.
+
+The domain variables refer to where the interaction took place. This does not refer to what was used during the interaction, but where the interaction happened. Coders were able to choose more than one answer. The unit variable is coded as an answer to the question ``what type of military units were involved in the interaction?" Coders were again able to choose more than one answer.In both cases, coding decisions were made by reading the ICB crisis narrative and coding how the qualitative narrative described the behavior by each actor during the crisis.
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|l|p{14cm}|}
+		\hline
+		\textbf{Variable} & \textbf{Description} \\ 
+		\hline
+		\hline
+		Crisis Name & Taken from the ICB2 actor dataset \\
+		Crisis Actor & Taken from the ICB2 actor dataset \\
+		\hline
+		\textbf{Domains} & Where did this interaction occur? This refers to where the interaction happened, not what was used during the interaction \\
+		Air &  The interaction occurred in the air \\
+		Land & The interaction occurred on the dry portion of the earth's surface \\
+		Sea & The interaction occurred in the ocean or a large body of water \\
+		WMD & Nuclear, chemical, or biological weapons. The physical domain where the WMD interaction occurred is separately coded \\
+		\hline
+		\textbf{Units} & What type of military units were involved in this interaction? This refers to what was used during the interaction \\
+		Aircraft carriers & Large naval vessel from which aircraft can take off and land \\
+		Armor & Armored vehicles such as tanks or humvees \\
+		Artillery & Large caliber weapons for discharging missiles like cannons or missile launchers \\
+		Bombers & Military aircraft designed to attack ground and sea targets \\
+		Chemical & Chemical weapon using toxic chemicals like nerve gas or tear gas \\
+		Fighters & Military aircraft designed for air-to-air combat \\
+		Nuclear & Nuclear weapon using fission or fusion nuclear reactors \\
+		Submarines & Warship that operates underneath the surface of the water \\
+		Surface Ships & Warships that operates on the surface of the water \\
+		Surveillance & Military aircraft used to collect information and intelligence \\
+		Troops & Individual human soldiers or units of soldiers \\
+		\hline
+	\end{tabular}
+	\captionof{table}{Variable Description for ICB}\label{tab:variable_summary}
+	\subcaption*{Note: Not all descriptor variables listed here}
+\end{table}
+
+\section{Data characteristics}
+Some summary statistics from the newly assembled data are presented here. The unit of analysis is the crisis-actor. 1000 crisis actors are represented in our dataset covering 455 distinct crises from 1918 to 2007.
+
+Figure \ref{fig:summary_crosssec} shows the aggregation of domains used by the five countries that have been involved in at least 20 crises from 1918-2007. These include crises where these domains and units were threatened, mobilized, deployed, or used. Here, we use the traditional military domains of land, air, and sea and add a separate domain for weapons of mass destruction (nuclear, chemical, and biological). The results are consistent with our intuition that the United States, given its geographic location and where it fights its wars, tends to invoke sea units in most of the crises it participated in. Israel and Libya, by contract, rely much more heavily on land and air units.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{domains_country_grid.png}
+	\caption{Cross-sectional of Crisis Domains and Units}
+	\label{fig:summary_crosssec}
+\end{figure}
+
+There is also interesting variation that depends on where wars are fought. Figure \ref{fig:summary_region} shows the number of times a particular military domain and unit was invoked in a crisis in a particular region. Here, the region refers to where the crisis occurred which could be proximate with some of the actors involved but not others. Even though the Taiwan Straits Crisis of 1996 involved the United States, for example, it took place in East Asia and is thus represented in the Asia category.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{domains_continent_grid.png}
+	\caption{Geographic Distribution of Crisis Domains}
+	\label{fig:summary_region}
+\end{figure}
+
+The data also gives us an idea of how the frequency with which particular domains and units of conflict has changed over time. Figure \ref{fig:summary_timeseries} shows the cumulative distribution of military domains over crises that occurred from 1918 until 2007. This distribution is insightful in light of research about the evolution from land to sea to air and potentially now to space and cyber forms of conflict. Further work could examine which states are driving the temporal trends noted here to test theories about comparative military doctrine and why some states evolve their forms of warfare while others do not.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{units_time_grid.png}
+	\caption{Temporal Distribution of Crisis Domains and Units}
+	\label{fig:summary_timeseries}
+\end{figure}
+
+\section{Application}
+Epidemiologists spend much of their time identifying factors that increase the risk of particular health problems in individuals. An important component of their work relies on the proper identification of events and conditions that serve as an indicator that health problems will soon follow. Similarly, scholars of international relations are interested in identifying factors that indicate that the outbreak of conflict is increasingly likely \citep{senese_steps_2008}. The goal in this case is not only to causally identify factors that make war more likely so that we can better understand events of the past, but also to improve our ability to forecast the likelihood of conflict in the future \citep{valeriano_pathways_2010}.
+
+International relations scholars do the same. We are interested in identifying factors that indicate the escalation of conflict is increasingly likely. This section provides an illustration of the use of this data in conjunction with the original ICB crisis-level data that should be familiar to many international relations scholars. Here, we examine the relationship between the domains and military units used in a crisis and the propensity of that crisis to escalate. The relationship between domains and crisis escalation is potentially important for a few reasons. First, we cannot understand crisis escalation without understand the tools that were used (as combat or as threat) during that crisis. When an actor decides to escalate a conflict because the expected benefits of a negotiated settlement are exceeded by the expected benefits of going to war, the manner in which that war was fought is a direct factor influencing the cost of that war and its expected outcome. In the case of the second Gulf of Sidra incident, the United States calculated that the amount of damage that Syrian military forces could do to the US naval fleet was low enough that it preferred instigating conflict given what it knew it was up against. Second, prior evidence suggests that military domains directly interact with the propensity to negotiate and de-escalate a conflict. Recent work has investigated how East Asian countries can best combat Chinese naval expansion \citep{beckley_emergingmilitarybalance_2017}. This is an example of a broader question about when powerful weapons like aircraft carriers may be more likely to prompt the defender to negotiate rather than risk fighting against a unit of this strength. Our data can shed light on these debates by investigating the relationship between A2/AD missile deployment as a response to naval carrier deployment by an aggressor. This example demonstrates that the escalatory effects of the tools used in a crisis are fundamental to understanding the evolution of conflict in the 21\textsuperscript{st} century.
+
+The ICB data provides a unique opportunity to examine conflict escalation because it is not limited to cases where conventional military conflict occurred. Rather, the data examines crises -- some of which escalated to militarized interstate conflict with some degree of violence and others which did not. As a result, this data provides variation in the dependent variable since we can compare cases where a crisis did violently escalate to cases where the crisis did not. Examining patterns in the military domains and units involved in each of these cases can shed light on when a crisis is likely to escalate.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\textwidth]{domains_mobilize_war.png}
+	\caption{Crisis Escalation and Military Domains}
+	\label{fig:app_escal_domain}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{unit_mobilize_war.png}
+	\caption{Crisis Escalation and Military Units}
+	\label{fig:app_escal_unit}
+\end{figure}
+
+Figure \ref{fig:app_escal_domain} shows what military domains and units were present in crises from 1918 to 2007 that escalated to high levels of violence and which were present in crises that did not escalate and were more peacefully resolved. Where a crisis escalated violently is coded  using the severity of violence variable in the original ICB data. The correlation between the severity of violence and the domains and units that were present in that crisis comes from the new data introduced in this paper.
+
+A cursory examination shows that naval units, in particular aircraft carriers and submarines, are rarely present in cases where crisis escalates to war. Although their use is relatively infrequent, especially when compared to troops, more often than not they exist in crises that maintain a relatively low level of violence.  The air domain, by comparison, sees bombers and fighters used at roughly the same frequency and with almost identical effects. Future work could extrapolate on these findings by investigating the various combinations of military domains and units that are deployed in a crisis. It could be that when bombers are used alone, as they were in 1969 for Nixon's ``madman" nuclear signaling, the propensity for escalation is different than when bombers are sent as part of aerial sorties designed to attack enemy military installations \citep{sagan_madman_2003}. Actors will also vary in their deployment of each of these military domains and units. Few international actors have aircraft carriers, and comparing how countries use these powerful floating bases against countries that also possess them as opposed to when their opponent does not could also yield fruitful insights about the interaction between different means of warfare. Figure \ref{fig:app_outcome_us} shows the outcome of a crisis for the United States for each military domain it utilized during a crisis. A cursory examination suggests that when the United States deploys naval units, it almost always accomplishes its intended goal. This paper does not make a claim about the causal direction present in this relationship, but preliminary evidence suggests that the choice of tool and the outcome of a conflict may not be stochastic.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{domains_outcome_us.png}
+	\caption{Crisis Escalation and Military Units}
+	\label{fig:app_outcome_us}
+\end{figure}
+
+\section{Conclusion}
+This project introduces the ICB domains-level data which provides new information about the military means used during a crisis. In particular, we code, for the first time, the military domains and units present on each side of a international crisis. This data can be used at the crisis and crisis-actor level to investigate what levers each actor was pulling to influence the course of that disagreement and what relationship those levers had on the outcome of the dispute. Exploratory analysis reveals that military domains and units are strategically deployed by actors and vary in accordance with conflict outcomes. In general, crises with sea units are less likely to escalate than crises with land units. In particular, US deployment of naval units appears correlated with a more desirable crisis outcome than when it does not deploy naval units. These cursory findings are merely suggestive, but more rigorous analysis using the newly produced data could shed light on such questions. This data has multiple uses beyond that examined here and can be used to explore larger issues at the core of research on international security. The means countries use to achieve their international objectives will continue to matter. They shape the resolution of international disputes which is at the heart of international relations inquiry. The version of the data presented here is only a small slice of the larger Cross-Domain Deterrence Initiative's ICB project coding the sequence of international crises which also includes the utilization of diplomatic and economic actions that are not captured in this paper's introduction of military domains.
+
+\singlespacing
+\bibliographystyle{apsr}
+\bibliography{icbdomains_bib}
+	
+\end{document}

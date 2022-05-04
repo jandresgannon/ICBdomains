@@ -1,0 +1,266 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+%\usepackage{amsfonts}
+%\usepackage{amssymb}
+\usepackage{makeidx}
+\usepackage{graphicx}
+\usepackage[normalem]{ulem}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{titlesec}
+\setcounter{tocdepth}{2}
+\usepackage[margin=1in]{geometry}
+\usepackage{ntheorem}
+\usepackage{booktabs}
+\usepackage{dcolumn}
+\usepackage[stable]{footmisc}
+\usepackage{setspace}
+%\linespread{1.25} 
+\onehalfspacing
+
+\usepackage{ntheorem}
+\newtheorem{hyp}{Hypothesis}
+\newtheorem{subhyp}{Hypothesis}[hyp]
+\renewcommand\thesubhyp{\thehyp.\alph{subhyp}}
+\usepackage{tikz}
+\usetikzlibrary{arrows, decorations.pathmorphing, backgrounds, fit, positioning, shapes.symbols, chains, decorations.pathreplacing, shapes.geometric}
+\usepackage[round]{natbib}
+\bibpunct{(}{)}{;}{a}{}{,~}
+\usepackage[space]{grffile}
+\graphicspath{{../figures/}}
+\usepackage[affil-it]{authblk}
+\makeatletter
+
+\def\@maketitle{%
+	\newpage
+	\null
+	\vskip 2em%
+	\begin{center}%
+		\let \footnote \thanks
+		{\Large\bfseries \@title \par}
+		\vskip 1.5em
+		{\normalsize
+			\lineskip .5em
+			\begin{tabular}[t]{c}
+				\@author
+			\end{tabular}\par}
+		{\normalsize \@date}
+	\end{center}%
+	\par
+	}
+\makeatother
+
+\title{Who Fights the Last War? Explaining Patterns in the Conduct of International Conflict}
+
+\author{J Andr\'{e}s Gannon%
+	\thanks{Electronic address: \texttt{jagannon@ucsd.edu} \\ This research was sponsored by Office of Naval Research Grant N00014-14-1-0071 and the Department of Defense Minerva Research Initiative. Any opinions, findings, and conclusions or recommendations expressed in this publication are those of the author and do not necessarily reflect the view of the Office of Naval Research.}}
+\affil{Department of Political Science \\ University of California, San Diego}
+
+\begin{document}
+\maketitle
+	
+\begin{abstract}
+The military capabilities a nation employs during a crisis -- known as domains -- is widely believed to be important in the study of international relations, yet scholarly research on this topic remains limited. This paper introduces a new dataset on the military domains and units employed by state actors during 455 international crises from 1918 to 2007. It discusses the coding procedures, describes global trends, and provides one empirical application of the dataset to show how the study of the means used during international crises contributes to our understanding of international relations. We provide preliminary evidence that crisis outcomes are more likely to favor actors that deploy naval units.
+\end{abstract}
+
+\section{Introduction}
+	The sea bordering the northern shores of Libya is known as the Gulf of Sidra. Gaddafi, who seized control of Libya in 1969, claimed this Gulf was an ``internal sea", meaning its territorial waters extended from the Gulf into the Mediterranean. The United States disagreed, arguing the Gulf was international waters. The US and Libya twice clashed over the Gulf of Sidra; once in 1981 and again in 1986. In 1981, the United States announced its Sixth Fleet would hold naval training exercises in the Gulf of Sidra, crossing Gaddafi's self-proclaimed ``line of death". Libya went onto full alert and sent in two Su-22 fighter jets that were promptly shot down by US F-14's, ending the crisis. In 1986 the United States again held naval exercises in the Gulf of Sidra. This time, Gaddafi responded by firing SAM-5 missiles at the US, prompting retaliatory US strikes on Libyan ships and radar installations. The US warned that it would take further action against Libya if necessary.
+	
+	Both of these crises contain a number of similarities. They involve the same actors (Libya and the United States) during the same decade (1980's) in the same place (Gulf of Sidra) and began with the same move (US naval training exercises). Yet the first incident, when Syria responded by deploying fighter jets, experienced only one exchange of fire and no casualties while the latter, when they responded by firing missiles, was more prolonged and ended with the destruction of Libyan ships and facilities. Unfortunately, much of the nuance in the conduct of how these conflicts were fought is lost by the inattention that quantitative scholars of international conflict give to the means countries employ to resolve international disputes. The two Gulf of Sidra incidents are just one example of a set of cases where the domains deployed by each actor provide important information about crisis escalation that is rarely examined outside of detailed case studies about a particular international conflict. Despite recognition that the domains used during conflict are important, we lack comprehensive information about the process and conduct of conflict.
+	
+	Much of the research on innovation and the evolution of war assumes that ``fighting the last war" is a sub-optimal strategy -- a mistake \citep{howard_causeswarsother_1983} -- caused by factors like short-sightedness or bureaucratic inefficiency \citep{murray_militaryadaptationwar_2009}. Yet history is replete with examples of states that erred precisely because they did not fight the last war. The British would have fared better on the battlefields of World War II had they ``prepared ruthlessly to fight the last war" \citep[88]{millett_lessonswar_1988} and Germany's innovative use of submarine warfare in World War I was an evolution they would have been better off without given it brought the United States into the conflict \citep{hull_absolutedestructionmilitary_2013}. If the saying ``if it ain't broke, don't fix it" can be applied to international affairs, then the conventional wisdom surrounding the lack of wisdom by actors fighting the last war deserves reconsideration.
+	
+	Problematically, whether fighting the last war is a mistake made by those who do not study history or an efficient means of sticking with something that isn't broken has not yet been answered because we don't know whether states fight the last war or what factors make a state more or less likely to do so. This paper seeks to fill that gap by producing the first dataset that includes information about the military domains and units used during international conflict to identify patterns that emerge in the conduct of conflict, thus allowing scholars to test theories about military innovation and the evolution of war fighting. Introduces a new cross-national dataset on military domains during international crises from 1918 to 2007, this study analyzes variation in the means used during international conflict. To our knowledge, this is the first attempt to collect information on not just what actors are involved in international disputes, but \textit{how} did they interact over the span of over 450 international crises. Our motivation in gathering data on the conduct of conflict is driven by the view that the means used to fight are a reflection of actors' goals, priorities, resolve, and capability.
+	
+	This paper will proceed in six parts.
+
+\section{Militaries as `Prisoners of the Past'}
+	Conventional theory about military innovation and the evolution of warfare can be organized by different levels of analysis and by when innovations occur.\footnote{We refer to whether innovations occur during peacetime or during conflict rather than by calendar year.}
+	
+	\citet[127-132]{clausewitz_war_1976} described the different levels of war as strategic, operational, and tactical. Scholars of military innovation have followed this typology in trying to understand when and how military learning occurs \citep{millett_effectivenessmilitaryorganizations_1986, millett_lessonswar_1988}. Starting from the most concrete level, scholars of tactical innovation have tried to understand learning as it takes place on the battlefield. At the operational level, innovation concerns ensuring that lessons from past wars are embedded in collective memory. The strategic level thus concerns ways states can make sure that the collective memory of past wars positively informs the conduct of future conflicts. This highest level -- the strategic -- is fundamentally a political story. Decisions about innovation, adaptation, and war fighting at the strategic level concerns ``the employment of national armed forces to secure by force national goals defined by political leadership" \citep[42]{millett_effectivenessmilitaryorganizations_1986}. This points to the importance of looking to political decisions as explanations for how wars are fought. ``Political leaders, whether civilian or military, had more influence on the outcome of the World Wars and the shape of policy in the interwar years than the military command. It was they who carried their countries to victory or doomed them to defeat" \citep[85]{millett_lessonswar_1988}. This has been particularly consequential when actors mistake successful operational and tactical evolution for strategic innovation \citep{zabecki_german1918offensives_2006}. In the early months of World War II, Germany excelled at tactical and operational innovation in ways that did not translate to long-term strategic success because political elites had the wrong takeaways from Germany's performance in World War I \citep{herwig_politicsfrustrationunited_1976, murray_germanmilitaryeffectiveness_1992}. Israel similarly took only tactical lessons from the Six Days War, causing early problems in the Yom Kippur War just over half a decade later when tactical innovations did not match their operational and strategic goals \citep[7.8-7.9]{murray_militaryadaptationwar_2009}.
+
+	Innovation has been studied in the context of military affairs for as long as conflict itself. The old adage about how generals are ``always fighting the last war" explains the motivations for such study; states that fight yesterday's wars are doomed to be tomorrow's losers. It seems puzzling that there are so many examples of militaries that ``were defeated and went on being defeated because they did not innovate" \citet[9]{rosen_winningnextwar_1991}. America's sub-optimal approach to Vietnam is said to be a product of its approach to World War II and the Korean War \citep{krepinevich_armyvietnam_1986, sorley_betterwarunexamined_1999, nagl_learningeatsoup_2005}. Similarly, Great Britain failed to adapt during counter-insurgency operations in Southern Cameroon during the early 1960's despite the conditions for successful adaptation being present \citep{harkness_militarymaladaptationcounterinsurgency_2015}. Yet fighting the last war can seemingly be rational if it brought about the desired outcome and the situation surrounding the current war mirrors that of a prior war. One explanation for pessimistic explanations for why states are ``doomed to fight the last war" concerns hype over the changing nature of conflict. If matters pertinent to conflict are constantly changing -- technology, the motivations for conflict, salient actors in international disputes, etc -- then states can only survive by engaging in similar evolution and adaptation \citep{rosen_winningnextwar_1991}. States may fail to evolve their strategies for war because international threats necessitate it \citep{layton_wastherepearl_1985, fairbanks_choosingtechnologiesanglogerman_1988}, there is a military preference for the offensive that is insufficiently checked by civilian intervention \citep{posen_sourcemilitarydoctrine_1984, snyder_ideologyoffensivemilitary_1989}, status \citep{katzenbach_horsecavalrytwentieth_1971}, if high-ranking military officers don't have the feedback loops requires for innovation \citep{rosen_winningnextwar_1991, foley_dumbdonkeyscunning_2014}, when parochial interests that bias both military and civilian leaders towards the status quo \citep{zisk_engagingenemyorganization_1993}, because of organizational culture \citep{kier_imaginingwarfrench_1997, nagl_learningeatsoup_2005, raths_germantankproduction_2011}, if bureaucratic structures alter civil military relations \citep{avant_politicalinstitutionsmilitary_1994}, or if a regime is particularly sensitive to costs \citep{rosen_vietnamamericantheory_1982, caverley_mythmilitarymyopia_2009}. Yet contrarian perspectives have cautioned against this view that the nature of war is fundamentally changing \citep{gentile_forumprogressdissent_2009, porch_counterinsurgencyexposingmyths_2013} or noted that adaptation and innovation seem to occur at a sufficient pace for most states \citep{terraine_douglashaigeducated_1963, murray_militaryinnovationinterwar_1996}. When these innovations do successfully occur, it depends on factors like broader strategic political goals \citep{harkness_militarymaladaptationcounterinsurgency_2015}, leader turnover and institutional memory \citep{farrell_improvingwarmilitary_2010}, and the network of relationships among individual soldiers \citep{kollars_warhorizonsoldierled_2015}.
+
+	\begin{figure}[H]
+	\begin{center}
+		\tikzset{every picture/.style={line width=0.75pt}}
+		
+		\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+			% Triangle outline
+			\draw (330,284) -- (187,2) -- (473,2) -- cycle ;
+			
+			% Horizontal lines
+			\draw (228,77) -- (433,78) ;
+			\draw (270,160) -- (390,160) ;
+			
+			% In triangle text	
+			\draw (334,20) node [scale=2.074] [align=left] {Strategic};
+			\draw (330,92) node  [align=left] {{\huge Operational}};
+			\draw (328,176) node  [align=left] {{\huge Tactical}};
+	
+			% Strategic citations
+			\draw (568.5,16) node [scale=0.9] [align=left] {\citet{millett_lessonswar_1988}, \\ \citet{mcmaster_derelictiondutyjohnson_1998}};
+			% Operational citations
+			\draw (568.5,94) node [scale=0.9] [align=left] {\citet{murray_militaryadaptationwar_2009}};
+			% Tactical citations
+			\draw (561.5,176) node [scale=0.9] [align=left] {\citet{kollars_warhorizonsoldierled_2015}, \citet{kollars_geniusmasterymilitary_2017}};		
+			\end{tikzpicture}
+	\end{center}
+	\caption{Conventional theories of innovation in war fighting strategy can be categorized by the levels of analysis provided by \citet[127-132]{clausewitz_war_1976} and \citet{millett_effectivenessmilitaryorganizations_1986}. This represents a generalization, as the levels are neither independent not mutually exclusive \citep{zabecki_german1918offensives_2006}.}
+	\label{fig:unit-of-analysis}
+	\end{figure}
+	
+	In yet other cases, scholars have noted instances of failed innovations that should have occurred but didn't like Russian non-innovation following the Russo-Japanese war \citep[77-99]{bushnell_tsaristarmyrussojapanese_1982} or the US repeating mistakes from the Vietnam war because they lacked a systemic way of passing information up the chain of command \citep{lovell_vietnamarmylearning_1987, krepinevich_armyvietnam_1986, spector_tetbloodiestyear_1993, caverley_mythmilitarymyopia_2009}.\footnote{The US military did not always have this problem. They were successful at passing information up the chain of command in the European theater during World War II with significantly more positive outcomes \citep[3.47]{murray_militaryadaptationwar_2009}.} Great Britain's archer-centric military during the Middle Ages was so effective, in part, due to France's failure to adapt. After British archers decimated France's cavalry at Crecy in 1346, there was essentially no French adaptation resulting in another defeat at Poitiers. Even seventy years later at Agincourt, the French repeated the same mistakes and British archers were again victorious \citep[2.10]{murray_militaryadaptationwar_2009}. The Germans were not the only member of the Axis to fail to innovate during World War II. Italy had similar problems to the US in later decades in terms of innovations that failed to materialize because information was not properly conveyed to relevant decision-makers. But in Mussolini's case, intense fear of political leadership and the consequences of failure created incredibly high levels of dishonesty among military officials; to the point that Mussolini had to employ civilians to count the number of Italian warplanes on the runways because the military systematically and repeatedly over-counted them to avoid having to convey news about their inadequacies \citep[89]{millett_lessonswar_1988}.
+	
+	Since policymakers are most interested in conflict's outcome, scholars studying innovation have typically followed suit in investigating how past conflict experiences are associated with success in future wars \citep{quackenbush_wealwaysfight_2015} as well as looking at the political conditions under which military adaptation occurs \citep{harkness_militarymaladaptationcounterinsurgency_2015}. Here, innovation is thought of in a variety of ways including evolution in strategy and tactics over the course of the war \citep{rosen_winningnextwar_1991} and adapting plans about the war you anticipated into plans for the war you have \citep{kollars_warhorizonsoldierled_2015}.
+
+		\begin{quote}
+		\begin{table}[H]
+			\caption{Notable Cases of Innovation and Conflict Outcomes}
+			\label{table:innovation_cases}
+			\centering
+			\begin{tabular}{rc|cc|}
+				\cline{3-4}
+				& & \multicolumn{2}{c|}{\textbf{Outcome}} \\
+				&  & Bad & Good \\
+				\hline
+				\multicolumn{1}{|c} {\multirow{2}{*}{\textbf{Innovation}}} & No & France Middle Ages, Russia 1941, Germany World War II, US Korean War, US Vietnam War, Israel 1973, US 2003 & TBD \\
+				\multicolumn{1}{|c}{} & Yes & Germany World War I, UK World War II & US World War II \\
+				\hline
+			\end{tabular}
+		\end{table}
+		\end{quote}
+	
+	So if the desirability of innovation and adaptation is taken as a given and fighting the last war is a `doomed' choice that rational, capable, and informed policymakers do not undertake then when do states fight the last war? One group of theories turns to bureaucratic explanations and domestic politics. Military may be more likely to fail to innovate (and thus fight the last war) when there are high levels of discipline among the ranks that translates to deference to authority because adaptation fundamentally requires questioning the revealed wisdom of superiors and their takeaways from past conflict \citep{knox_conclusioncontinuityrevolution_1996, murray_militaryadaptationwar_2009}. Extensive research on leader turnover, although applied more broadly than the context of military innovation provides empirical and theoretical support that the nature of conflict may change when new political and military elites come to power \citep{wolford_turnovertrapnew_2007, wolford_incumbentssuccessorscrisis_2012, mattes_leadershipturnoverforeign_2015, wolford_warssuccession_2018}. States at risk of a coup may also be less prone to innovation if a paranoid political leader responds to the risk of a coup by removing advisers with dissenting viewpoints \citep{murray_militaryadaptationwar_2009}. This situations results in political decisions that silence dissent and reward loyalty - rather than ability - with promotion \citep{bausch_coupproofingmilitaryinefficiencies_2018} and that produce a military more focused on internal security rather than adapting to the foreign threat over the horizon \citep{narang_civilmilitarypathologiesdefeat_2018}. Stalin's purge of the Red Army's officer corps in 1930 left them without institutional knowledge about how best respond to Germany's Operation Barbarossa invasion with terrible results \citep{habeck_stormsteeldevelopment_2014, glantz_companioncolossusreborn_2005}. Saddam Hussein had a similar problem in Iraq; and his forceful moves to quell a coup and its accompanying dissent shut down innovation in military strategy \citep{hashim_saddamhusayncivilmilitary_2003, woods_iraqiperspectivesproject_2006}. States that delegate strategic wartime decision-making to military leadership as opposed to civilian leadership may also be more likely to fight the last war because left to their own devices, the military prefers to fight the way that they know how and the way they have trained. World War I Germany is an example of civilian leadership abdicating responsibility to military elites \citep{prior_passchendaeleuntoldstory_1996}. Professional military education (PME) may have the opposite effect. One of the goals pf institutionalizing PME is to create an environment where new ideas and strategies can be percolated, discussed, and tested. The US Naval War College instituted war games that simulated the use of aircraft carriers even before the United States had any deployed \citep{spires_imagerealitymaking_1984}. A similar thing happened in the US with amphibious assault strategy at a time when very few countries thought it would play a major role in future wars. Fortunately for the US, this training paid off in the Pacific theater during World War II \citep{millett_amphibiouswaramerican_1996}. PME is also credited with Germany's successful tactical adaptation at the beginning of World War II since they established PMEs to institutionalize lessons learned after World War I \citep{spires_imagerealitymaking_1984}. Certain technologies like intelligence, surveillance, and reconnaissance (ISR) capabilities may also aid a state in innovating its military strategy by providing more information about battlefield performance and capabilities by both sides. States that are consequently better able to reduce the fog of war may be able to adapt to circumstances they now see as distinct \citep{owens_liftingfogwar_2001}.
+	
+	Unfortunately, most of the research on military innovation and the evolution of warfare has not escaped the broader bias towards European history that is present in the study of international relations \citep{kang_usbiasstudy_2019}. Historical analysis takes the ``European way of war" as the starting point of innovation in warfare because earlier European actors like the Roman legionaries innovated little beyond the tactical level \citep{knox_dynamicsmilitaryrevolution_2001}. For this reason, large-n quantitative analysis of conflict patterns can be fruitful by divorcing itself from a focus on detailed historical records of European conflicts. Of course, this does not remedy the situation since quantitative data sets are constructed based on readings of historical and archival material, but it nonetheless avoids relying on cases that are under the streetlamp.\footnote{This is a reference to observational bias whereby scholars search where it is easiest to look \citep{kaplan_conductinquiry_1973}.}
+
+\section{Those Who Study the Past are Fortunate to Repeat It\ldots So Who Studies the Past?}
+	Much of the research on military innovation has assumed that innovation and adaptation are inherently desirable. Hence the adage, `those who do not study the past are doomed to repeat it.` When innovation fails, it is because the wrong type of innovation occurred, it was incorrectly implemented, or the other side simply innovated better. But the actual lesson seems to be that states need a way to recognize patterns from their own experience. Error lies not in repeating the last war, but in failing to study it \citep[4.1]{murray_militaryadaptationwar_2009}. Sometimes the lesson to be taken from past experience is that things must be done differently -- the US failure to learn from Great Britain's mistakes in Iraq in 1920 is indicative of this phenomenon \citep{haldane_insurrectionmesopotamia1920_1922} -- but other times the lesson is that things should be done the same way. The task is then identifying when states are best able to recognize patterns from past experience. We focus here on learning at the strategic level of conflict rather than the tactical or operational because it best explains military failures that dominate scholarly and practitioner interest like Vietnam \citep{mcmaster_derelictiondutyjohnson_1998} and the Iraq war \citep{fallows_blindbaghdadamerica_2006}, allows us to examine the comparatively understudied phenomenon of learning and innovation across wars rather than tactical innovation over the course of a war, and because ``it is more important to make correct decisions at the political and strategic level than it is at the operational and tactical level. Mistakes in operations and tactics can be corrected but political and strategic mistakes live forever" \citep{millett_lessonswar_1988}.
+
+	Less formal military institutions may be better able to learn from past mistakes and adapt because they are more conducive to bottom up innovation by those in the theater of conflict \citep{kollars_warhorizonsoldierled_2015}. We saw this during World War I where Great Britain was able to adopt the tank much more easily than Germany because of differences in military cultures surrounding change to military strategy \citep{raths_germantankproduction_2011, foley_dumbdonkeyscunning_2014}. Part of the explanation in this case can be observed by different outcomes in conscript and volunteer armies. Volunteer armies are likely to have less formal structures -- hence what we observe with Germany's strict and formal conscript army during World War I \citep{foley_learningwarlessons_2011}. While formal learning may positively influence innovation during the course of the war by encouraging lines of communication, it may be less likely to carry over into future wars because it is less likely to change official doctrine. Informal learning may be better for long-term learning across conflicts because it encourages personal ties among military members like we saw in Great Britain after World War I. Ernest Swinton, who many credit as the brain behind the tank's invention, thought about using tracks to traverse broken ground. He mentioned this to his superior who in turn spoke to an automotive company he personally knew. The proposal was then submitted to the War Cabinet and Churchill agreed to experiment with this new military technology \citep[291-293]{foley_dumbdonkeyscunning_2014}. Others disagree, nothing that innovations are more likely to change formal doctrine when there is a centralized and synthetic network that is conducive to unified solutions and evolutions in military strategy \citep{kollars_warhorizonsoldierled_2015}. Comparison between UK and US approaches to jungle warfare in South Asia during World War II are also illustrative of this trend, as the US sent its most tightly disciplined army units and was consequently more successful in adapting to unexpected circumstances \citep[137]{thiesmeyer_combatscientistsscience_1947}.
+	
+	The size of a military's officer corp could also influence adaptation across conflicts. Military officers tend to be in charge of changing doctrine and tactics and are the command in charge of formulating operational strategy. Great Britain lacked many active duty officers prior to World War I \citep{simkins_kitchenerarmyraising_2007} while Germany had a comparatively large officer corps \citep[217]{kriegsruestungundkriegswirtschaft_1930}.
+	
+	The length (or expected length) of a conflict could also influence innovation if longer wars make innovation more likely \citep[38-39]{rosen_winningnextwar_1991}
+
+\section{Research Design}
+	The game of chess has 20 possible opening moves for the first player, resulting in 400 possible board configurations after both players have moved once. By the time each side has taken their second turn, there are 197,742 possible board configurations. By the third turn, approximately 121 million. Despite this overwhelming number of openings to the ancient game, 70\% of recorded professional chess games since 1850 have used the same 30 opening configurations. The 12 regular matches between Magnus Carlsen and Fabiano Caruana in the 2018 world chess championship saw only 4 unique openers with the most common, the Sicilian Defence, being the move of choice in 6 of the 12 matches. Despite a lack of innovation in opening moves, the world championship quickly entered uncharted territory. In the second match, by move 10, the board configuration had only been seen in recorded competition once before. The third match was identical to the first for the first 6 moves, but by the 7th move produced a board last seen in 1995. Game 7 was a repeat of the second game for the first 9 moves, but by move 11 had entered entirely uncharted territory.
+	
+	In a simplified sense, international disputes share some similarity with the ancient game of chess. There are two sides in dispute in a zero-sum competition engaging in a series of strategic moves with the ultimate goal of victory over the opponent. Each side considers the moves that maximize their chance of achieving the desired outcome given the likely responses of the other player. Much like chess players prepare for future games by studying the past, actors engaged in war -- whether we think of them as states, politicians, or military generals -- (should) similarly study past wars to understand patterns of moves and their attendant consequences.
+	
+	Of course, international disputes may be better represented by a game of chess between two adolescents who try to move simultaneously, take multiple consecutive moves, and introduce foreign objects onto the board to obtain an unanticipated advantage. And yet, there is a finite set of actions (moves) each actor can take and the ultimate goal remains victory. The question then becomes whether scholars can identify the actors, actions and context of wars in ways that map onto the players, moves, and board of a game of chess. If so, the sequence of ``play" can be identified and patterns in the conduct of conflict can be identified. Two of the greatest chess masters in history repeated the same opening sequence in half of their contests. Yet states who fight the next war the way they fought the last one are accused of being `prisoners of the past', giving rise to the adage ``generals who do not study the past are doomed to repeat it'.
+
+	\subsection{Data}
+		Previous analysis has noted the importance of looking at the conduct of war, but the current data is limited. The domains countries use during conflict -- traditionally understood as land, air, sea, space, and cyber -- are important in understanding the causes and consequences of war. Regarding its causes, if, as Clausewitz noted, war is the continuation of politics with other means, then the tools used for war are the tools used for the continuation of politics with other means. The wide body of literature studying the causes of war has recognize the importance of \textit{how} nations fight in specific contexts like conflict initiation \citep{beckley_emergingmilitarybalance_2017}, the balance of power \citep{horowitz_diffusionmilitarypower_2010}, whether a show of force is a deterrent to conflict or encourages a spiral \citep{glaser_politicalconsequencesmilitary_1992}, when and why treaties are chosen instead of war \citep{allison_armamentsarmscontrol_1975}, when coups against autocratic leaders are successful \citep{talmadge_differentthreatsdifferent_2016}, and the type of negotiated settlement a country is able to get given how an opponent feels about the prospect of winning that war. It goes without saying that the consequences of war also depend on its conduct including who wins \citep{,rosen_winningnextwar_1991, lyall_ragemachinesexplaining_2009} and the costs in treasure and in blood \citep{caverley_democraticmilitarismvoting_2014}.
+		
+		An important contribution of this paper is to help bridge the gap between formal models and our rich datasets so that they can speak to one another in a more productive and empirically-oriented manner \citep{fearon_signalingbalancepower_1994}. But such an empirical test requires very fine-grained and disaggregated information about the types of signals sent during a crisis. When Doran first published his research on leading indicators of conflict (including military mobilization) in a case study of the Six-Day War, his hope was that ``additional research will have to determine the actual probability that these leading indicators will provide accurate forecasts. Given enough cases, such probability could be assessed" \citep{doran_leadingindicatorsjune_1980}. We now have enough cases to discern what types of military mobilization precede conflict to help theoretically explain why this occurs and under what conditions.
+		
+		This crisis-domain dataset represents -- to the best of our knowledge --  the most extensive data collection available on the means used during conflict. The means of conflict can be used as either a dependent or independent variable in the study of international relations. Our contribution to the research is twofold. First, the military domains used during a crisis can influence its outcome and whether a crisis escalates or it resolved peacefully. In the first Gulf of Sidra incident, Libya responding to US aircraft carriers by deploying their own fighter aircraft which was predictably met with a similar fighter aircraft response that resolved the situation rather quickly. But when Syria responded to aircraft carriers with surface-to-air missiles in the second incident, the crisis escalated to a higher level of intensity and resulted in damage to Libyan military installations.
+		
+		Our dataset allows scholars to test theories about how countries respond to different means of attack and what those responses mean for the propensity of a crisis to escalate. We draw from an existing international relations dataset, the International Crisis Behavior (ICB) dataset, which makes it easy for conflict scholars to use. The list of crises used to populate our dataset comes from the ICB data and the ICB crisis narratives provided the text needed to code what military domains and units were used by each actor during each crisis. This increases the utility of our dataset since it can be used alongside current datasets; much scholarly work has already tested theories about international conflict using the previously published ICB data. Second, many studies about the conduct of international conflict have looked at particular cases like the Korean War \citep{slantchev_feigningweakness_2010} or nuclear alerts during the Vietnam War \citep{sagan_madmannuclearalert_2003}. In contrast, this project is about the means used during all international crises from 1918 to 2007 which allows scholars to examine the degree to which the conduct of particular international crises can by generalized to validate or disprove broader theories of international relations.
+		
+		Our exploratory analysis sheds light on what domains actors mobilize during a crisis and which of those domains are present in conflicts that escalate as opposed to those that have relatively low levels of violence. This dataset potentially plays a central role in answering fundamental questions about international relations like how the conduct of war is changing over time, how responses to particular forms of aggression are met, which responses to particular forms of warfare are successful, and how can international actors dissuade adversaries from employing particular tools during conflict.
+
+		We extend the ICB dataset by gathering extensive data on the tools utilized during crises. The dataset introduced here contains data on the military domains and units used by each actor during these international crises. As such, the unit of analysis is the crisis-actor and the newly coded variables are binary true/false values representing whether that actor employed that domain and unit during the crisis.
+		
+		The data source used by the coders was the ICB crisis narratives that provide qualitative descriptions of the crises. This has a few benefits over other events datasets. First, the ICB crisis narratives are written in a systematic fashion. They are all approximately the same length, contain the same level of detail, and were written by the same research team at the University of Maryland. This reduces concerns that variation among crisis variables is due to variation in the data generating process. For example, more recent crises do not have more detailed crisis narratives which is not the case for the reporting of militarized interstate disputes captured by scraping news sources. Second, the ICB narratives are accompanied by the more commonly used ICB dataset that codes important international relations variables in the dataset. This helps verify the coding effort since the information that coders extract from the crisis narratives should be consistent with previous codings that populate the quantitative ICB dataset.
+		
+		The first set of codings were done by graduate students at the University of Maryland that were overseen by the ICB directors who helped construct the original ICB datasets and narratives. For each crisis, two research assistants coded the ICB crisis narratives at the sentence level for a series of variables created by the Cross-Domain Deterrence Initiative. A third coder was used to break ties or when there were discrepancies about how to code the events in a sentence. Undergraduate political science students at the University of California, San Diego also coded the crisis narratives for course credit. Coders could not make reference to the existing codings and the raw coding includes a measure of uncertainty for each coder. The data collection process took approximately two years which included the development of a Graphic User Interface (GUI) for data entry, the development of an ontology for the actors, actions, and supporting details to describe each event, the data entry itself, and pre-processing of the raw coder data. An example of the GUI the coders used to enter the data is shown in figure \ref{fig:coding_gui}. Coders selected one of the 455 ICB crises and for each individual sentence in the corresponding ICB crisis narrative, they coded the events that occurred as a series of actions undertaken by an actor along with supporting details like when the action took place, where, and to what effect. The final version of the data includes an aggregation of the multiple different codings that exist for each case. This paper only focuses on the military domains and units used during these crises since the other variables concerning the sequence of international crises and non-military moves are still being processed. This represents an improvement over current efforts to analyze aggregate analysis of crisis behavior by including fine-grained information about how actors behaved as well as capturing the sequence and timing of their behavior. In this way, theories like deterrence and the spiral models of conflict that rely on action-reaction cycles can be tested in more thorough ways.
+		
+		\begin{figure}[h]
+			\centering
+			\includegraphics[width=\textwidth]{gui_example.jpg}
+			\caption{ICB Graphic User Interface (GUI)}
+			\subcaption*{Example for coding a sentence describing an event during the Cuban Missile Crisis}
+			\label{fig:coding_gui}
+		\end{figure} 
+		
+		The two sets of variables coded here, military domains and units, concern escalatory interactions. Table \ref{tab:variable_summary} describes the newly created variables. Escalatory interactions involve another actor, possibly as a target, and are hostile and risk an increase in the degree or probability of violence. This includes preparations for war (mobilizations, exercises, weapons tests), maneuvers (deployment, show of force, blockade), and/or combat (battles, bombardments, invasions, occupations). When a coder indicated that an escalatory interaction had occurred in a crisis, they specified the type of escalatory interaction and then coded the military domains and units that were involved in that escalatory interaction. This version of the data does not specify what kind of escalatory interaction the domains and units were since that information is still being processed.
+		
+		The domain variables refer to where the interaction took place. This does not refer to what was used during the interaction, but where the interaction happened. Coders were able to choose more than one answer. The unit variable is coded as an answer to the question ``what type of military units were involved in the interaction?" Coders were again able to choose more than one answer.In both cases, coding decisions were made by reading the ICB crisis narrative and coding how the qualitative narrative described the behavior by each actor during the crisis.
+		
+		\begin{table}[h]
+			\centering
+			\begin{tabular}{|l|p{14cm}|}
+				\hline
+				\textbf{Variable} & \textbf{Description} \\ 
+				\hline
+				\hline
+				Crisis Name & Taken from the ICB2 actor dataset \\
+				Crisis Actor & Taken from the ICB2 actor dataset \\
+				\hline
+				\textbf{Domains} & Where did this interaction occur? This refers to where the interaction happened, not what was used during the interaction \\
+				Air &  The interaction occurred in the air \\
+				Land & The interaction occurred on the dry portion of the earth's surface \\
+				Sea & The interaction occurred in the ocean or a large body of water \\
+				WMD & Nuclear, chemical, or biological weapons. The physical domain where the WMD interaction occurred is separately coded \\
+				\hline
+				\textbf{Units} & What type of military units were involved in this interaction? This refers to what was used during the interaction \\
+				Aircraft carriers & Large naval vessel from which aircraft can take off and land \\
+				Armor & Armored vehicles such as tanks or humvees \\
+				Artillery & Large caliber weapons for discharging missiles like cannons or missile launchers \\
+				Bombers & Military aircraft designed to attack ground and sea targets \\
+				Chemical & Chemical weapon using toxic chemicals like nerve gas or tear gas \\
+				Fighters & Military aircraft designed for air-to-air combat \\
+				Nuclear & Nuclear weapon using fission or fusion nuclear reactors \\
+				Submarines & Warship that operates underneath the surface of the water \\
+				Surface Ships & Warships that operates on the surface of the water \\
+				Surveillance & Military aircraft used to collect information and intelligence \\
+				Troops & Individual human soldiers or units of soldiers \\
+				\hline
+			\end{tabular}
+			\captionof{table}{Variable Description for ICB}\label{tab:variable_summary}
+			\subcaption*{Note: Not all descriptor variables listed here}
+		\end{table}
+
+		Some summary statistics from the newly assembled data are presented here. The unit of analysis is the crisis-actor. 1000 crisis actors are represented in our dataset covering 455 distinct crises from 1918 to 2007.
+		
+		Figure \ref{fig:summary_crosssec} shows the aggregation of domains used by the five countries that have been involved in at least 20 crises from 1918-2007. These include crises where these domains and units were threatened, mobilized, deployed, or used. Here, we use the traditional military domains of land, air, and sea and add a separate domain for weapons of mass destruction (nuclear, chemical, and biological). The results are consistent with our intuition that the United States, given its geographic location and where it fights its wars, tends to invoke sea units in most of the crises it participated in. Israel and Libya, by contract, rely much more heavily on land and air units.
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=\textwidth]{domains_country_grid.png}
+			\caption{Cross-sectional of Crisis Domains and Units}
+			\label{fig:summary_crosssec}
+		\end{figure}
+		
+		There is also interesting variation that depends on where wars are fought. Figure \ref{fig:summary_region} shows the number of times a particular military domain and unit was invoked in a crisis in a particular region. Here, the region refers to where the crisis occurred which could be proximate with some of the actors involved but not others. Even though the Taiwan Straits Crisis of 1996 involved the United States, for example, it took place in East Asia and is thus represented in the Asia category.
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=\textwidth]{domains_continent_grid.png}
+			\caption{Geographic Distribution of Crisis Domains}
+			\label{fig:summary_region}
+		\end{figure}
+		
+		The data also gives us an idea of how the frequency with which particular domains and units of conflict has changed over time. Figure \ref{fig:summary_timeseries} shows the cumulative distribution of military domains over crises that occurred from 1918 until 2007. This distribution is insightful in light of research about the evolution from land to sea to air and potentially now to space and cyber forms of conflict. Further work could examine which states are driving the temporal trends noted here to test theories about comparative military doctrine and why some states evolve their forms of warfare while others do not.
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=\textwidth]{units_time_grid.png}
+			\caption{Temporal Distribution of Crisis Domains and Units}
+			\label{fig:summary_timeseries}
+		\end{figure}
+	
+	\subsection{Model and Results}
+
+\section{Implications}
+	Epidemiologists spend much of their time identifying factors that increase the risk of particular health problems in individuals. An important component of their work relies on the proper identification of events and conditions that serve as an indicator that health problems will soon follow. Similarly, scholars of international relations are interested in identifying factors that indicate that the outbreak of conflict is increasingly likely \citep{senese_stepswarempirical_2008}. The goal in this case is not only to causally identify factors that make war more likely so that we can better understand events of the past, but also to improve our ability to forecast the likelihood of conflict in the future \citep{valeriano_pathwaysinterstatewar_2010}.
+	
+	The relationship between domains and crisis escalation is potentially important for a few reasons. First, we cannot understand crisis escalation without understand the tools that were used (as combat or as threat) during that crisis. When an actor decides to escalate a conflict because the expected benefits of a negotiated settlement are exceeded by the expected benefits of going to war, the manner in which that war was fought is a direct factor influencing the cost of that war and its expected outcome. In the case of the second Gulf of Sidra incident, the United States calculated that the amount of damage that Syrian military forces could do to the US naval fleet was low enough that it preferred instigating conflict given what it knew it was up against. Second, prior evidence suggests that military domains directly interact with the propensity to negotiate and de-escalate a conflict. Recent work has investigated how East Asian countries can best combat Chinese naval expansion \citep{beckley_emergingmilitarybalance_2017}. This is an example of a broader question about when powerful weapons like aircraft carriers may be more likely to prompt the defender to negotiate rather than risk fighting against a unit of this strength. Our data can shed light on these debates by investigating the relationship between A2/AD missile deployment as a response to naval carrier deployment by an aggressor. This example demonstrates that the escalatory effects of the tools used in a crisis are fundamental to understanding the evolution of conflict in the 21\textsuperscript{st} century.
+	
+	The ICB data provides a unique opportunity to examine conflict escalation because it is not limited to cases where conventional military conflict occurred. Rather, the data examines crises -- some of which escalated to militarized interstate conflict with some degree of violence and others which did not. As a result, this data provides variation in the dependent variable since we can compare cases where a crisis did violently escalate to cases where the crisis did not. Examining patterns in the military domains and units involved in each of these cases can shed light on when a crisis is likely to escalate.
+
+\section{Conclusion}
+
+
+\singlespacing
+\bibliographystyle{apsr}
+\bibliography{icbdomains_bib}
+	
+\end{document}

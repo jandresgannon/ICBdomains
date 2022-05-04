@@ -1,0 +1,453 @@
+crisno,crisname,actor,gwname,gwcode,coder1,coder2,coder3,agreement,side,notes
+463,PREAH VIHEAR TEMPLE II,cambodia,CAM,811,side_B,side_B,side_B,1,side_B,
+463,PREAH VIHEAR TEMPLE II,indonesia,INS,850,no_side,no_side,no_side,1,no_side,
+463,PREAH VIHEAR TEMPLE II,thailand,THI,800,side_A,side_A,side_A,1,side_A,
+464,LIBYAN CIVILWAR,belgium,BEL,211,side_A,no_side,side_A,0,side_A,"coalition participant. Are states that had no input other then enforcing a UNSC-sanctioned no-fly zone crisis actors?
+It comes down to the third criteria, ""at least one of the states perceives that the other has directed a threatening or hostile action against it."" 
+
+Libya perceives that the UN has directed a hostile act against it: ""On 19 March, Libya issued its major response in the form of a public statement from Gaddafi in
+which he harshly condemned the UNSC resolution and vowed to arm the Libyan people and fight to the end to protect them from “colonial, crusader” aggression.""
+
+I would argue that the third criteria is a pretty low bar since we are going on state perceptions. Since we have limited information, all a state has to do is declare that it finds an act hostile. In this case, Libya clearly does that against the no-fly zone. If we had asked about each of the participants, he would have condemned each. As such, I would include each participant as side A. I would suggest flagging these as coalition participants (vs. coalition leaders), and exclude them in a robustness check. "
+464,LIBYAN CIVILWAR,bulgaria,BUL,355,side_A,no_side,side_A,0,side_A,"coalition participant. Are states that had no input other then enforcing a UNSC-sanctioned no-fly zone crisis actors?
+It comes down to the third criteria, ""at least one of the states perceives that the other has directed a threatening or hostile action against it."" 
+
+Libya perceives that the UN has directed a hostile act against it: ""On 19 March, Libya issued its major response in the form of a public statement from Gaddafi in
+which he harshly condemned the UNSC resolution and vowed to arm the Libyan people and fight to the end to protect them from “colonial, crusader” aggression.""
+
+I would argue that the third criteria is a pretty low bar since we are going on state perceptions. Since we have limited information, all a state has to do is declare that it finds an act hostile. In this case, Libya clearly does that against the no-fly zone. If we had asked about each of the participants, he would have condemned each. As such, I would include each participant as side A. I would suggest flagging these as coalition participants (vs. coalition leaders), and exclude them in a robustness check. "
+464,LIBYAN CIVILWAR,canada,CAN,20,side_A,side_A,side_A,1,side_A,"coalition participant. Are states that had no input other then enforcing a UNSC-sanctioned no-fly zone crisis actors?
+It comes down to the third criteria, ""at least one of the states perceives that the other has directed a threatening or hostile action against it."" 
+
+Libya perceives that the UN has directed a hostile act against it: ""On 19 March, Libya issued its major response in the form of a public statement from Gaddafi in
+which he harshly condemned the UNSC resolution and vowed to arm the Libyan people and fight to the end to protect them from “colonial, crusader” aggression.""
+
+I would argue that the third criteria is a pretty low bar since we are going on state perceptions. Since we have limited information, all a state has to do is declare that it finds an act hostile. In this case, Libya clearly does that against the no-fly zone. If we had asked about each of the participants, he would have condemned each. As such, I would include each participant as side A. I would suggest flagging these as coalition participants (vs. coalition leaders), and exclude them in a robustness check. "
+464,LIBYAN CIVILWAR,china,CHN,710,no_side,no_side,no_side,1,no_side,"coalition participant. Are states that had no input other then enforcing a UNSC-sanctioned no-fly zone crisis actors?
+It comes down to the third criteria, ""at least one of the states perceives that the other has directed a threatening or hostile action against it."" 
+
+Libya perceives that the UN has directed a hostile act against it: ""On 19 March, Libya issued its major response in the form of a public statement from Gaddafi in
+which he harshly condemned the UNSC resolution and vowed to arm the Libyan people and fight to the end to protect them from “colonial, crusader” aggression.""
+
+I would argue that the third criteria is a pretty low bar since we are going on state perceptions. Since we have limited information, all a state has to do is declare that it finds an act hostile. In this case, Libya clearly does that against the no-fly zone. If we had asked about each of the participants, he would have condemned each. As such, I would include each participant as side A. I would suggest flagging these as coalition participants (vs. coalition leaders), and exclude them in a robustness check. "
+464,LIBYAN CIVILWAR,denmark,DEN,390,side_A,no_side,side_A,0,side_A,"coalition participant. Are states that had no input other then enforcing a UNSC-sanctioned no-fly zone crisis actors?
+It comes down to the third criteria, ""at least one of the states perceives that the other has directed a threatening or hostile action against it."" 
+
+Libya perceives that the UN has directed a hostile act against it: ""On 19 March, Libya issued its major response in the form of a public statement from Gaddafi in
+which he harshly condemned the UNSC resolution and vowed to arm the Libyan people and fight to the end to protect them from “colonial, crusader” aggression.""
+
+I would argue that the third criteria is a pretty low bar since we are going on state perceptions. Since we have limited information, all a state has to do is declare that it finds an act hostile. In this case, Libya clearly does that against the no-fly zone. If we had asked about each of the participants, he would have condemned each. As such, I would include each participant as side A. I would suggest flagging these as coalition participants (vs. coalition leaders), and exclude them in a robustness check. "
+464,LIBYAN CIVILWAR,france,FRN,220,side_A,side_A,side_A,1,side_A,"coalition participant. Are states that had no input other then enforcing a UNSC-sanctioned no-fly zone crisis actors?
+It comes down to the third criteria, ""at least one of the states perceives that the other has directed a threatening or hostile action against it."" 
+
+Libya perceives that the UN has directed a hostile act against it: ""On 19 March, Libya issued its major response in the form of a public statement from Gaddafi in
+which he harshly condemned the UNSC resolution and vowed to arm the Libyan people and fight to the end to protect them from “colonial, crusader” aggression.""
+
+I would argue that the third criteria is a pretty low bar since we are going on state perceptions. Since we have limited information, all a state has to do is declare that it finds an act hostile. In this case, Libya clearly does that against the no-fly zone. If we had asked about each of the participants, he would have condemned each. As such, I would include each participant as side A. I would suggest flagging these as coalition participants (vs. coalition leaders), and exclude them in a robustness check. "
+464,LIBYAN CIVILWAR,greece,GRC,350,side_A,no_side,side_A,0,side_A,"coalition participant. Are states that had no input other then enforcing a UNSC-sanctioned no-fly zone crisis actors?
+It comes down to the third criteria, ""at least one of the states perceives that the other has directed a threatening or hostile action against it."" 
+
+Libya perceives that the UN has directed a hostile act against it: ""On 19 March, Libya issued its major response in the form of a public statement from Gaddafi in
+which he harshly condemned the UNSC resolution and vowed to arm the Libyan people and fight to the end to protect them from “colonial, crusader” aggression.""
+
+I would argue that the third criteria is a pretty low bar since we are going on state perceptions. Since we have limited information, all a state has to do is declare that it finds an act hostile. In this case, Libya clearly does that against the no-fly zone. If we had asked about each of the participants, he would have condemned each. As such, I would include each participant as side A. I would suggest flagging these as coalition participants (vs. coalition leaders), and exclude them in a robustness check. "
+464,LIBYAN CIVILWAR,italy,ITA,325,side_A,side_A,side_A,1,side_A,"coalition participant. Are states that had no input other then enforcing a UNSC-sanctioned no-fly zone crisis actors?
+It comes down to the third criteria, ""at least one of the states perceives that the other has directed a threatening or hostile action against it."" 
+
+Libya perceives that the UN has directed a hostile act against it: ""On 19 March, Libya issued its major response in the form of a public statement from Gaddafi in
+which he harshly condemned the UNSC resolution and vowed to arm the Libyan people and fight to the end to protect them from “colonial, crusader” aggression.""
+
+I would argue that the third criteria is a pretty low bar since we are going on state perceptions. Since we have limited information, all a state has to do is declare that it finds an act hostile. In this case, Libya clearly does that against the no-fly zone. If we had asked about each of the participants, he would have condemned each. As such, I would include each participant as side A. I would suggest flagging these as coalition participants (vs. coalition leaders), and exclude them in a robustness check. "
+464,LIBYAN CIVILWAR,jordan,JOR,663,side_A,no_side,side_A,0,side_A,"coalition participant. Are states that had no input other then enforcing a UNSC-sanctioned no-fly zone crisis actors?
+It comes down to the third criteria, ""at least one of the states perceives that the other has directed a threatening or hostile action against it."" 
+
+Libya perceives that the UN has directed a hostile act against it: ""On 19 March, Libya issued its major response in the form of a public statement from Gaddafi in
+which he harshly condemned the UNSC resolution and vowed to arm the Libyan people and fight to the end to protect them from “colonial, crusader” aggression.""
+
+I would argue that the third criteria is a pretty low bar since we are going on state perceptions. Since we have limited information, all a state has to do is declare that it finds an act hostile. In this case, Libya clearly does that against the no-fly zone. If we had asked about each of the participants, he would have condemned each. As such, I would include each participant as side A. I would suggest flagging these as coalition participants (vs. coalition leaders), and exclude them in a robustness check. "
+464,LIBYAN CIVILWAR,libya,LIB,620,side_B,side_B,side_B,1,side_B,"coalition participant. Are states that had no input other then enforcing a UNSC-sanctioned no-fly zone crisis actors?
+It comes down to the third criteria, ""at least one of the states perceives that the other has directed a threatening or hostile action against it."" 
+
+Libya perceives that the UN has directed a hostile act against it: ""On 19 March, Libya issued its major response in the form of a public statement from Gaddafi in
+which he harshly condemned the UNSC resolution and vowed to arm the Libyan people and fight to the end to protect them from “colonial, crusader” aggression.""
+
+I would argue that the third criteria is a pretty low bar since we are going on state perceptions. Since we have limited information, all a state has to do is declare that it finds an act hostile. In this case, Libya clearly does that against the no-fly zone. If we had asked about each of the participants, he would have condemned each. As such, I would include each participant as side A. I would suggest flagging these as coalition participants (vs. coalition leaders), and exclude them in a robustness check. "
+464,LIBYAN CIVILWAR,norway,NOR,385,side_A,no_side,side_A,0,side_A,"coalition participant. Are states that had no input other then enforcing a UNSC-sanctioned no-fly zone crisis actors?
+It comes down to the third criteria, ""at least one of the states perceives that the other has directed a threatening or hostile action against it."" 
+
+Libya perceives that the UN has directed a hostile act against it: ""On 19 March, Libya issued its major response in the form of a public statement from Gaddafi in
+which he harshly condemned the UNSC resolution and vowed to arm the Libyan people and fight to the end to protect them from “colonial, crusader” aggression.""
+
+I would argue that the third criteria is a pretty low bar since we are going on state perceptions. Since we have limited information, all a state has to do is declare that it finds an act hostile. In this case, Libya clearly does that against the no-fly zone. If we had asked about each of the participants, he would have condemned each. As such, I would include each participant as side A. I would suggest flagging these as coalition participants (vs. coalition leaders), and exclude them in a robustness check. "
+464,LIBYAN CIVILWAR,netherlands,NTH,210,side_A,no_side,side_A,0,side_A,"coalition participant. Are states that had no input other then enforcing a UNSC-sanctioned no-fly zone crisis actors?
+It comes down to the third criteria, ""at least one of the states perceives that the other has directed a threatening or hostile action against it."" 
+
+Libya perceives that the UN has directed a hostile act against it: ""On 19 March, Libya issued its major response in the form of a public statement from Gaddafi in
+which he harshly condemned the UNSC resolution and vowed to arm the Libyan people and fight to the end to protect them from “colonial, crusader” aggression.""
+
+I would argue that the third criteria is a pretty low bar since we are going on state perceptions. Since we have limited information, all a state has to do is declare that it finds an act hostile. In this case, Libya clearly does that against the no-fly zone. If we had asked about each of the participants, he would have condemned each. As such, I would include each participant as side A. I would suggest flagging these as coalition participants (vs. coalition leaders), and exclude them in a robustness check. "
+464,LIBYAN CIVILWAR,qatar,QAT,694,side_A,side_A,side_A,1,side_A,"coalition participant. Are states that had no input other then enforcing a UNSC-sanctioned no-fly zone crisis actors?
+It comes down to the third criteria, ""at least one of the states perceives that the other has directed a threatening or hostile action against it."" 
+
+Libya perceives that the UN has directed a hostile act against it: ""On 19 March, Libya issued its major response in the form of a public statement from Gaddafi in
+which he harshly condemned the UNSC resolution and vowed to arm the Libyan people and fight to the end to protect them from “colonial, crusader” aggression.""
+
+I would argue that the third criteria is a pretty low bar since we are going on state perceptions. Since we have limited information, all a state has to do is declare that it finds an act hostile. In this case, Libya clearly does that against the no-fly zone. If we had asked about each of the participants, he would have condemned each. As such, I would include each participant as side A. I would suggest flagging these as coalition participants (vs. coalition leaders), and exclude them in a robustness check. "
+464,LIBYAN CIVILWAR,romania,RUM,360,side_A,no_side,side_A,0,side_A,"coalition participant. Are states that had no input other then enforcing a UNSC-sanctioned no-fly zone crisis actors?
+It comes down to the third criteria, ""at least one of the states perceives that the other has directed a threatening or hostile action against it."" 
+
+Libya perceives that the UN has directed a hostile act against it: ""On 19 March, Libya issued its major response in the form of a public statement from Gaddafi in
+which he harshly condemned the UNSC resolution and vowed to arm the Libyan people and fight to the end to protect them from “colonial, crusader” aggression.""
+
+I would argue that the third criteria is a pretty low bar since we are going on state perceptions. Since we have limited information, all a state has to do is declare that it finds an act hostile. In this case, Libya clearly does that against the no-fly zone. If we had asked about each of the participants, he would have condemned each. As such, I would include each participant as side A. I would suggest flagging these as coalition participants (vs. coalition leaders), and exclude them in a robustness check. "
+464,LIBYAN CIVILWAR,russia,RUS,365,no_side,no_side,no_side,1,no_side,"coalition participant. Are states that had no input other then enforcing a UNSC-sanctioned no-fly zone crisis actors?
+It comes down to the third criteria, ""at least one of the states perceives that the other has directed a threatening or hostile action against it."" 
+
+Libya perceives that the UN has directed a hostile act against it: ""On 19 March, Libya issued its major response in the form of a public statement from Gaddafi in
+which he harshly condemned the UNSC resolution and vowed to arm the Libyan people and fight to the end to protect them from “colonial, crusader” aggression.""
+
+I would argue that the third criteria is a pretty low bar since we are going on state perceptions. Since we have limited information, all a state has to do is declare that it finds an act hostile. In this case, Libya clearly does that against the no-fly zone. If we had asked about each of the participants, he would have condemned each. As such, I would include each participant as side A. I would suggest flagging these as coalition participants (vs. coalition leaders), and exclude them in a robustness check. "
+464,LIBYAN CIVILWAR,spain,SPN,230,side_A,no_side,side_A,0,side_A,"coalition participant. Are states that had no input other then enforcing a UNSC-sanctioned no-fly zone crisis actors?
+It comes down to the third criteria, ""at least one of the states perceives that the other has directed a threatening or hostile action against it."" 
+
+Libya perceives that the UN has directed a hostile act against it: ""On 19 March, Libya issued its major response in the form of a public statement from Gaddafi in
+which he harshly condemned the UNSC resolution and vowed to arm the Libyan people and fight to the end to protect them from “colonial, crusader” aggression.""
+
+I would argue that the third criteria is a pretty low bar since we are going on state perceptions. Since we have limited information, all a state has to do is declare that it finds an act hostile. In this case, Libya clearly does that against the no-fly zone. If we had asked about each of the participants, he would have condemned each. As such, I would include each participant as side A. I would suggest flagging these as coalition participants (vs. coalition leaders), and exclude them in a robustness check. "
+464,LIBYAN CIVILWAR,sweden,SWD,380,side_A,no_side,side_A,0,side_A,"coalition participant. Are states that had no input other then enforcing a UNSC-sanctioned no-fly zone crisis actors?
+It comes down to the third criteria, ""at least one of the states perceives that the other has directed a threatening or hostile action against it."" 
+
+Libya perceives that the UN has directed a hostile act against it: ""On 19 March, Libya issued its major response in the form of a public statement from Gaddafi in
+which he harshly condemned the UNSC resolution and vowed to arm the Libyan people and fight to the end to protect them from “colonial, crusader” aggression.""
+
+I would argue that the third criteria is a pretty low bar since we are going on state perceptions. Since we have limited information, all a state has to do is declare that it finds an act hostile. In this case, Libya clearly does that against the no-fly zone. If we had asked about each of the participants, he would have condemned each. As such, I would include each participant as side A. I would suggest flagging these as coalition participants (vs. coalition leaders), and exclude them in a robustness check. "
+464,LIBYAN CIVILWAR,turkey,TUR,640,side_A,no_side,side_A,0,side_A,"coalition participant. Are states that had no input other then enforcing a UNSC-sanctioned no-fly zone crisis actors?
+It comes down to the third criteria, ""at least one of the states perceives that the other has directed a threatening or hostile action against it."" 
+
+Libya perceives that the UN has directed a hostile act against it: ""On 19 March, Libya issued its major response in the form of a public statement from Gaddafi in
+which he harshly condemned the UNSC resolution and vowed to arm the Libyan people and fight to the end to protect them from “colonial, crusader” aggression.""
+
+I would argue that the third criteria is a pretty low bar since we are going on state perceptions. Since we have limited information, all a state has to do is declare that it finds an act hostile. In this case, Libya clearly does that against the no-fly zone. If we had asked about each of the participants, he would have condemned each. As such, I would include each participant as side A. I would suggest flagging these as coalition participants (vs. coalition leaders), and exclude them in a robustness check. "
+464,LIBYAN CIVILWAR,united arab emirates,UAE,696,side_A,no_side,side_A,0,side_A,"coalition participant. Are states that had no input other then enforcing a UNSC-sanctioned no-fly zone crisis actors?
+It comes down to the third criteria, ""at least one of the states perceives that the other has directed a threatening or hostile action against it."" 
+
+Libya perceives that the UN has directed a hostile act against it: ""On 19 March, Libya issued its major response in the form of a public statement from Gaddafi in
+which he harshly condemned the UNSC resolution and vowed to arm the Libyan people and fight to the end to protect them from “colonial, crusader” aggression.""
+
+I would argue that the third criteria is a pretty low bar since we are going on state perceptions. Since we have limited information, all a state has to do is declare that it finds an act hostile. In this case, Libya clearly does that against the no-fly zone. If we had asked about each of the participants, he would have condemned each. As such, I would include each participant as side A. I would suggest flagging these as coalition participants (vs. coalition leaders), and exclude them in a robustness check. "
+464,LIBYAN CIVILWAR,united kingdom,UKG,200,side_A,side_A,side_A,1,side_A,"coalition participant. Are states that had no input other then enforcing a UNSC-sanctioned no-fly zone crisis actors?
+It comes down to the third criteria, ""at least one of the states perceives that the other has directed a threatening or hostile action against it."" 
+
+Libya perceives that the UN has directed a hostile act against it: ""On 19 March, Libya issued its major response in the form of a public statement from Gaddafi in
+which he harshly condemned the UNSC resolution and vowed to arm the Libyan people and fight to the end to protect them from “colonial, crusader” aggression.""
+
+I would argue that the third criteria is a pretty low bar since we are going on state perceptions. Since we have limited information, all a state has to do is declare that it finds an act hostile. In this case, Libya clearly does that against the no-fly zone. If we had asked about each of the participants, he would have condemned each. As such, I would include each participant as side A. I would suggest flagging these as coalition participants (vs. coalition leaders), and exclude them in a robustness check. "
+464,LIBYAN CIVILWAR,united states,USA,2,side_A,side_A,side_A,1,side_A,"coalition participant. Are states that had no input other then enforcing a UNSC-sanctioned no-fly zone crisis actors?
+It comes down to the third criteria, ""at least one of the states perceives that the other has directed a threatening or hostile action against it."" 
+
+Libya perceives that the UN has directed a hostile act against it: ""On 19 March, Libya issued its major response in the form of a public statement from Gaddafi in
+which he harshly condemned the UNSC resolution and vowed to arm the Libyan people and fight to the end to protect them from “colonial, crusader” aggression.""
+
+I would argue that the third criteria is a pretty low bar since we are going on state perceptions. Since we have limited information, all a state has to do is declare that it finds an act hostile. In this case, Libya clearly does that against the no-fly zone. If we had asked about each of the participants, he would have condemned each. As such, I would include each participant as side A. I would suggest flagging these as coalition participants (vs. coalition leaders), and exclude them in a robustness check. "
+465,COTE D'IVOIRE PRESIDENTIAL CRISIS,ivory coast,CDI,437,side_A,side_A,no_side,0,side_A,"Since you are dropping non-state actors, can they count in establishing the criteria?
+
+Ivory Coast meets the second requirement (perceived heightened probability of military hostilities, a threat to basic national values, and a finite time within which to make decisions) and the 3rd (at least one of the states perceives that the other has directed a threatening or hostile action against it). So in the Ivory-Coast - rebel dyad, Ivory-Coast gets SideA and rebels get SideB. Do you apply the criteria and then drop non-states (so Ivory Coast still gets SideA status) or do you drop non-states before checking other criteria (Ivory Coast gets no-side since there is no actor to direct hostile action against it)?
+
+My sense is you dropped non-state actors because you are not interested in what domains they use, but you are still interested in what domains states used against non-state actors when they felt threatened. So I'll assume the order of operations drops non-states after establishing criteria 2 and 3. 
+
+Once Ivory Coast is a crisis actor, France is also clearly a crisis actor on Side B:  ""On 3 April 2011, French forces took direct action in the conflict by taking control of, and
+reopening, the Abidjan airport. This made it clear to the Gbagbo regime that France was a direct threat to its survival and triggered a crisis for Cote d’Ivoire.""
+
+Actually, based on that description, I would argue that event without the rebel group, Ivory Coast would still meet the 2nd and 3rd requirement with respect to France."
+465,COTE D'IVOIRE PRESIDENTIAL CRISIS,france,FRN,220,side_B,side_B,no_side,0,side_B,"Since you are dropping non-state actors, can they count in establishing the criteria?
+
+Ivory Coast meets the second requirement (perceived heightened probability of military hostilities, a threat to basic national values, and a finite time within which to make decisions) and the 3rd (at least one of the states perceives that the other has directed a threatening or hostile action against it). So in the Ivory-Coast - rebel dyad, Ivory-Coast gets SideA and rebels get SideB. Do you apply the criteria and then drop non-states (so Ivory Coast still gets SideA status) or do you drop non-states before checking other criteria (Ivory Coast gets no-side since there is no actor to direct hostile action against it)?
+
+My sense is you dropped non-state actors because you are not interested in what domains they use, but you are still interested in what domains states used against non-state actors when they felt threatened. So I'll assume the order of operations drops non-states after establishing criteria 2 and 3. 
+
+Once Ivory Coast is a crisis actor, France is also clearly a crisis actor on Side B:  ""On 3 April 2011, French forces took direct action in the conflict by taking control of, and
+reopening, the Abidjan airport. This made it clear to the Gbagbo regime that France was a direct threat to its survival and triggered a crisis for Cote d’Ivoire.""
+
+Actually, based on that description, I would argue that event without the rebel group, Ivory Coast would still meet the 2nd and 3rd requirement with respect to France."
+465,COTE D'IVOIRE PRESIDENTIAL CRISIS,nigeria,NIG,475,no_side,no_side,no_side,1,no_side,"Since you are dropping non-state actors, can they count in establishing the criteria?
+
+Ivory Coast meets the second requirement (perceived heightened probability of military hostilities, a threat to basic national values, and a finite time within which to make decisions) and the 3rd (at least one of the states perceives that the other has directed a threatening or hostile action against it). So in the Ivory-Coast - rebel dyad, Ivory-Coast gets SideA and rebels get SideB. Do you apply the criteria and then drop non-states (so Ivory Coast still gets SideA status) or do you drop non-states before checking other criteria (Ivory Coast gets no-side since there is no actor to direct hostile action against it)?
+
+My sense is you dropped non-state actors because you are not interested in what domains they use, but you are still interested in what domains states used against non-state actors when they felt threatened. So I'll assume the order of operations drops non-states after establishing criteria 2 and 3. 
+
+Once Ivory Coast is a crisis actor, France is also clearly a crisis actor on Side B:  ""On 3 April 2011, French forces took direct action in the conflict by taking control of, and
+reopening, the Abidjan airport. This made it clear to the Gbagbo regime that France was a direct threat to its survival and triggered a crisis for Cote d’Ivoire.""
+
+Actually, based on that description, I would argue that event without the rebel group, Ivory Coast would still meet the 2nd and 3rd requirement with respect to France."
+466,SUDAN-SOUTH SUDAN,ethiopia,ETH,530,no_side,no_side,no_side,1,no_side,"I don't understand the difference between ""national congress (sudan)"" and ""sudan"". My guess is one is Sudan before South Sudan succeeded, and the other is post-secession. Since the crisis did not begin until post-succession, pre-succession Sudan is not an actor because it no longer exists. "
+466,SUDAN-SOUTH SUDAN,south sudan,SSD,626,side_B,side_B,side_B,1,side_B,"I don't understand the difference between ""national congress (sudan)"" and ""sudan"". My guess is one is Sudan before South Sudan succeeded, and the other is post-secession. Since the crisis did not begin until post-succession, pre-succession Sudan is not an actor because it no longer exists. "
+466,SUDAN-SOUTH SUDAN,national congress (sudan),,,no_side,side_A,side_A,0,no_side,"I don't understand the difference between ""national congress (sudan)"" and ""sudan"". My guess is one is Sudan before South Sudan succeeded, and the other is post-secession. Since the crisis did not begin until post-succession, pre-succession Sudan is not an actor because it no longer exists. "
+466,SUDAN-SOUTH SUDAN,sudan,SUD,625,side_A,side_A,side_A,1,side_A,"I don't understand the difference between ""national congress (sudan)"" and ""sudan"". My guess is one is Sudan before South Sudan succeeded, and the other is post-secession. Since the crisis did not begin until post-succession, pre-succession Sudan is not an actor because it no longer exists. "
+466,SUDAN-SOUTH SUDAN,united states,USA,2,no_side,no_side,no_side,1,no_side,"I don't understand the difference between ""national congress (sudan)"" and ""sudan"". My guess is one is Sudan before South Sudan succeeded, and the other is post-secession. Since the crisis did not begin until post-succession, pre-succession Sudan is not an actor because it no longer exists. "
+467,SCARBOROUGH SHOAL,china,CHN,710,side_A,side_A,side_A,1,side_A,
+467,SCARBOROUGH SHOAL,philippines,PHI,840,side_B,side_B,side_B,1,side_B,
+467,SCARBOROUGH SHOAL,united states,USA,2,side_B,no_side,side_B,0,no_side,
+468,SYRIA-TURKEY BORDER INCIDENTS,russia,RUS,365,no_side,no_side,no_side,1,no_side,
+468,SYRIA-TURKEY BORDER INCIDENTS,syria,SYR,652,side_A,side_A,side_A,1,side_A,
+468,SYRIA-TURKEY BORDER INCIDENTS,turkey,TUR,640,side_B,side_B,side_B,1,side_B,
+468,SYRIA-TURKEY BORDER INCIDENTS,united states,USA,2,side_B,side_B,side_B,1,no_side,
+469,N. KOREA NUCLEAR V,china,CHN,710,no_side,no_side,no_side,1,no_side,
+469,N. KOREA NUCLEAR V,japan,JPN,740,side_A,side_A,side_A,1,side_A,
+469,N. KOREA NUCLEAR V,north korea,PRK,731,side_B,side_B,side_B,1,side_B,
+469,N. KOREA NUCLEAR V,south korea,ROK,732,side_A,side_A,side_A,1,side_A,
+469,N. KOREA NUCLEAR V,russia,RUS,365,no_side,no_side,no_side,1,no_side,
+469,N. KOREA NUCLEAR V,switzerland,SWZ,225,no_side,no_side,no_side,1,no_side,
+469,N. KOREA NUCLEAR V,united states,USA,2,side_A,side_A,side_A,1,side_A,
+470,SYRIA CHEMICAL WEAPONS,france,FRN,220,no_side,no_side,no_side,1,no_side,
+470,SYRIA CHEMICAL WEAPONS,russia,RUS,365,no_side,no_side,no_side,1,no_side,
+470,SYRIA CHEMICAL WEAPONS,syria,SYR,652,side_A,side_A,side_A,1,side_A,
+470,SYRIA CHEMICAL WEAPONS,syrian opposition,,,no_side,no_side,side_A,0,no_side,
+470,SYRIA CHEMICAL WEAPONS,united kingdom,UKG,200,no_side,no_side,no_side,1,no_side,
+470,SYRIA CHEMICAL WEAPONS,united states,USA,2,side_B,side_B,side_B,1,side_B,
+471,CRIMEA-DONBASS,france,FRN,220,no_side,no_side,side_B,0,no_side,"Russia is established as a crisis actor early on (""The removal of Yanukovych on 22 February 2014 sparked a crisis for Russia. Russia feared that Ukraine would leave its sphere of influence and become a NATO ally."") 
+
+France and Germany threatened new sanctions at one point, but there is no sign that Russia felt threatened by these sanctions (the narrative states that sanctions were seen as ineffective). Thus France and Germany are no_side. 
+
+""Trilateral contact group on Ukraine"" seems a non-state actor, so should be dropped, right?
+
+U.S. involvement is limited to: ""advised Ukraine to not engage Russia militarily but also imposed economic sanctions on Russia. The sanctions were widely viewed as ineffective. In
+addition, the U.S. provided funds, military training, and military equipment – not including weapons – to Ukraine during the crisis."" These points out a difference between criteria 2 and 3. It is established that Russia feels ""a threat to basic national values"" to meet Criteria 2. However, that is different then Criteria 3 which requires ""at least one of the states perceives that the other has directed a threatening or hostile action against it"". USA actions may be supporting a threat to Russia's basic national values (right to control Ukraine), but I would be hard pressed to say that the United States directed a threatening action again Russia. United States is a no_side. "
+471,CRIMEA-DONBASS,germany,GFR,260,no_side,no_side,side_B,0,no_side,"Russia is established as a crisis actor early on (""The removal of Yanukovych on 22 February 2014 sparked a crisis for Russia. Russia feared that Ukraine would leave its sphere of influence and become a NATO ally."") 
+
+France and Germany threatened new sanctions at one point, but there is no sign that Russia felt threatened by these sanctions (the narrative states that sanctions were seen as ineffective). Thus France and Germany are no_side. 
+
+""Trilateral contact group on Ukraine"" seems a non-state actor, so should be dropped, right?
+
+U.S. involvement is limited to: ""advised Ukraine to not engage Russia militarily but also imposed economic sanctions on Russia. The sanctions were widely viewed as ineffective. In
+addition, the U.S. provided funds, military training, and military equipment – not including weapons – to Ukraine during the crisis."" These points out a difference between criteria 2 and 3. It is established that Russia feels ""a threat to basic national values"" to meet Criteria 2. However, that is different then Criteria 3 which requires ""at least one of the states perceives that the other has directed a threatening or hostile action against it"". USA actions may be supporting a threat to Russia's basic national values (right to control Ukraine), but I would be hard pressed to say that the United States directed a threatening action again Russia. United States is a no_side. "
+471,CRIMEA-DONBASS,malaysia,MAL,820,no_side,no_side,no_side,1,no_side,"Russia is established as a crisis actor early on (""The removal of Yanukovych on 22 February 2014 sparked a crisis for Russia. Russia feared that Ukraine would leave its sphere of influence and become a NATO ally."") 
+
+France and Germany threatened new sanctions at one point, but there is no sign that Russia felt threatened by these sanctions (the narrative states that sanctions were seen as ineffective). Thus France and Germany are no_side. 
+
+""Trilateral contact group on Ukraine"" seems a non-state actor, so should be dropped, right?
+
+U.S. involvement is limited to: ""advised Ukraine to not engage Russia militarily but also imposed economic sanctions on Russia. The sanctions were widely viewed as ineffective. In
+addition, the U.S. provided funds, military training, and military equipment – not including weapons – to Ukraine during the crisis."" These points out a difference between criteria 2 and 3. It is established that Russia feels ""a threat to basic national values"" to meet Criteria 2. However, that is different then Criteria 3 which requires ""at least one of the states perceives that the other has directed a threatening or hostile action against it"". USA actions may be supporting a threat to Russia's basic national values (right to control Ukraine), but I would be hard pressed to say that the United States directed a threatening action again Russia. United States is a no_side. "
+471,CRIMEA-DONBASS,russia,RUS,365,side_A,side_A,side_A,1,side_A,"Russia is established as a crisis actor early on (""The removal of Yanukovych on 22 February 2014 sparked a crisis for Russia. Russia feared that Ukraine would leave its sphere of influence and become a NATO ally."") 
+
+France and Germany threatened new sanctions at one point, but there is no sign that Russia felt threatened by these sanctions (the narrative states that sanctions were seen as ineffective). Thus France and Germany are no_side. 
+
+""Trilateral contact group on Ukraine"" seems a non-state actor, so should be dropped, right?
+
+U.S. involvement is limited to: ""advised Ukraine to not engage Russia militarily but also imposed economic sanctions on Russia. The sanctions were widely viewed as ineffective. In
+addition, the U.S. provided funds, military training, and military equipment – not including weapons – to Ukraine during the crisis."" These points out a difference between criteria 2 and 3. It is established that Russia feels ""a threat to basic national values"" to meet Criteria 2. However, that is different then Criteria 3 which requires ""at least one of the states perceives that the other has directed a threatening or hostile action against it"". USA actions may be supporting a threat to Russia's basic national values (right to control Ukraine), but I would be hard pressed to say that the United States directed a threatening action again Russia. United States is a no_side. "
+471,CRIMEA-DONBASS,trilateral contact group on ukraine,,,no_side,no_side,side_B,0,no_side,"Russia is established as a crisis actor early on (""The removal of Yanukovych on 22 February 2014 sparked a crisis for Russia. Russia feared that Ukraine would leave its sphere of influence and become a NATO ally."") 
+
+France and Germany threatened new sanctions at one point, but there is no sign that Russia felt threatened by these sanctions (the narrative states that sanctions were seen as ineffective). Thus France and Germany are no_side. 
+
+""Trilateral contact group on Ukraine"" seems a non-state actor, so should be dropped, right?
+
+U.S. involvement is limited to: ""advised Ukraine to not engage Russia militarily but also imposed economic sanctions on Russia. The sanctions were widely viewed as ineffective. In
+addition, the U.S. provided funds, military training, and military equipment – not including weapons – to Ukraine during the crisis."" These points out a difference between criteria 2 and 3. It is established that Russia feels ""a threat to basic national values"" to meet Criteria 2. However, that is different then Criteria 3 which requires ""at least one of the states perceives that the other has directed a threatening or hostile action against it"". USA actions may be supporting a threat to Russia's basic national values (right to control Ukraine), but I would be hard pressed to say that the United States directed a threatening action again Russia. United States is a no_side. "
+471,CRIMEA-DONBASS,ukraine,UKR,369,side_B,side_B,side_B,1,side_B,"Russia is established as a crisis actor early on (""The removal of Yanukovych on 22 February 2014 sparked a crisis for Russia. Russia feared that Ukraine would leave its sphere of influence and become a NATO ally."") 
+
+France and Germany threatened new sanctions at one point, but there is no sign that Russia felt threatened by these sanctions (the narrative states that sanctions were seen as ineffective). Thus France and Germany are no_side. 
+
+""Trilateral contact group on Ukraine"" seems a non-state actor, so should be dropped, right?
+
+U.S. involvement is limited to: ""advised Ukraine to not engage Russia militarily but also imposed economic sanctions on Russia. The sanctions were widely viewed as ineffective. In
+addition, the U.S. provided funds, military training, and military equipment – not including weapons – to Ukraine during the crisis."" These points out a difference between criteria 2 and 3. It is established that Russia feels ""a threat to basic national values"" to meet Criteria 2. However, that is different then Criteria 3 which requires ""at least one of the states perceives that the other has directed a threatening or hostile action against it"". USA actions may be supporting a threat to Russia's basic national values (right to control Ukraine), but I would be hard pressed to say that the United States directed a threatening action again Russia. United States is a no_side. "
+471,CRIMEA-DONBASS,united states,USA,2,no_side,no_side,side_B,0,no_side,"Russia is established as a crisis actor early on (""The removal of Yanukovych on 22 February 2014 sparked a crisis for Russia. Russia feared that Ukraine would leave its sphere of influence and become a NATO ally."") 
+
+France and Germany threatened new sanctions at one point, but there is no sign that Russia felt threatened by these sanctions (the narrative states that sanctions were seen as ineffective). Thus France and Germany are no_side. 
+
+""Trilateral contact group on Ukraine"" seems a non-state actor, so should be dropped, right?
+
+U.S. involvement is limited to: ""advised Ukraine to not engage Russia militarily but also imposed economic sanctions on Russia. The sanctions were widely viewed as ineffective. In
+addition, the U.S. provided funds, military training, and military equipment – not including weapons – to Ukraine during the crisis."" These points out a difference between criteria 2 and 3. It is established that Russia feels ""a threat to basic national values"" to meet Criteria 2. However, that is different then Criteria 3 which requires ""at least one of the states perceives that the other has directed a threatening or hostile action against it"". USA actions may be supporting a threat to Russia's basic national values (right to control Ukraine), but I would be hard pressed to say that the United States directed a threatening action again Russia. United States is a no_side. "
+472,CHINESE OIL RIG,china,CHN,710,side_A,side_A,side_A,1,side_A,
+472,CHINESE OIL RIG,vietnam,DRV,816,side_B,side_B,side_B,1,side_B,
+472,CHINESE OIL RIG,taiwan,TAW,713,no_side,no_side,no_side,1,no_side,
+472,CHINESE OIL RIG,united states,USA,2,no_side,no_side,no_side,1,no_side,
+473,INDIA-PAKISTAN BORDER FIRING,india,IND,750,side_A,side_A,side_A,1,side_A,
+473,INDIA-PAKISTAN BORDER FIRING,pakistan,PAK,770,side_B,side_B,side_B,1,side_B,
+475,KOREAN LAND MINE,north korea,PRK,731,side_A,side_A,side_A,1,side_A,"Low level actions by United States. U.S. does take joint military exercises with South Korea, which North Korea leadership 'called for “full combat readiness” in response', but that seems a constant reaction even pre-crisis. U.S. is no_side. "
+475,KOREAN LAND MINE,south korea,ROK,732,side_B,side_B,side_B,1,side_B,"Low level actions by United States. U.S. does take joint military exercises with South Korea, which North Korea leadership 'called for “full combat readiness” in response', but that seems a constant reaction even pre-crisis. U.S. is no_side. "
+475,KOREAN LAND MINE,united states,USA,2,side_B,no_side,side_B,0,no_side,"Low level actions by United States. U.S. does take joint military exercises with South Korea, which North Korea leadership 'called for “full combat readiness” in response', but that seems a constant reaction even pre-crisis. U.S. is no_side. "
+476,TURKEY-RUSSIA JET INCIDENT,denmark,DEN,390,no_side,side_B,side_B,0,no_side,"By the narrative, U.S., UK, France, Germany, and Denmark meet criteria 2
+""The downing of the jet also initiated crises for several NATO members—the U.S., United Kingdom, France, Germany, and Denmark. These five states had already committed or were soon to commit military personnel to direct involvement in the Syrian theater, and therefore feared that any escalation could draw them into potentially lethal conflict with Russia due to their Article V commitments of mutual defense.""
+
+These states then deploy some forces, but it not clear that Russia ever see the movements as a threatening or hostile action against it. After the deployments are described, the next action by Russia is to fire ""a warning shot at a Turkish vessel in the Aegean Sea, in what was widely regarded as retaliation for the downing of the Russian jet.""
+
+Here is the extent of Spain, and Italy's involvement. Without any other threat, does not meet criteria 3. 
+""NATO held an important three-day Foreign Ministers meeting beginning on 30 November and decided to augment Turkey’s maritime and air defenses. The U.S. agreed to keep the USS Donald Cook—an anti-ballistic missile and air defense vessel—in the region. Germany and Denmark each committed to deploying a naval ship to the eastern Mediterranean. Denmark’s vessel was intended to counter the Russian S-400 system and to protect Turkey from any electronic intelligence gathering. Italy agreed to provide additional air-defense missile systems, and Spain agreed to extend the presence of its Patriot missile systems, which were already in Turkey as part of an earlier agreement.""
+
+Here is the extent of Luxembourg, clearly a no_side. 
+""Press reports also began to appear in mid-February in which some NATO member government officials—especially Luxembourg, Germany, and France—said that they were not interested in defending Turkey if it provoked a war with Russia.""
+
+Syria Opposition is not a state, so should be dropped as an actor.
+
+Syria is in an ongoing crisis during this, but this incident between Russia and Turkey does not seem to be contributing to Syria's ongoing crisis. In the narrative, Syria is always described as a place or a theatre and never as an actor, thus it's involvement in this crisis seems purely geographical. In terms of the criteria, it does not seem that this incident led Syria to perceive ""a heightened probability of military hostilities"". It is a no_side. "
+476,TURKEY-RUSSIA JET INCIDENT,france,FRN,220,no_side,side_B,side_B,0,no_side,"By the narrative, U.S., UK, France, Germany, and Denmark meet criteria 2
+""The downing of the jet also initiated crises for several NATO members—the U.S., United Kingdom, France, Germany, and Denmark. These five states had already committed or were soon to commit military personnel to direct involvement in the Syrian theater, and therefore feared that any escalation could draw them into potentially lethal conflict with Russia due to their Article V commitments of mutual defense.""
+
+These states then deploy some forces, but it not clear that Russia ever see the movements as a threatening or hostile action against it. After the deployments are described, the next action by Russia is to fire ""a warning shot at a Turkish vessel in the Aegean Sea, in what was widely regarded as retaliation for the downing of the Russian jet.""
+
+Here is the extent of Spain, and Italy's involvement. Without any other threat, does not meet criteria 3. 
+""NATO held an important three-day Foreign Ministers meeting beginning on 30 November and decided to augment Turkey’s maritime and air defenses. The U.S. agreed to keep the USS Donald Cook—an anti-ballistic missile and air defense vessel—in the region. Germany and Denmark each committed to deploying a naval ship to the eastern Mediterranean. Denmark’s vessel was intended to counter the Russian S-400 system and to protect Turkey from any electronic intelligence gathering. Italy agreed to provide additional air-defense missile systems, and Spain agreed to extend the presence of its Patriot missile systems, which were already in Turkey as part of an earlier agreement.""
+
+Here is the extent of Luxembourg, clearly a no_side. 
+""Press reports also began to appear in mid-February in which some NATO member government officials—especially Luxembourg, Germany, and France—said that they were not interested in defending Turkey if it provoked a war with Russia.""
+
+Syria Opposition is not a state, so should be dropped as an actor.
+
+Syria is in an ongoing crisis during this, but this incident between Russia and Turkey does not seem to be contributing to Syria's ongoing crisis. In the narrative, Syria is always described as a place or a theatre and never as an actor, thus it's involvement in this crisis seems purely geographical. In terms of the criteria, it does not seem that this incident led Syria to perceive ""a heightened probability of military hostilities"". It is a no_side. "
+476,TURKEY-RUSSIA JET INCIDENT,germany,GFR,260,no_side,side_B,side_B,0,no_side,"By the narrative, U.S., UK, France, Germany, and Denmark meet criteria 2
+""The downing of the jet also initiated crises for several NATO members—the U.S., United Kingdom, France, Germany, and Denmark. These five states had already committed or were soon to commit military personnel to direct involvement in the Syrian theater, and therefore feared that any escalation could draw them into potentially lethal conflict with Russia due to their Article V commitments of mutual defense.""
+
+These states then deploy some forces, but it not clear that Russia ever see the movements as a threatening or hostile action against it. After the deployments are described, the next action by Russia is to fire ""a warning shot at a Turkish vessel in the Aegean Sea, in what was widely regarded as retaliation for the downing of the Russian jet.""
+
+Here is the extent of Spain, and Italy's involvement. Without any other threat, does not meet criteria 3. 
+""NATO held an important three-day Foreign Ministers meeting beginning on 30 November and decided to augment Turkey’s maritime and air defenses. The U.S. agreed to keep the USS Donald Cook—an anti-ballistic missile and air defense vessel—in the region. Germany and Denmark each committed to deploying a naval ship to the eastern Mediterranean. Denmark’s vessel was intended to counter the Russian S-400 system and to protect Turkey from any electronic intelligence gathering. Italy agreed to provide additional air-defense missile systems, and Spain agreed to extend the presence of its Patriot missile systems, which were already in Turkey as part of an earlier agreement.""
+
+Here is the extent of Luxembourg, clearly a no_side. 
+""Press reports also began to appear in mid-February in which some NATO member government officials—especially Luxembourg, Germany, and France—said that they were not interested in defending Turkey if it provoked a war with Russia.""
+
+Syria Opposition is not a state, so should be dropped as an actor.
+
+Syria is in an ongoing crisis during this, but this incident between Russia and Turkey does not seem to be contributing to Syria's ongoing crisis. In the narrative, Syria is always described as a place or a theatre and never as an actor, thus it's involvement in this crisis seems purely geographical. In terms of the criteria, it does not seem that this incident led Syria to perceive ""a heightened probability of military hostilities"". It is a no_side. "
+476,TURKEY-RUSSIA JET INCIDENT,italy,ITA,325,no_side,no_side,side_B,0,no_side,"By the narrative, U.S., UK, France, Germany, and Denmark meet criteria 2
+""The downing of the jet also initiated crises for several NATO members—the U.S., United Kingdom, France, Germany, and Denmark. These five states had already committed or were soon to commit military personnel to direct involvement in the Syrian theater, and therefore feared that any escalation could draw them into potentially lethal conflict with Russia due to their Article V commitments of mutual defense.""
+
+These states then deploy some forces, but it not clear that Russia ever see the movements as a threatening or hostile action against it. After the deployments are described, the next action by Russia is to fire ""a warning shot at a Turkish vessel in the Aegean Sea, in what was widely regarded as retaliation for the downing of the Russian jet.""
+
+Here is the extent of Spain, and Italy's involvement. Without any other threat, does not meet criteria 3. 
+""NATO held an important three-day Foreign Ministers meeting beginning on 30 November and decided to augment Turkey’s maritime and air defenses. The U.S. agreed to keep the USS Donald Cook—an anti-ballistic missile and air defense vessel—in the region. Germany and Denmark each committed to deploying a naval ship to the eastern Mediterranean. Denmark’s vessel was intended to counter the Russian S-400 system and to protect Turkey from any electronic intelligence gathering. Italy agreed to provide additional air-defense missile systems, and Spain agreed to extend the presence of its Patriot missile systems, which were already in Turkey as part of an earlier agreement.""
+
+Here is the extent of Luxembourg, clearly a no_side. 
+""Press reports also began to appear in mid-February in which some NATO member government officials—especially Luxembourg, Germany, and France—said that they were not interested in defending Turkey if it provoked a war with Russia.""
+
+Syria Opposition is not a state, so should be dropped as an actor.
+
+Syria is in an ongoing crisis during this, but this incident between Russia and Turkey does not seem to be contributing to Syria's ongoing crisis. In the narrative, Syria is always described as a place or a theatre and never as an actor, thus it's involvement in this crisis seems purely geographical. In terms of the criteria, it does not seem that this incident led Syria to perceive ""a heightened probability of military hostilities"". It is a no_side. "
+476,TURKEY-RUSSIA JET INCIDENT,luxembourg,LUX,212,no_side,side_B,no_side,0,no_side,"By the narrative, U.S., UK, France, Germany, and Denmark meet criteria 2
+""The downing of the jet also initiated crises for several NATO members—the U.S., United Kingdom, France, Germany, and Denmark. These five states had already committed or were soon to commit military personnel to direct involvement in the Syrian theater, and therefore feared that any escalation could draw them into potentially lethal conflict with Russia due to their Article V commitments of mutual defense.""
+
+These states then deploy some forces, but it not clear that Russia ever see the movements as a threatening or hostile action against it. After the deployments are described, the next action by Russia is to fire ""a warning shot at a Turkish vessel in the Aegean Sea, in what was widely regarded as retaliation for the downing of the Russian jet.""
+
+Here is the extent of Spain, and Italy's involvement. Without any other threat, does not meet criteria 3. 
+""NATO held an important three-day Foreign Ministers meeting beginning on 30 November and decided to augment Turkey’s maritime and air defenses. The U.S. agreed to keep the USS Donald Cook—an anti-ballistic missile and air defense vessel—in the region. Germany and Denmark each committed to deploying a naval ship to the eastern Mediterranean. Denmark’s vessel was intended to counter the Russian S-400 system and to protect Turkey from any electronic intelligence gathering. Italy agreed to provide additional air-defense missile systems, and Spain agreed to extend the presence of its Patriot missile systems, which were already in Turkey as part of an earlier agreement.""
+
+Here is the extent of Luxembourg, clearly a no_side. 
+""Press reports also began to appear in mid-February in which some NATO member government officials—especially Luxembourg, Germany, and France—said that they were not interested in defending Turkey if it provoked a war with Russia.""
+
+Syria Opposition is not a state, so should be dropped as an actor.
+
+Syria is in an ongoing crisis during this, but this incident between Russia and Turkey does not seem to be contributing to Syria's ongoing crisis. In the narrative, Syria is always described as a place or a theatre and never as an actor, thus it's involvement in this crisis seems purely geographical. In terms of the criteria, it does not seem that this incident led Syria to perceive ""a heightened probability of military hostilities"". It is a no_side. "
+476,TURKEY-RUSSIA JET INCIDENT,russia,RUS,365,side_A,side_A,side_A,1,side_A,"By the narrative, U.S., UK, France, Germany, and Denmark meet criteria 2
+""The downing of the jet also initiated crises for several NATO members—the U.S., United Kingdom, France, Germany, and Denmark. These five states had already committed or were soon to commit military personnel to direct involvement in the Syrian theater, and therefore feared that any escalation could draw them into potentially lethal conflict with Russia due to their Article V commitments of mutual defense.""
+
+These states then deploy some forces, but it not clear that Russia ever see the movements as a threatening or hostile action against it. After the deployments are described, the next action by Russia is to fire ""a warning shot at a Turkish vessel in the Aegean Sea, in what was widely regarded as retaliation for the downing of the Russian jet.""
+
+Here is the extent of Spain, and Italy's involvement. Without any other threat, does not meet criteria 3. 
+""NATO held an important three-day Foreign Ministers meeting beginning on 30 November and decided to augment Turkey’s maritime and air defenses. The U.S. agreed to keep the USS Donald Cook—an anti-ballistic missile and air defense vessel—in the region. Germany and Denmark each committed to deploying a naval ship to the eastern Mediterranean. Denmark’s vessel was intended to counter the Russian S-400 system and to protect Turkey from any electronic intelligence gathering. Italy agreed to provide additional air-defense missile systems, and Spain agreed to extend the presence of its Patriot missile systems, which were already in Turkey as part of an earlier agreement.""
+
+Here is the extent of Luxembourg, clearly a no_side. 
+""Press reports also began to appear in mid-February in which some NATO member government officials—especially Luxembourg, Germany, and France—said that they were not interested in defending Turkey if it provoked a war with Russia.""
+
+Syria Opposition is not a state, so should be dropped as an actor.
+
+Syria is in an ongoing crisis during this, but this incident between Russia and Turkey does not seem to be contributing to Syria's ongoing crisis. In the narrative, Syria is always described as a place or a theatre and never as an actor, thus it's involvement in this crisis seems purely geographical. In terms of the criteria, it does not seem that this incident led Syria to perceive ""a heightened probability of military hostilities"". It is a no_side. "
+476,TURKEY-RUSSIA JET INCIDENT,saudi arabia,SAU,670,no_side,no_side,no_side,1,no_side,"By the narrative, U.S., UK, France, Germany, and Denmark meet criteria 2
+""The downing of the jet also initiated crises for several NATO members—the U.S., United Kingdom, France, Germany, and Denmark. These five states had already committed or were soon to commit military personnel to direct involvement in the Syrian theater, and therefore feared that any escalation could draw them into potentially lethal conflict with Russia due to their Article V commitments of mutual defense.""
+
+These states then deploy some forces, but it not clear that Russia ever see the movements as a threatening or hostile action against it. After the deployments are described, the next action by Russia is to fire ""a warning shot at a Turkish vessel in the Aegean Sea, in what was widely regarded as retaliation for the downing of the Russian jet.""
+
+Here is the extent of Spain, and Italy's involvement. Without any other threat, does not meet criteria 3. 
+""NATO held an important three-day Foreign Ministers meeting beginning on 30 November and decided to augment Turkey’s maritime and air defenses. The U.S. agreed to keep the USS Donald Cook—an anti-ballistic missile and air defense vessel—in the region. Germany and Denmark each committed to deploying a naval ship to the eastern Mediterranean. Denmark’s vessel was intended to counter the Russian S-400 system and to protect Turkey from any electronic intelligence gathering. Italy agreed to provide additional air-defense missile systems, and Spain agreed to extend the presence of its Patriot missile systems, which were already in Turkey as part of an earlier agreement.""
+
+Here is the extent of Luxembourg, clearly a no_side. 
+""Press reports also began to appear in mid-February in which some NATO member government officials—especially Luxembourg, Germany, and France—said that they were not interested in defending Turkey if it provoked a war with Russia.""
+
+Syria Opposition is not a state, so should be dropped as an actor.
+
+Syria is in an ongoing crisis during this, but this incident between Russia and Turkey does not seem to be contributing to Syria's ongoing crisis. In the narrative, Syria is always described as a place or a theatre and never as an actor, thus it's involvement in this crisis seems purely geographical. In terms of the criteria, it does not seem that this incident led Syria to perceive ""a heightened probability of military hostilities"". It is a no_side. "
+476,TURKEY-RUSSIA JET INCIDENT,spain,SPN,230,no_side,no_side,side_B,0,no_side,"By the narrative, U.S., UK, France, Germany, and Denmark meet criteria 2
+""The downing of the jet also initiated crises for several NATO members—the U.S., United Kingdom, France, Germany, and Denmark. These five states had already committed or were soon to commit military personnel to direct involvement in the Syrian theater, and therefore feared that any escalation could draw them into potentially lethal conflict with Russia due to their Article V commitments of mutual defense.""
+
+These states then deploy some forces, but it not clear that Russia ever see the movements as a threatening or hostile action against it. After the deployments are described, the next action by Russia is to fire ""a warning shot at a Turkish vessel in the Aegean Sea, in what was widely regarded as retaliation for the downing of the Russian jet.""
+
+Here is the extent of Spain, and Italy's involvement. Without any other threat, does not meet criteria 3. 
+""NATO held an important three-day Foreign Ministers meeting beginning on 30 November and decided to augment Turkey’s maritime and air defenses. The U.S. agreed to keep the USS Donald Cook—an anti-ballistic missile and air defense vessel—in the region. Germany and Denmark each committed to deploying a naval ship to the eastern Mediterranean. Denmark’s vessel was intended to counter the Russian S-400 system and to protect Turkey from any electronic intelligence gathering. Italy agreed to provide additional air-defense missile systems, and Spain agreed to extend the presence of its Patriot missile systems, which were already in Turkey as part of an earlier agreement.""
+
+Here is the extent of Luxembourg, clearly a no_side. 
+""Press reports also began to appear in mid-February in which some NATO member government officials—especially Luxembourg, Germany, and France—said that they were not interested in defending Turkey if it provoked a war with Russia.""
+
+Syria Opposition is not a state, so should be dropped as an actor.
+
+Syria is in an ongoing crisis during this, but this incident between Russia and Turkey does not seem to be contributing to Syria's ongoing crisis. In the narrative, Syria is always described as a place or a theatre and never as an actor, thus it's involvement in this crisis seems purely geographical. In terms of the criteria, it does not seem that this incident led Syria to perceive ""a heightened probability of military hostilities"". It is a no_side. "
+476,TURKEY-RUSSIA JET INCIDENT,syria,SYR,652,side_A,no_side,no_side,0,no_side,"By the narrative, U.S., UK, France, Germany, and Denmark meet criteria 2
+""The downing of the jet also initiated crises for several NATO members—the U.S., United Kingdom, France, Germany, and Denmark. These five states had already committed or were soon to commit military personnel to direct involvement in the Syrian theater, and therefore feared that any escalation could draw them into potentially lethal conflict with Russia due to their Article V commitments of mutual defense.""
+
+These states then deploy some forces, but it not clear that Russia ever see the movements as a threatening or hostile action against it. After the deployments are described, the next action by Russia is to fire ""a warning shot at a Turkish vessel in the Aegean Sea, in what was widely regarded as retaliation for the downing of the Russian jet.""
+
+Here is the extent of Spain, and Italy's involvement. Without any other threat, does not meet criteria 3. 
+""NATO held an important three-day Foreign Ministers meeting beginning on 30 November and decided to augment Turkey’s maritime and air defenses. The U.S. agreed to keep the USS Donald Cook—an anti-ballistic missile and air defense vessel—in the region. Germany and Denmark each committed to deploying a naval ship to the eastern Mediterranean. Denmark’s vessel was intended to counter the Russian S-400 system and to protect Turkey from any electronic intelligence gathering. Italy agreed to provide additional air-defense missile systems, and Spain agreed to extend the presence of its Patriot missile systems, which were already in Turkey as part of an earlier agreement.""
+
+Here is the extent of Luxembourg, clearly a no_side. 
+""Press reports also began to appear in mid-February in which some NATO member government officials—especially Luxembourg, Germany, and France—said that they were not interested in defending Turkey if it provoked a war with Russia.""
+
+Syria Opposition is not a state, so should be dropped as an actor.
+
+Syria is in an ongoing crisis during this, but this incident between Russia and Turkey does not seem to be contributing to Syria's ongoing crisis. In the narrative, Syria is always described as a place or a theatre and never as an actor, thus it's involvement in this crisis seems purely geographical. In terms of the criteria, it does not seem that this incident led Syria to perceive ""a heightened probability of military hostilities"". It is a no_side. "
+476,TURKEY-RUSSIA JET INCIDENT,syrian opposition,,,side_B,no_side,no_side,0,no_side,"By the narrative, U.S., UK, France, Germany, and Denmark meet criteria 2
+""The downing of the jet also initiated crises for several NATO members—the U.S., United Kingdom, France, Germany, and Denmark. These five states had already committed or were soon to commit military personnel to direct involvement in the Syrian theater, and therefore feared that any escalation could draw them into potentially lethal conflict with Russia due to their Article V commitments of mutual defense.""
+
+These states then deploy some forces, but it not clear that Russia ever see the movements as a threatening or hostile action against it. After the deployments are described, the next action by Russia is to fire ""a warning shot at a Turkish vessel in the Aegean Sea, in what was widely regarded as retaliation for the downing of the Russian jet.""
+
+Here is the extent of Spain, and Italy's involvement. Without any other threat, does not meet criteria 3. 
+""NATO held an important three-day Foreign Ministers meeting beginning on 30 November and decided to augment Turkey’s maritime and air defenses. The U.S. agreed to keep the USS Donald Cook—an anti-ballistic missile and air defense vessel—in the region. Germany and Denmark each committed to deploying a naval ship to the eastern Mediterranean. Denmark’s vessel was intended to counter the Russian S-400 system and to protect Turkey from any electronic intelligence gathering. Italy agreed to provide additional air-defense missile systems, and Spain agreed to extend the presence of its Patriot missile systems, which were already in Turkey as part of an earlier agreement.""
+
+Here is the extent of Luxembourg, clearly a no_side. 
+""Press reports also began to appear in mid-February in which some NATO member government officials—especially Luxembourg, Germany, and France—said that they were not interested in defending Turkey if it provoked a war with Russia.""
+
+Syria Opposition is not a state, so should be dropped as an actor.
+
+Syria is in an ongoing crisis during this, but this incident between Russia and Turkey does not seem to be contributing to Syria's ongoing crisis. In the narrative, Syria is always described as a place or a theatre and never as an actor, thus it's involvement in this crisis seems purely geographical. In terms of the criteria, it does not seem that this incident led Syria to perceive ""a heightened probability of military hostilities"". It is a no_side. "
+476,TURKEY-RUSSIA JET INCIDENT,turkey,TUR,640,side_B,side_B,side_B,1,side_B,"By the narrative, U.S., UK, France, Germany, and Denmark meet criteria 2
+""The downing of the jet also initiated crises for several NATO members—the U.S., United Kingdom, France, Germany, and Denmark. These five states had already committed or were soon to commit military personnel to direct involvement in the Syrian theater, and therefore feared that any escalation could draw them into potentially lethal conflict with Russia due to their Article V commitments of mutual defense.""
+
+These states then deploy some forces, but it not clear that Russia ever see the movements as a threatening or hostile action against it. After the deployments are described, the next action by Russia is to fire ""a warning shot at a Turkish vessel in the Aegean Sea, in what was widely regarded as retaliation for the downing of the Russian jet.""
+
+Here is the extent of Spain, and Italy's involvement. Without any other threat, does not meet criteria 3. 
+""NATO held an important three-day Foreign Ministers meeting beginning on 30 November and decided to augment Turkey’s maritime and air defenses. The U.S. agreed to keep the USS Donald Cook—an anti-ballistic missile and air defense vessel—in the region. Germany and Denmark each committed to deploying a naval ship to the eastern Mediterranean. Denmark’s vessel was intended to counter the Russian S-400 system and to protect Turkey from any electronic intelligence gathering. Italy agreed to provide additional air-defense missile systems, and Spain agreed to extend the presence of its Patriot missile systems, which were already in Turkey as part of an earlier agreement.""
+
+Here is the extent of Luxembourg, clearly a no_side. 
+""Press reports also began to appear in mid-February in which some NATO member government officials—especially Luxembourg, Germany, and France—said that they were not interested in defending Turkey if it provoked a war with Russia.""
+
+Syria Opposition is not a state, so should be dropped as an actor.
+
+Syria is in an ongoing crisis during this, but this incident between Russia and Turkey does not seem to be contributing to Syria's ongoing crisis. In the narrative, Syria is always described as a place or a theatre and never as an actor, thus it's involvement in this crisis seems purely geographical. In terms of the criteria, it does not seem that this incident led Syria to perceive ""a heightened probability of military hostilities"". It is a no_side. "
+476,TURKEY-RUSSIA JET INCIDENT,united kingdom,UKG,200,no_side,side_B,side_B,0,no_side,"By the narrative, U.S., UK, France, Germany, and Denmark meet criteria 2
+""The downing of the jet also initiated crises for several NATO members—the U.S., United Kingdom, France, Germany, and Denmark. These five states had already committed or were soon to commit military personnel to direct involvement in the Syrian theater, and therefore feared that any escalation could draw them into potentially lethal conflict with Russia due to their Article V commitments of mutual defense.""
+
+These states then deploy some forces, but it not clear that Russia ever see the movements as a threatening or hostile action against it. After the deployments are described, the next action by Russia is to fire ""a warning shot at a Turkish vessel in the Aegean Sea, in what was widely regarded as retaliation for the downing of the Russian jet.""
+
+Here is the extent of Spain, and Italy's involvement. Without any other threat, does not meet criteria 3. 
+""NATO held an important three-day Foreign Ministers meeting beginning on 30 November and decided to augment Turkey’s maritime and air defenses. The U.S. agreed to keep the USS Donald Cook—an anti-ballistic missile and air defense vessel—in the region. Germany and Denmark each committed to deploying a naval ship to the eastern Mediterranean. Denmark’s vessel was intended to counter the Russian S-400 system and to protect Turkey from any electronic intelligence gathering. Italy agreed to provide additional air-defense missile systems, and Spain agreed to extend the presence of its Patriot missile systems, which were already in Turkey as part of an earlier agreement.""
+
+Here is the extent of Luxembourg, clearly a no_side. 
+""Press reports also began to appear in mid-February in which some NATO member government officials—especially Luxembourg, Germany, and France—said that they were not interested in defending Turkey if it provoked a war with Russia.""
+
+Syria Opposition is not a state, so should be dropped as an actor.
+
+Syria is in an ongoing crisis during this, but this incident between Russia and Turkey does not seem to be contributing to Syria's ongoing crisis. In the narrative, Syria is always described as a place or a theatre and never as an actor, thus it's involvement in this crisis seems purely geographical. In terms of the criteria, it does not seem that this incident led Syria to perceive ""a heightened probability of military hostilities"". It is a no_side. "
+476,TURKEY-RUSSIA JET INCIDENT,united states,USA,2,no_side,side_B,side_B,0,no_side,"By the narrative, U.S., UK, France, Germany, and Denmark meet criteria 2
+""The downing of the jet also initiated crises for several NATO members—the U.S., United Kingdom, France, Germany, and Denmark. These five states had already committed or were soon to commit military personnel to direct involvement in the Syrian theater, and therefore feared that any escalation could draw them into potentially lethal conflict with Russia due to their Article V commitments of mutual defense.""
+
+These states then deploy some forces, but it not clear that Russia ever see the movements as a threatening or hostile action against it. After the deployments are described, the next action by Russia is to fire ""a warning shot at a Turkish vessel in the Aegean Sea, in what was widely regarded as retaliation for the downing of the Russian jet.""
+
+Here is the extent of Spain, and Italy's involvement. Without any other threat, does not meet criteria 3. 
+""NATO held an important three-day Foreign Ministers meeting beginning on 30 November and decided to augment Turkey’s maritime and air defenses. The U.S. agreed to keep the USS Donald Cook—an anti-ballistic missile and air defense vessel—in the region. Germany and Denmark each committed to deploying a naval ship to the eastern Mediterranean. Denmark’s vessel was intended to counter the Russian S-400 system and to protect Turkey from any electronic intelligence gathering. Italy agreed to provide additional air-defense missile systems, and Spain agreed to extend the presence of its Patriot missile systems, which were already in Turkey as part of an earlier agreement.""
+
+Here is the extent of Luxembourg, clearly a no_side. 
+""Press reports also began to appear in mid-February in which some NATO member government officials—especially Luxembourg, Germany, and France—said that they were not interested in defending Turkey if it provoked a war with Russia.""
+
+Syria Opposition is not a state, so should be dropped as an actor.
+
+Syria is in an ongoing crisis during this, but this incident between Russia and Turkey does not seem to be contributing to Syria's ongoing crisis. In the narrative, Syria is always described as a place or a theatre and never as an actor, thus it's involvement in this crisis seems purely geographical. In terms of the criteria, it does not seem that this incident led Syria to perceive ""a heightened probability of military hostilities"". It is a no_side. "

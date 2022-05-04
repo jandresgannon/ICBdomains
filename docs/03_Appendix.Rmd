@@ -1,0 +1,707 @@
+---
+title: "Online Appendix: Supporting Information for _One if by land, and two if by sea: Cross-domain contests and the escalation of international crises_"
+author: "Author names redacted"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+site: bookdown::bookdown_site
+output:
+  bookdown::pdf_document2:
+    toc: yes
+    toc_depth: '5'
+    number_sections: yes
+  bookdown::html_notebook2:
+    fig_height: 8
+    fig_width: 12
+    number_sections: yes
+    theme: flatly
+    toc: yes
+    toc_depth: 5
+    toc_float:
+      collapsed: yes
+  bookdown::word_document:
+    toc: no
+    toc_depth: '5'
+editor_options:
+  chunk_output_type: inline
+header-includes:
+- \usepackage{tikz}
+- \usepackage{pgfplots}
+- \pgfplotsset{compat=newest}
+- \usetikzlibrary{plotmarks}
+- \usetikzlibrary{arrows.meta}
+- \usepgfplotslibrary{patchplots}
+- \usepackage{grffile}
+- \usepackage{caption}
+- \newcommand{\beginsupplement}{
+    \setcounter{table}{0}  
+    \renewcommand{\thetable}{A\arabic{table}} 
+    \setcounter{figure}{0} 
+    \renewcommand{\thefigure}{A\arabic{figure}}}
+bibliography: icbd.bib
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, fig.pos = "h!", out.extra = "", fig.align = "center")
+library(magrittr)
+library(ggplot2)
+```
+
+```{r new polr function}
+# Same new polr function from the model results rmd
+library(MASS)
+
+polr <- function(formula, data, weights, start, ..., subset,
+                 na.action, contrasts = NULL, Hess = FALSE,
+                 model = TRUE,
+                 method = c("logistic", "probit", "cloglog", "cauchit"))
+{
+    logit <- function(p) log(p/(1 - p))
+
+    fmin <- function(beta) {
+        theta <- beta[pc + 1L:q]
+        gamm <- c(-Inf, cumsum(c(theta[1L], exp(theta[-1L]))), Inf)
+        eta <- offset
+        if (pc > 0)
+            eta <- eta + drop(x %*% beta[1L:pc])
+        pr <- pfun(gamm[y + 1] - eta) - pfun(gamm[y] - eta)
+        if (all(pr > 0))
+            -sum(wt * log(pr))
+        else Inf
+    }
+
+    gmin <- function(beta)
+    {
+        jacobian <- function(theta) { ## dgamma by dtheta matrix
+            k <- length(theta)
+            etheta <- exp(theta)
+            mat <- matrix(0 , k, k)
+            mat[, 1] <- rep(1, k)
+            for (i in 2:k) mat[i:k, i] <- etheta[i]
+            mat
+        }
+        theta <- beta[pc + 1L:q]
+        gamm <- c(-Inf, cumsum(c(theta[1L], exp(theta[-1L]))), Inf)
+        eta <- offset
+        if(pc > 0) eta <- eta + drop(x %*% beta[1L:pc])
+        pr <- pfun(gamm[y+1] - eta) - pfun(gamm[y] - eta)
+        p1 <- dfun(gamm[y+1] - eta)
+        p2 <- dfun(gamm[y] - eta)
+        g1 <- if(pc > 0) t(x) %*% (wt*(p1 - p2)/pr) else numeric(0)
+        xx <- .polrY1*p1 - .polrY2*p2
+        g2 <- - t(xx) %*% (wt/pr)
+        g2 <- t(g2) %*% jacobian(theta)
+        if(all(pr > 0)) c(g1, g2) else rep(NA, pc+q)
+    }
+
+    m <- match.call(expand.dots = FALSE)
+    method <- match.arg(method)
+    pfun <- switch(method, logistic = plogis, probit = pnorm,
+                   cloglog = pgumbel, cauchit = pcauchy)
+    dfun <- switch(method, logistic = dlogis, probit = dnorm,
+                   cloglog = dgumbel, cauchit = dcauchy)
+    if(is.matrix(eval.parent(m$data)))
+        m$data <- as.data.frame(data)
+    m$start <- m$Hess <- m$method <- m$model <- m$... <- NULL
+    m[[1L]] <- as.name("model.frame")
+    m <- eval.parent(m)
+    Terms <- attr(m, "terms")
+    x <- model.matrix(Terms, m, contrasts)
+    xint <- match("(Intercept)", colnames(x), nomatch=0L)
+    n <- nrow(x)
+    pc <- ncol(x)
+    cons <- attr(x, "contrasts") # will get dropped by subsetting
+    if(xint > 0) {
+        x <- x[, -xint, drop=FALSE]
+        pc <- pc - 1
+    } else warning("an intercept is needed and assumed")
+    wt <- model.weights(m)
+    if(!length(wt)) wt <- rep(1, n)
+    offset <- model.offset(m)
+    if(length(offset) <= 1) offset <- rep(0, n)
+    y <- model.response(m)
+    if(!is.factor(y)) stop("response must be a factor")
+    lev <- levels(y)
+    if(length(lev) <= 2) stop("response must have 3 or more levels")
+    y <- unclass(y)
+    q <- length(lev) - 1
+    Y <- matrix(0, n, q)
+    .polrY1 <- col(Y) == y
+    .polrY2 <- col(Y) == y - 1
+    if(missing(start)) {
+      # try something that should always work -tjb
+      u <- as.integer(table(y))
+      u <- (cumsum(u)/sum(u))[1:q]
+      zetas <-
+         switch(method,
+                "logistic"= qlogis(u),
+                "probit"=   qnorm(u),
+                "cauchit"=  qcauchy(u),
+                "cloglog"=  -log(-log(u)) )
+      s0 <- c(rep(0,pc),zetas[1],log(diff(zetas)))
+
+##         # try logistic/probit regression on 'middle' cut
+##         q1 <- length(lev) %/% 2
+##         y1 <- (y > q1)
+##         X <- cbind(Intercept = rep(1, n), x)
+##         fit <-
+##             switch(method,
+##                    "logistic"= glm.fit(X, y1, wt, family = binomial(), offset = offset),
+##                    "probit" = glm.fit(X, y1, wt, family = binomial("probit"), offset = offset),
+##                    ## this is deliberate, a better starting point
+##                    "cloglog" = glm.fit(X, y1, wt, family = binomial("probit"), offset = offset),
+##                    "cauchit" = glm.fit(X, y1, wt, family = binomial("cauchit"), offset = offset))
+##         if(!fit$converged)
+##             stop("attempt to find suitable starting values failed")
+##         coefs <- fit$coefficients
+##         if(any(is.na(coefs))) {
+##             warning("design appears to be rank-deficient, so dropping some coefs")
+##             keep <- names(coefs)[!is.na(coefs)]
+##             coefs <- coefs[keep]
+##             x <- x[, keep[-1L], drop = FALSE]
+##             pc <- ncol(x)
+##           }
+##         spacing <- logit((1L:q)/(q+1)) # just a guess
+##         if(method != "logistic") spacing <- spacing/1.7
+##         gammas <- -coefs[1L] + spacing - spacing[q1]
+##         thetas <- c(gammas[1L], log(diff(gammas)))
+##         s0 <- c(coefs[-1L], thetas)
+    } else if(length(start) != pc + q)
+	stop("'start' is not of the correct length")
+    else {
+        s0 <- if(pc > 0) c(start[seq_len(pc+1)], log(diff(start[-seq_len(pc)])))
+        else c(start[1L], log(diff(start)))
+      }
+    res <- optim(s0, fmin, gmin, method="BFGS", hessian = Hess, ...)
+    beta <- res$par[seq_len(pc)]
+    theta <- res$par[pc + 1L:q]
+    zeta <- cumsum(c(theta[1L],exp(theta[-1L])))
+    deviance <- 2 * res$value
+    niter <- c(f.evals=res$counts[1L], g.evals=res$counts[2L])
+    names(zeta) <- paste(lev[-length(lev)], lev[-1L], sep="|")
+    if(pc > 0) {
+        names(beta) <- colnames(x)
+        eta <- offset + drop(x %*% beta)
+    } else eta <- offset + rep(0, n)
+
+    cumpr <- matrix(pfun(matrix(zeta, n, q, byrow=TRUE) - eta), , q)
+    fitted <- t(apply(cumpr, 1L, function(x) diff(c(0, x, 1))))
+    dimnames(fitted) <- list(row.names(m), lev)
+    fit <- list(coefficients = beta, zeta = zeta, deviance = deviance,
+                fitted.values = fitted, lev = lev, terms = Terms,
+                df.residual = sum(wt) - pc - q, edf = pc + q, n = sum(wt),
+                nobs = sum(wt),
+                call = match.call(), method = method,
+		convergence = res$convergence, niter = niter, lp = eta)
+    if(Hess) {
+        dn <- c(names(beta), names(zeta))
+        H <- res$hessian
+        dimnames(H) <- list(dn, dn)
+        fit$Hessian <- H
+    }
+    if(model) fit$model <- m
+    fit$na.action <- attr(m, "na.action")
+    fit$contrasts <- cons
+    fit$xlevels <- .getXlevels(Terms, m)
+    class(fit) <- "polr"
+    fit
+}
+```
+
+```{r load-data}
+# load dataframes
+df_allnew <- readRDS(file = paste0(here::here(), '/data/01a_icb_domains_monadic.rds'))
+df_actor <- readRDS(file = paste0(here::here(), '/data/01b_icb_domains_monadic.rds'))
+df_crisis <- readRDS(file = paste0(here::here(), '/data/01b_icb_domains_crisis.rds'))
+```
+
+\beginsupplement
+
+This appendix accompanies the paper "One if by land, and two if by sea: Cross-domain contests and the escalation of international crises". It provides supplemental information concerning the data set of military domain actions introduced in the paper, and robustness checks and alternate specifications for the statistical model.
+
+\newpage
+
+# Summary statistics
+Although data was compiled on the domains used by all actors mentioned in the ICB narratives, the statistical analysis is limited to the sample of actors that were crisis-dyad participants in accordance with pre-existing work on ICB crisis dyads [@hewitt_dyadicprocessesinternational_2003; @beardsley_winningbomb_2009; @levin-banchik_precrisismilitaryhostility_2020]. Table \@ref(tab:summary-stats) present descriptive statistics of the sample used in the models provided in the main text. Missing values for the power discrepancy variable explain dropped observations in the models with all control variables.
+
+```{r summary-stats, results = 'asis'}
+df_crisis %>% 
+  dplyr::select(sevviosy, brexit, crossdomain_jaccard, noactr, powdissy, protrac, territ, majpwrinv, ethnic, contig) %>%
+  data.frame() %>%
+  stargazer::stargazer(title = "Covariate Summary Statistics: Crisis-actor level",
+                     covariate.labels = c("Violence severity",
+                                          "Crisis duration (days)",
+                                          "Cross-domainness",
+                                          "Number of actors",
+                                          "Power discrepancy",
+                                          "Protracted conflict",
+                                          "Territorial conflict",
+                                          "Major power involv",
+                                          "Ethnic conflict",
+                                          "Contiguous"),
+                     digits = 1,
+                     header = FALSE,
+                     label = "tab:summary-stats",
+                     type = "latex")
+```
+
+## Great powers
+Different states could be expected to take military actions in the various domains at different frequencies. The codings for great power status used here come from the original ICB coding and are defined in the original codebook. @brecher_studycrisis_2000 divided power status into four categories -- small, middle, great, and super -- based on the scope of their potential impact in the system in which a crisis occurs. This means that "a state may be a small power in the global power hierarchy but a middle power—or even a great power—within its sub-system" as Egypt and Israel were in the Middle East during 1956 [@brecher_studycrisis_2000, 29].
+
+Table \@ref(tab:greatpower-actor) shows that, consistent with expectations, superpowers use a wider variety of domains than small and middle powers. At the crisis-level, Table \@ref(tab:greatpower-crisis) shows that there is no significant difference in the amount of cross-domainness conditional on the number of great powers involved. This could occur if great power opponents in a crisis use the same domains as one another at the same rates as crises involving two non-great powers.
+
+```{r greatpower-actor, results = 'asis', fig.pos = 'H'}
+# At actor level, see if great powers use more domains
+df_actor %>%
+  dplyr::mutate(total_action = (land_action + air_action + sea_action + wmd_action + space_action + cyber_action)) %>%
+  dplyr::select(total_action, powsta) %>%
+  dplyr::mutate(powsta = dplyr::recode(powsta,
+                                       '1' = "Small power",
+                                       '2' = "Middle power",
+                                       '3' = "Great power",
+                                       '4' = "Super power"),
+                powsta = forcats::fct_relevel(powsta, "Small power", "Middle power", "Great power", "Super power")) %>%
+  dplyr::group_by(powsta) %>%
+  dplyr::summarise(count = dplyr::n(),
+                   mean_domaincount = round(mean(total_action), 2)) %>%
+  dplyr::mutate(freq = count/sum(count),
+                domain_freq = mean_domaincount/6) %>%
+  dplyr::mutate(freq = scales::percent(freq,
+                                       accuracy = 1),
+                domain_freq = scales::percent(domain_freq,
+                                              accuracy = 1)) %>%
+  dplyr::select(powsta, count, freq, mean_domaincount, domain_freq) %>%
+  knitr::kable(col.names = c("Power status", "No. of Crises", "Pct. of Crises", "Avg Domain Count", "Avg Domain Pct."),
+               caption = "Summary of cross-domainness by great power status") %>%
+  kableExtra::row_spec(0,
+                       bold = TRUE) %>%
+  kableExtra::kable_styling(latex_options = "HOLD_position")
+```
+
+```{r greatpower-crisis, results = 'asis', fig.pos = 'H'}
+# At the dyad level, see if crises with power difference or great power presence are more CDD
+df_crisis %>%
+  dplyr::select(crossdomain_jaccard, gpinv, powinv) %>%
+  dplyr::mutate(greatpower = dplyr::case_when(gpinv == 2 ~ 'None',
+                                              gpinv >= 3 & gpinv <= 5 ~ 'One',
+                                              gpinv >= 6 ~ 'More than one',
+                                              gpinv == 1 & powinv == 2 ~ 'None',
+                                              gpinv == 1 & (powinv == 3 | powinv == 4) ~ 'One',
+                                              gpinv == 1 & powinv>= 5 ~ 'More than one'),
+                greatpower = forcats::fct_relevel(greatpower, "None", "One", "More than one")) %>%
+  dplyr::select(crossdomain_jaccard, greatpower) %>%
+  dplyr::group_by(greatpower) %>%
+  dplyr::summarise(count = dplyr::n(),
+                   mean_crossdomain = round(mean(crossdomain_jaccard), 2)) %>%
+  knitr::kable(col.names = c("Great power involvment", "Crisis Count", "Mean Cross-domainness"),
+               caption = "Summary of cross-domainness in each crisis by great power involvement") %>%
+  kableExtra::row_spec(0,
+                       bold = TRUE) %>%
+  kableExtra::kable_styling(latex_options = "HOLD_position")
+```
+
+## Domains and crisis outcomes
+The number of domains in which states take actions could also be an indication of their resolve, as devoting resources to more domains may indicate a greater willingness to incur costs. This could positively correlate with an actor's probability of victory since actors who devote more resources to a conflict may be more likely to emerge victorious. Table \@ref(tab:domain-victory) provides descriptive statistics that indicate there may be a weak positive relationship between the number of domains in which an actor takes military action and the likelihood of a positive outcome. A more sophisticated analysis would look at "relative domain count" -- accounting for the number of domains their opponent used -- to test theories evaluating the balance of capabilities as opposed to the balance of resolve [@powell_nuclearbrinkmanshiplimited_2015].
+
+```{r domain-victory, results = 'asis', fig.pos = 'H'}
+# At the actor level, see if actors that use more domains during a crisis have more favorable outcomes
+df_actor %>%
+  dplyr::mutate(total_action = (land_action + air_action + sea_action + wmd_action + space_action + cyber_action)) %>%
+  dplyr::select(total_action, outcom) %>%
+  dplyr::mutate(outcom = dplyr::recode(outcom,
+                                       '1' = "Victory",
+                                       '2' = "Compromise",
+                                       '3' = "Stalemate",
+                                       '4' = "Defeat"),
+                outcom = forcats::fct_relevel(outcom, "Defeat", "Stalemate", "Compromise", "Victory")) %>%
+  dplyr::group_by(outcom) %>%
+  dplyr::summarise(count = dplyr::n(),
+                   mean_domaintotal = round(mean(total_action), 2)) %>%
+  knitr::kable(col.names = c("Actor Outcome", "Count", "Mean Domain Count"),
+               caption = "Summary of Military Domains and Crisis Outcome") %>%
+  kableExtra::row_spec(0,
+                       bold = TRUE) %>%
+  kableExtra::kable_styling(latex_options = "HOLD_position")
+```
+
+\newpage
+
+# Alternate model specifications
+I run a battery of alternate model specifications for both models as robustness checks. Our results are consistent across alternate modeling specifications including different regression models. Those results are shown below.
+
+## Dependent variable: Intensity of violence
+
+### Odds ratios
+
+We computer odds ratios for the two ordered probit models for more easily interpretable covariates. Those are shown in Table \@ref(tab:oddsratio). For the full model, the odds ratio of 0.65 indicates that the odds of a crisis with a serious clash or full scale war are 45% lower than the odds of experiencing violence with a minor clash or no violence if the actors use completely dissimilar means.
+
+```{r oddsratio, results = 'asis'}
+# model 1 bivariate severity
+df_m1 <- df_crisis %>%
+  dplyr::select(sevviosy, crossdomain_jaccard) %>%
+  dplyr::mutate(sevviosy = as.factor(sevviosy))
+
+m1 <- polr(sevviosy ~ .,
+           data = df_m1,
+           method = "probit")
+
+# model 2 full severity
+df_m2 <- df_crisis %>%
+  dplyr::select(sevviosy, crossdomain_jaccard, noactr, powdissy, protrac, territ, majpwrinv, ethnic, contig) %>%
+  dplyr::mutate(sevviosy = as.factor(sevviosy))
+
+m2 <- polr(sevviosy ~ .,
+           data = df_m2,
+           method = "probit")
+
+# compute odds ratios
+## Prep odds ratio
+m1_tr <- texreg::extract(m1)
+m1_tr@coef <- exp(m1_tr@coef)
+
+m2_tr <- texreg::extract(m2)
+m2_tr@coef <- exp(m2_tr@coef)
+
+models_tr <- list(m1_tr, m2_tr)
+
+# All results, with odds ratios for ordered probit
+texreg::texreg(models_tr,
+               omit.coef = "(1|2|3|4)",
+               override.coef = list(exp(coef(m1)),
+                                    exp(coef(m2))),
+               custom.coef.names = c("Cross-domainness",
+                                     "No. of actors",
+                                     "Power Dissimilarity",
+                                     "Protracted Crisis",
+                                     "Territorial Crisis",
+                                     "Major Power Involv.",
+                                     "Ethnic Crisis",
+                                     "Contiguity"),
+               label = "tab:oddsratio",
+               caption = "Intensity of Violence: Odds Ratios",
+               float.pos = "H",
+               ci.force = TRUE,
+               ci.force.level = 0.9,
+               ci.test = 1,
+               digits = 2)
+```
+
+\newpage
+
+### Ordered logit
+We also run all models as ordered logits instead of ordered probits. Both are generalized linear models appropriate for an ordinal dependent variable that differ only in whether they use a logit link function as opposed to inverse normal link function [@johnston_generalizedorderedprobit_2020]. The results of the ordered logit in Table \@ref(tab:ordered-logit-results) are almost identical to those of the ordered probit, as expected.
+
+```{r ordered-logit, results = 'asis'}
+df_m1 <- df_crisis %>%
+  dplyr::select(sevviosy, crossdomain_jaccard) %>%
+  dplyr::mutate(sevviosy = as.factor(sevviosy))
+
+m1 <- polr(sevviosy ~ .,
+           data = df_m1,
+           method = "logistic",
+           Hess = TRUE)
+
+# model 2 full severity
+df_m2 <- df_crisis %>%
+  dplyr::select(sevviosy, crossdomain_jaccard, noactr, powdissy, protrac, territ, majpwrinv, ethnic, contig) %>%
+  dplyr::mutate(sevviosy = as.factor(sevviosy))
+
+m2 <- polr(sevviosy ~ .,
+           data = df_m2,
+           method = "logistic",
+           Hess = TRUE)
+
+models <- list(m1, m2)
+
+texreg::texreg(models,
+               omit.coef = "(1|2|3|4)",
+               custom.coef.names = c("Cross-domainness",
+                                     "No. of actors",
+                                     "Power Dissimilarity",
+                                     "Protracted Crisis",
+                                     "Territorial Crisis",
+                                     "Major Power Involv.",
+                                     "Ethnic Crisis",
+                                     "Contiguity"),
+               label="tab:ordered-logit-results",
+               caption = "Intensity of Violence: Ordered Logit Results",
+               float.pos = "H",
+               ci.force = TRUE,
+               ci.force.level = 0.9,
+               ci.test = 1,
+               digits = 2)
+```
+
+\newpage
+
+### OLS
+Although an ordered probit model is most appropriate given the dependent variable (intensity) is ordinal, we ensure that the sign on our coefficients are consistent with an OLS model that treats intensity as a continuous variable. Table \@ref(tab:ols-results-1) illustrates consistent coefficient signs and significance for all variables.
+
+```{r ols-results-1, results = 'asis'}
+df_m1 <- df_crisis %>%
+  dplyr::select(sevviosy, crossdomain_jaccard)
+
+m1 <- lm(sevviosy ~ .,
+           data = df_m1)
+
+# model 2 full severity
+df_m2 <- df_crisis %>%
+  dplyr::select(sevviosy, crossdomain_jaccard, noactr, powdissy, protrac, territ, majpwrinv, ethnic, contig)
+
+m2 <- lm(sevviosy ~ .,
+           data = df_m2)
+
+models <- list(m1, m2)
+
+texreg::texreg(models,
+               custom.coef.names = c("Intercept",
+                                     "Cross-domainness",
+                                     "No. of actors",
+                                     "Power Dissimilarity",
+                                     "Protracted Crisis",
+                                     "Territorial Crisis",
+                                     "Major Power Involv.",
+                                     "Ethnic Crisis",
+                                     "Contiguity"),
+               float.pos = "H",
+               label="tab:ols-results-1",
+               caption = "Intensity of Violence: OLS Results")
+```
+
+\newpage
+
+## Dependent variable: Crisis duration
+
+### Other parametric hazard models
+A comparison of other parametric specifications of the hazard model in Table \@ref(tab:model-hazards) shows the lognormal to be most appropriate, as it has the smallest AIC [@slantchev_howinitiatorsend_2004; @chiba_militarycoalitionscrisis_2019]. The first column here -- lognormal -- is identical to the main results table presented in the text. Although the log-logistic model shows a statistically significant effect for the cross-domainness variable, we do not interpret this as evidence of statistical significance since it is not the most appropriate model specification.
+
+```{r model-hazards, results = 'asis'}
+df_m1 <- df_crisis %>%
+  dplyr::select(brexit, crossdomain_jaccard, noactr, powdissy, protrac, territ, majpwrinv, ethnic, contig)
+
+m1 <- survival::survreg(survival::Surv(brexit) ~ .,
+                        dist = 'lognormal',
+                        data = df_m1)
+
+m2 <- survival::survreg(survival::Surv(brexit) ~ .,
+                        dist = 'weibull',
+                        data = df_m1)
+
+m3 <- survival::survreg(survival::Surv(brexit) ~ .,
+                        dist = 'exponential',
+                        data = df_m1)
+
+m4 <- survival::survreg(survival::Surv(brexit) ~ .,
+                        dist = 'gaussian',
+                        data = df_m1)
+
+m5 <- survival::survreg(survival::Surv(brexit) ~ .,
+                        dist = 'logistic',
+                        data = df_m1)
+
+m6 <- survival::survreg(survival::Surv(brexit) ~ .,
+                        dist = 'loglogistic',
+                        data = df_m1)
+
+# Table of results
+models <- list(m1, m2, m3, m4, m5, m6)
+
+texreg::texreg(models,
+               stars = c(0.01, 0.05, 0.1),
+               omit.coef = "(1|2|3|4)",
+               custom.coef.names = c("Intercept",
+                                     "Cross-domainness",
+                                     "No. of actors",
+                                     "Power Dissimilarity",
+                                     "Protracted Crisis",
+                                     "Territorial Crisis",
+                                     "Major Power Involv.",
+                                     "Ethnic Crisis",
+                                     "Contiguity",
+                                     "Log (scale)"),               
+               custom.header = list("Log normal" = 1, "Weibull" = 2, "Exponential" = 3, "Gaussian" = 4, "Logistic" = 5, "Log-logistic" = 6),
+               custom.note = ("\\parbox{.75\\linewidth}{\\vspace{2pt}%stars.}"),
+               float.pos = "H",
+               label="tab:model-hazards",
+               use.packages = FALSE,
+               caption = "Comparison of parametric hazard models")
+```
+
+\newpage
+
+### Cox proportional hazard model
+A Cox proportional hazard model is inappropriate given the Schoenfeld residuals shown in Table \@ref(tab:coxph-1) and \@ref(tab:coxph-2). The small p-values indicate time-dependent coefficients which violates the proportionality assumption that is necessary for a Cox proportional hazard model to be appropriate.
+
+```{r coxph-1}
+df_m3 <- df_crisis %>%
+  dplyr::select(brexit, crossdomain_jaccard)
+
+m3 <- survival::coxph(survival::Surv(brexit) ~ .,
+                      data = df_m3)
+
+survival::cox.zph(m3) %>%
+  extract2("table") %>% 
+  knitr::kable(align = "r",
+               digits = 3,
+               position = "H",
+               caption = "Schoenfeld residuals: bivariate model")
+```
+
+```{r coxph-2}
+df_m4 <- df_crisis %>%
+  dplyr::select(brexit, crossdomain_jaccard, noactr, powdissy, protrac, territ, majpwrinv, ethnic, contig)
+
+m4 <- survival::coxph(survival::Surv(brexit) ~ .,
+                      data = df_m4)
+
+
+survival::cox.zph(m4) %>%
+  extract2("table") %>% 
+  knitr::kable(align = "r",
+               digits = 3,
+               position = "H",
+               caption = "Schoenfeld residuals: multivariate model")
+```
+
+\newpage
+
+### OLS
+
+Although an OLS model is not appropriate for duration variables since they cannot account for time-dependent covariates, we provide the results in table \@ref(tab:ols-results-2). They are consistent with the results of the more appropriate hazard models.
+
+```{r ols-results-2, results = 'asis'}
+m3 <- lm(brexit ~ .,
+           data = df_m3)
+
+m4 <- lm(brexit ~ .,
+           data = df_m4)
+
+models <- list(m3, m4)
+
+texreg::texreg(models,
+               custom.coef.names = c("Intercept",
+                                     "Cross-domainness",
+                                     "No. of actors",
+                                     "Power Dissimilarity",
+                                     "Protracted Crisis",
+                                     "Territorial Crisis",
+                                     "Major Power Involv.",
+                                     "Ethnic Crisis",
+                                     "Contiguity"),
+               float.pos = "H",
+               label="tab:ols-results-2",
+               caption = "Crisis Duration: OLS Results")
+```
+
+\newpage
+
+## Variable codings
+### Exclude new domains
+Given the rarity of military actions in space, cyber, and WMD, we re-run the analysis without them to see if the results hold. The results, shown in Table \@ref(tab:truncated-cdd), are consistent with the original model specifications. The Jaccard similarity coefficients when run on all domains and when excluding the three new domains have a correlation coefficient of `r round(cor(df_crisis$crossdomain_jaccard, df_crisis$crossdomain_jaccard_traditional), 3)`.
+
+```{r, truncated-cdd, results = 'asis'}
+# model 1 bivariate severity
+df_m1 <- df_crisis %>%
+  dplyr::select(sevviosy, crossdomain_jaccard_traditional) %>%
+  dplyr::mutate(sevviosy = as.factor(sevviosy))
+
+m1 <- polr(sevviosy ~ .,
+           data = df_m1,
+           method = "probit",
+           Hess = TRUE)
+
+# model 2 full severity
+df_m2 <- df_crisis %>%
+  dplyr::select(sevviosy, crossdomain_jaccard_traditional, noactr, powdissy, protrac, territ, majpwrinv, ethnic, contig) %>%
+  dplyr::mutate(sevviosy = as.factor(sevviosy))
+
+m2 <- polr(sevviosy ~ .,
+           data = df_m2,
+           method = "probit",
+           Hess = TRUE)
+
+# model 3 bivariate
+df_m3 <- df_crisis %>%
+  dplyr::select(brexit, crossdomain_jaccard_traditional)
+
+m3 <- survival::survreg(survival::Surv(brexit) ~ .,
+                      dist = 'lognormal',
+                      data = df_m3)
+
+# model 4 full duration
+df_m4 <- df_crisis %>%
+  dplyr::select(brexit, crossdomain_jaccard_traditional, noactr, powdissy, protrac, territ, majpwrinv, ethnic, contig)
+
+m4 <- survival::survreg(survival::Surv(brexit) ~ .,
+                        dist = 'lognormal',
+                        data = df_m4)
+
+# Table of results
+models <- list(m1, m2, m3, m4)
+
+texreg::texreg(models,
+               stars = c(0.01, 0.05, 0.1),
+               omit.coef = "(1|2|3|4)",
+               custom.coef.names = c("Cross-domainness",
+                                     "No. of actors",
+                                     "Power Dissimilarity",
+                                     "Protracted Crisis",
+                                     "Territorial Crisis",
+                                     "Major Power Involv.",
+                                     "Ethnic Crisis",
+                                     "Contiguity",
+                                     "Intercept",
+                                     "Log (scale)"),               
+               custom.header = list("Violence Intensity" = 1:2, "Crisis Duration" = 3:4),
+               custom.note = ("\\parbox{.75\\linewidth}{\\vspace{2pt}%stars. \\\\ 
+                              Models 1 and 2 are ordered probit models and models 3 and 4 are log-normal accelerated failure time models.}"),
+               float.pos = "H",
+               label="tab:truncated-cdd",
+               use.packages = FALSE)
+```
+
+\newpage
+
+### Binary Dependent Variable
+We run additional models using a binary dependent variable for violence severity, a modeling decision used in prior work on ICB crisis violence [@hewitt_democraciesinternationalcrisis_1996; @chiozza_internationalconflicttenure_2004]. Table \@ref(tab:model-binary-dv) shows the results of that model which are consistent with the main findings.
+
+```{r model-binary-dv, results = 'asis'}
+df_crisis$viol <- ifelse(df_crisis$sevviosy > 2, 1, 0)
+
+df_m1 <- df_crisis %>%
+  dplyr::select(viol, crossdomain_jaccard)
+
+m1 <- glm(viol ~ .,
+           data = df_m1,
+           family = "binomial")
+
+# model 2 full severity
+df_m2 <- df_crisis %>%
+  dplyr::select(viol, crossdomain_jaccard, noactr, powdissy, protrac, territ, majpwrinv, ethnic, contig)
+
+m2 <- glm(viol ~ .,
+           data = df_m2,
+           family = "binomial")
+
+# Table of results
+models <- list(m1, m2)
+
+texreg::texreg(models,
+               stars = c(0.01, 0.05, 0.1),
+               custom.coef.names = c("Intercept",
+                                     "Cross-domainness",
+                                     "No. of actors",
+                                     "Power Dissimilarity",
+                                     "Protracted Crisis",
+                                     "Territorial Crisis",
+                                     "Major Power Involv.",
+                                     "Ethnic Crisis",
+                                     "Contiguity"),               
+               custom.note = ("%stars."),
+               float.pos = "H",
+               label="tab:model-binary-dv",
+               use.packages = FALSE,
+               caption = "Logit results using a binary dependent variable for intensity of violence")
+```
+
+\newpage
+
+# References

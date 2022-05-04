@@ -1,0 +1,36 @@
+
+# One if by land, and two if by sea: Cross-domain contests and the escalation of international crises
+
+This is a package, documentation, and replication repository for the paper "One if by land, and two if by sea: Cross-domain contests and the escalation of international crises" (accepted for publication at International Studies Quarterly) 2022
+
+The Paper:
+
+[One if by land, and two if by sea: Cross-domain contests and the escalation of international crises](https://github.com/CenterForPeaceAndSecurityStudies/ISAF/blob/master/paper/2020-11-15_BurdenShare_GannonKent.pdf)
+
+Author:
+
+* [J Andres Gannon](https://jandresgannon.com/) (Harvard Kennedy School)
+
+For any questions, please email: [jagannon@hks.harvard.edu](mailto:jagannon@hks.harvard.edu).
+
+## Replication Code and Analysis
+
+### Self Contained Package
+
+All of the files necessary for reproducing our analysis are including in a self contained R package "ICBd". You can install the package ICBd from github with the instructions below:
+
+```{r gh-installation, eval = FALSE}
+if(!require(devtools)) install.packages("devtools")
+devtools::install_github("CenterForPeaceAndSecurityStudies/ICBd")
+```
+
+### R-Notebooks
+
+The analysis and figures in the paper and statistical appendix are produced in a number of R Notebooks. 
+
+File Preparation - Dependent Variable:
+
+* [01 Load Data for DV](https://github.com/CenterForPeaceAndSecurityStudies/ISAF/blob/master/docs/01_DataLoad_DV.Rmd): Loads a novel dataset of national troop contributions to the ISAF operation in Afghanistan (2001-2014).
+
+Summary Statistics:
+

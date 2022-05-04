@@ -1,0 +1,474 @@
+---
+title: "01a ICB - Prep Domain Numerator"
+author: "J Andres Gannon"
+date: "May 19, 2020"
+output:
+  html_document:
+    theme: flatly
+    code_download: true
+    df_print: paged
+    number_sections: yes
+    toc: yes
+    toc_depth: '5'
+    toc_float:
+      collapsed: yes
+editor_options:
+  chunk_output_type: inline
+---
+
+```{r setup, include = FALSE}
+library(magrittr)
+library(ggplot2)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, echo = FALSE)
+```
+
+This document loads in the newly created ICB data that identifies the military domains used by each crisis-actor.
+
+# Load
+Start by loading the cleaned ICB data. For this version of the data, each row is a crisis-actor and each column is a dummy variable for a military domain
+```{r}
+df <- readRDS(file = paste0(here::here(), '/data/00_crisis_actor_domain_type.Rds'))
+```
+
+```{r, eval = FALSE}
+# REPLICATION NOTE: the accepted paper version was built using a beta version of the ICBe data that is manually edited and re-coded here. Scholars replicating this piece should use ICBe_V1_wide_agreed (https://github.com/CenterForPeaceAndSecurityStudies/ICBEdataset/blob/master/replication_data/out/ICBe_V1_wide_agreed.Rds) for different codings of military domains that are described in the accompanying paper
+```
+
+We can examine distributions of the numeric variables to identify outliers or problems in data quality. Everything looks largely correct
+```{r, fig.width = 16, fig.height = 16}
+DT::datatable(funModeling::df_status(df))
+funModeling::plot_num(df)
+```
+
+# Prep ICB domain data
+## Reshape
+We need the ICB domains data with each row being a crisis actor and each column is a dummy for type-domain
+
+Each domain can be "used" by an actor as either a thought, speech, action. We want to disaggregate those because they are not the same. That can also tell us about escalation patterns. We use the same process to convert the wikipedia URL actor names into strings that can be matched to GW country codes and qcodes
+```{r}
+# Convert event_type column to lower case
+df$event_type <- tolower(df$event_type)
+```
+
+We then convert the event_type column into the appropriate dummies
+```{r}
+# Make blank columns for each domain_type
+df$land_action <- NA
+df$land_speech <- NA
+df$land_thought <- NA
+
+df$air_action <- NA
+df$air_speech <- NA
+df$air_thought <- NA
+
+df$sea_action <- NA
+df$sea_speech <- NA
+df$sea_thought <- NA
+
+df$wmd_action <- NA
+df$wmd_speech <- NA
+df$wmd_thought <- NA
+
+df$space_action <- NA
+df$space_speech <- NA
+df$space_thought <- NA
+
+df$cyber_action <- NA
+df$cyber_speech <- NA
+df$cyber_thought <- NA
+
+# If event_type = X and domain = 1, domain_type = 1. Otherwise, 0
+df$land_action[df$event_type == "action" &
+                      df$land == 1] <- 1
+df$land_speech[df$event_type == "speech" &
+                      df$land == 1] <- 1
+df$land_thought[df$event_type == "thought" &
+                      df$land == 1] <- 1
+
+df$air_action[df$event_type == "action" &
+                      df$air == 1] <- 1
+df$air_speech[df$event_type == "speech" &
+                      df$air == 1] <- 1
+df$air_thought[df$event_type == "thought" &
+                      df$air == 1] <- 1
+
+df$sea_action[df$event_type == "action" &
+                      df$sea == 1] <- 1
+df$sea_speech[df$event_type == "speech" &
+                      df$sea == 1] <- 1
+df$sea_thought[df$event_type == "thought" &
+                      df$sea == 1] <- 1
+
+df$wmd_action[df$event_type == "action" &
+                      df$wmd == 1] <- 1
+df$wmd_speech[df$event_type == "speech" &
+                      df$wmd == 1] <- 1
+df$wmd_thought[df$event_type == "thought" &
+                      df$wmd == 1] <- 1
+
+df$space_action[df$event_type == "action" &
+                      df$space == 1] <- 1
+df$space_speech[df$event_type == "speech" &
+                      df$space == 1] <- 1
+df$space_thought[df$event_type == "thought" &
+                      df$space == 1] <- 1
+
+df$cyber_action[df$event_type == "action" &
+                      df$cyber == 1] <- 1
+df$cyber_speech[df$event_type == "speech" &
+                      df$cyber == 1] <- 1
+df$cyber_thought[df$event_type == "thought" &
+                      df$cyber == 1] <- 1
+
+# Drop event type and group by crisis actor
+df <- df %>% 
+  dplyr::select(-c(event_type, land, air, sea, wmd, space, cyber)) %>%
+  dplyr::filter(!is.na(actor)) %>%
+  dplyr::group_by(crisno, actor) %>%
+  replace(is.na(.), 0) %>%
+  dplyr::summarise_all(sum)
+```
+
+## Add year and crisis name
+These variables are helpful for getting the correct actor codes, since they change over time, and just generally identifying the crises
+```{r}
+# Load
+icb <- read.csv(file = paste0(here::here(), '/inst/extdata/icb1v13.csv'))
+
+# Subset to variables of interest and rename
+icb <- icb %>% dplyr::select(crisno, crisname, yrtrig) %>%
+  dplyr::rename(year = yrtrig)
+
+# Merge
+df <- dplyr::left_join(df, icb)
+```
+
+## Fix actor names
+Actor names are currently coded using their wikipedia URL. We want to convert that to the corresponding wikidata names with Q codes
+```{r}
+# Ungroup since it's causing a lot of problems
+df <- df %>% dplyr::ungroup()
+
+# Keep only actor name
+df$actor <- sub(".*/", "", df$actor)
+
+# Remove underscores
+df$actor <- stringr::str_replace_all(df$actor, "_", " ")
+
+# Clean UTF-8 encoding errors
+df$actor[df$actor == "%C3%85land Islands"] <- "Åland Islands"
+df$actor[df$actor == "%C3%89tienne Tshisekedi"] <- "Étienne Tshisekedi"
+df$actor[df$actor == "%C3%91ancahuaz%C3%BA Guerrilla"] <- "Ñancahuazú Guerrilla"
+df$actor[df$actor == "All-African Peoples%27 Conference"] <- "All-African Peoples' Conference"
+df$actor[df$actor == "King%27s African Rifles"] <- "King's African Rifles"
+df$actor[df$actor == "Mongolian People%27s Republic"] <- "Mongolian People's Republic"
+df$actor[df$actor == "People%27s Armed Forces"] <- "People's Armed Forces"
+
+# Set to lower case for easier merging
+df$actor <- tolower(df$actor)
+```
+
+# Add external variables
+## Qcodes
+We now add qcodes for each actor which is their unique identifier from wikidata. These have been manually collected for each domain crisis-actor. The table shown below are all the non-Gleditsch Ward country crisis-actors for which we have domain data. The table should represent international bodies and non-state actors
+```{r}
+qcodes <- read.csv(file = paste0(here::here(), '/data/icb_actor_qcodes.csv'))
+
+# Prep Qcodes for merging
+qcodes <- qcodes %>% 
+  dplyr::select(actor, qcode, trash_actor, gwcode, gwname) %>%
+  dplyr::mutate(actor = tolower(actor))
+
+# Merge manual Qcodes into the ICB domain dataframe
+df <- dplyr::left_join(df, qcodes)
+
+# Remove trash actors
+df <- df %>% 
+  dplyr::filter(is.na(trash_actor)) %>%
+  dplyr::select(-trash_actor)
+
+# Inspect
+df %>% 
+  dplyr::select(actor, qcode, gwname, gwcode) %>%
+  dplyr::filter(is.na(gwcode)) %>%
+  dplyr::select(-gwcode, -gwname) %>%
+  dplyr::distinct() %>%
+  dplyr::arrange(actor) %>%
+  DT::datatable()
+```
+
+## GW country codes
+While in theory the Qcodes should be matched to GW country codes in the previous dataset, they are not matched by year which produces problems for entities that change code over time or should only be considered states during certain time periods
+```{r}
+df_mssl <- read.csv(file = paste0(here::here(), '/data/polities_mssl_gleditschward_states.csv'))
+
+# Subset to columns of interest
+df_mssl <- df_mssl %>% 
+  dplyr::select(nation_wikidata_id, gwcode, gwabrev, gw_start, gw_end, microstate) %>%
+  dplyr::filter(microstate == 0) %>%
+  dplyr::rename(qcode = nation_wikidata_id, 
+                gwid_mssl = gwcode, 
+                gwname_mssl = gwabrev) %>%
+  dplyr::select(-microstate)
+
+# To capture post-2021 crises, change end date for those ending in 2012 to be 2020
+df_mssl$gw_end[df_mssl$gw_end == "2012-12-31"] <- "2020-12-31"
+
+# Make long to expand year range, since we need to match on the qcode-year combo
+df_mssl$gw_start <- as.POSIXct(df_mssl$gw_start)
+df_mssl$gw_end <- as.POSIXct(df_mssl$gw_end)
+
+df_mssl$gw_start <- as.numeric(format(df_mssl$gw_start, '%Y'))
+df_mssl$gw_end <- as.numeric(format(df_mssl$gw_end, '%Y'))
+
+# Make long
+df_mssl <- df_mssl %>% dplyr::mutate(year = purrr::map2(gw_start, gw_end, `:`)) %>%
+  dplyr::select(-gw_start, -gw_end) %>%
+  tidyr::unnest(cols = year) %>%
+  dplyr::rename(gwcode_date = gwid_mssl,
+                gwname_date = gwname_mssl)
+
+# Merge
+df <- dplyr::left_join(df, df_mssl)
+
+# Identify the entities that have different GW codes
+df %>%
+  dplyr::mutate(diff = dplyr::if_else(gwcode == gwcode_date, 0, 1)) %>%
+  dplyr::filter(diff == 1) %>%
+  dplyr::select(crisno, year, actor, qcode, dplyr::starts_with("gw")) %>%
+  dplyr::arrange(actor) %>%
+  dplyr::filter(stringr::str_detect(actor, 'vietnam')) %>%
+  DT::datatable()
+
+# Fix date-based discrepancies
+## Czech Republic
+df$gwcode[df$gwcode == 316 &
+            df$year < 1993] <- 315
+df$gwname[df$gwname == "CZR" &
+            df$year < 1993] <- "CZE"
+
+## Yugoslavia
+df$gwcode[df$gwcode == 340 &
+            df$year < 2006] <- 345
+df$gwname[df$gwname == "SER" &
+            df$year < 2006] <- "YUG"
+
+## Vietnam
+df$gwcode[df$gwcode == 815 &
+            df$year == (1953 | 1977)] <- 817
+df$gwname[df$gwname == "VNM" &
+            df$year == (1953)] <- "RVN"
+
+df$gwcode[df$gwcode == 815 &
+            df$year > 1974] <- 816
+df$gwname[df$gwname == "VNM" &
+            df$year > 1974] <- "DRV"
+
+## Germany
+df$gwcode[df$gwcode == 260 &
+            df$year < 1950] <- 255
+df$gwcode[df$gwcode == 265 &
+            df$year < 1950] <- 255
+df$gwname[df$gwcode == 255] <- "GMY"
+```
+
+Now that that's cleaned, the list of crisis-actors without a GW code should only refer to non-state or suprastate actors
+```{r}
+df %>%
+  dplyr::filter(is.na(gwcode)) %>%
+  dplyr::select(actor, gwname, gwcode) %>%
+  dplyr::distinct() %>%
+  dplyr::arrange(actor) %>%
+  DT::datatable()
+```
+
+# Sort
+We re-sort the columns and make sure they are appropriately named
+```{r}
+df <- df %>% 
+  dplyr::rename(gwid = gwcode) %>%
+  dplyr::select(crisno, crisname, year,
+                actor, gwname, gwid,
+                land_action, air_action, sea_action, wmd_action, space_action, cyber_action)
+
+funModeling::plot_num(df)
+```
+
+# Fix edge cases
+## Actor coding
+Some actors still have GW codes even though they do not refer to the country. We fix those manually
+```{r}
+df %>%
+  dplyr::select(actor, gwname, gwid) %>%
+  dplyr::distinct() %>%
+  dplyr::arrange(gwname) %>%
+  DT::datatable()
+
+df$gwname[df$actor == "national congress (sudan)"] <- NA
+df$gwid[df$actor == "national congress (sudan)"] <- NA
+
+df$gwname[df$actor == "syrian opposition"] <- NA
+df$gwid[df$actor == "syrian opposition"] <- NA
+
+df$gwname[df$actor == "trilateral contact group on ukraine"] <- NA
+df$gwid[df$actor == "trilateral contact group on ukraine"] <- NA
+```
+
+## Domain coding
+Some action codings have to be fixed. We double check all action codings and manually fix ones that were errors by the original coders. We start by examining the less common domains of WMD, space, and cyber
+```{r}
+# Land
+## Cases coded 1 that should be 0
+  ### US during north korea satellite launch 2009
+  df$land_action[df$crisno == 459 &
+                    df$gwname == "USA"] <- 0
+
+  ### US during north korea satellite launch 2009
+  df$land_action[df$crisno == 459 &
+                    df$gwname == "ROK"] <- 0
+
+  ### Japan during north korea satellite launch 2009
+  df$land_action[df$crisno == 459 &
+                    df$gwname == "JPN"] <- 0
+
+# Sea
+## Cases coded 1 that should be 0
+  ### North Korea during north korea satellite launch 2009
+  df$sea_action[df$crisno == 459 &
+                    df$gwname == "PRK"] <- 0
+  
+# WMD
+## Cases coded 1 that should be 0
+  ### Bolivia during chaco 1 1928
+  df$wmd_action[df$crisno == 37 &
+                    df$gwname == "BOL"] <- 0
+
+  ### Japan during Shanghai crisis 1932
+  df$wmd_action[df$crisno == 40 &
+                    df$gwname == "JPN"] <- 0
+
+  ### Ethiopia during Ethiopian war 1934
+  df$wmd_action[df$crisno == 47 &
+                    df$gwname == "ETH"] <- 0
+
+  ### Italy during Ethiopian war 1934
+  df$wmd_action[df$crisno == 47 &
+                    df$gwname == "ITA"] <- 0
+
+  ### UK during Ethiopian war 1934
+  df$wmd_action[df$crisno == 47 &
+                    df$gwname == "UKG"] <- 0
+
+  ### Russia during Fall of Saipan 1944
+  df$wmd_action[df$crisno == 95 &
+                    df$gwname == "RUS"] <- 0
+
+  ### Egypt during Yum Kippus war 1973
+  df$wmd_action[df$crisno == 255 &
+                    df$gwname == "EGY"] <- 0
+    
+  ### France during Iraq nuclear reactor 1981
+  df$wmd_action[df$crisno == 324 &
+                    df$gwname == "FRN"] <- 0
+
+  ### China during Stratleys 1988
+  df$wmd_action[df$crisno == 384 &
+                    df$gwname == "CHN"] <- 0
+
+  ### China during Taiwan Strait 1996
+  df$wmd_action[df$crisno == 415 &
+                    df$gwname == "CHN"] <- 0
+
+  ### Syria during Haifa suicide bombing 2003
+  df$wmd_action[df$crisno == 443 &
+                    df$gwname == "SYR"] <- 0
+  
+  ### Japan during NK nuclear 2006
+  df$wmd_action[df$crisno == 450 &
+                    df$gwname == "JPN"] <- 0
+  
+  ### South Korea during NK nuclear 2006
+  df$wmd_action[df$crisno == 450 &
+                    df$gwname == "ROK"] <- 0
+  
+  ### US during NK nuclear 2013
+  df$wmd_action[df$crisno == 469 &
+                    df$gwname == "USA"] <- 0
+
+## Cases coded 0 that should be 1
+  ### Egypt during Yemen war III 1965
+  df$wmd_action[df$crisno == 212 &
+                    df$gwname == "EGY"] <- 1
+
+  ### US during Tet offensive 1968
+  df$wmd_action[df$crisno == 225 &
+                    df$gwname == "USA"] <- 1
+
+  ### Rhodesia during Rhodesia raid 1977
+  df$wmd_action[df$crisno == 283 &
+                    df$gwname == "ZIM"] <- 1
+
+  ### Iraq during Iraw recapture of Al-Faw 1988
+  df$wmd_action[df$crisno == 385 &
+                    df$gwname == "IRQ"] <- 1
+
+  ### Syria during Syria chemical weapons 2013
+  df$wmd_action[df$crisno == 470 &
+                    df$gwname == "SYR"] <- 1
+
+# Space
+## Cases coded 1 that should be 0
+  ### USA during Russian civil war 1918
+  df$space_action[df$crisno == 3 &
+                    df$gwname == "USA"] <- 0
+  
+  ### Turkey during Greece-Turkey war 1922
+  df$space_action[df$crisno == 25 &
+                    df$gwname == "TUR"] <- 0
+  
+  ### Japan during Shanghai crisis 1932
+  df$space_action[df$crisno == 40 &
+                    df$gwname == "JPN"] <- 0
+  
+  ### USA during Cuban Missile Crisis 1962
+  df$space_action[df$crisno == 196 &
+                    df$gwname == "USA"] <- 0
+  
+  ### Pakistan during I-P nuclear tests 1998
+  df$space_action[df$crisno == 425 &
+                    df$gwname == "PAK"] <- 0
+  
+  ### US during North Korea nuclear test 2013
+  df$space_action[df$crisno == 469 &
+                    df$gwname == "USA"] <- 0
+
+## Cases coded 0 that should be 1
+  ### North Korea during North Korea nuclear test satellite launch 2009
+  df$space_action[df$crisno == 459 &
+                    df$gwname == "PRK"] <- 1
+
+# Cyber
+## Cases coded 1 that should be 0
+  ### Japan during Shanghai 1932
+  df$cyber_action[df$crisno == 40 &
+                    df$gwname == "JPN"] <- 0
+
+  ### Egypt during Formation of UAR 1958
+  df$cyber_action[df$crisno == 162 &
+                    df$gwname == "EGY"] <- 0
+
+  ### Syria during formation of UAR 1958
+  df$cyber_action[df$crisno == 162 &
+                    df$gwname == "SYR"] <- 0
+
+## Cases coded 0 that should be 1
+  ### Russia cyber attack during Turkey Russia jet incident 2016
+  df$cyber_action[df$crisno == 476 &
+                    df$gwname == "RUS"] <- 1
+```
+
+# Save
+Save final version of the new data
+```{r}
+saveRDS(df, paste0(here::here(), "/data/","01a_icb_domains_monadic.rds"))
+```

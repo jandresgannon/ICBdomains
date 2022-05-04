@@ -1,0 +1,601 @@
+---
+title: '\singlespacing One if by land, and two if by sea: Cross-domain contests and the escalation of international crises'
+author: "Anonymized author"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+  bookdown::pdf_document2:
+    number_sections: yes
+    toc: no
+    keep_tex: yes
+  bookdown::html_notebook2:
+    fig_height: 8
+    fig_width: 12
+    number_sections: yes
+    theme: flatly
+    toc: yes
+    toc_depth: 5
+    toc_float:
+      collapsed: yes
+  bookdown::word_document2: default
+  bookdown::word_document:
+    toc: no
+site: bookdown::bookdown_site
+editor_options:
+  chunk_output_type: inline
+abstract: \singlespacing Speculation is growing that new domains of human endeavor and interaction have begun to trigger important changes in the nature of conflict. Technological advances have added cyber and space to more traditional domains of conflict (land, sea, air). Leading arguments, and anecdotes, suggest increasing competition across domains. Yet, empirical studies are largely constrained to single domains, limiting our collective ability to assess how domains interact. This study uses a new dataset of the domains in which states took military action during 412 international crises from 1918 to 2015 to test existing claims about cross-domain deterrence and cross-domain conflict. Far from being rare, these data show that cross-domain interactions are the modal form of conflict. Indeed, cross-domain conflict is no more frequent (proportionately) today than in decades past. Crises with cross-domain military interactions are also less violent and of no greater duration than crises involving belligerents using similar means. \linebreak \linebreak Word count - 11,405
+header-includes:
+- \usepackage{tikz}
+- \usepackage{pgfplots}
+- \pgfplotsset{compat=newest}
+- \usetikzlibrary{plotmarks}
+- \usetikzlibrary{arrows.meta}
+- \usepgfplotslibrary{patchplots}
+- \usepackage{grffile}
+- \usepackage{caption}
+- \usepackage[utf8]{inputenc}
+- \usepackage[doublespacing]{setspace}
+- \usepackage{float}
+- \usepackage{multirow}
+bibliography: icbdomains.bib
+---
+
+```{r knitr_options, echo = FALSE, warning = FALSE}
+# added to indicate that the home holder is the repo folder
+library(knitr)
+library(magrittr)
+library(ggplot2)
+knitr::opts_knit$set(root.dir = normalizePath(here::here()))
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, fig.pos = "h!", out.extra = "", fig.align = "center")
+```
+
+```{r load data}
+df_allnew <- readRDS(file = paste0(here::here(), '/data/01a_icb_domains_monadic.rds'))
+df_actor <- readRDS(file = paste0(here::here(), '/data/01b_icb_domains_monadic.rds'))
+df_crisis <- readRDS(file = paste0(here::here(), '/data/01b_icb_domains_crisis.rds'))
+```
+
+```{r fixed polr function}
+# Fix polr functions
+# I use the polr function from the MASS package to compute an ordered probit. The base version of the function in the R package contains an error that does not take the log of differences in the reposed zetas which results in an optimization error where vmmin is infinite. A fixed version of the function was created and is loaded here. For this reason, the polr function is not loaded from the MASS package, but instead from the function below. All secondary functions from the MASS package are compatible with the output of the revised function.
+
+# file MASS/R/polr.R
+# copyright (C) 1994-2008 W. N. Venables and B. D. Ripley
+# Use of transformed intercepts contributed by David Firth
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 or 3 of the License
+#  (at your option).
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  A copy of the GNU General Public License is available at
+#  http://www.r-project.org/Licenses/
+#
+library(MASS)
+
+polr <- function(formula, data, weights, start, ..., subset,
+                 na.action, contrasts = NULL, Hess = FALSE,
+                 model = TRUE,
+                 method = c("logistic", "probit", "cloglog", "cauchit"))
+{
+    logit <- function(p) log(p/(1 - p))
+
+    fmin <- function(beta) {
+        theta <- beta[pc + 1L:q]
+        gamm <- c(-Inf, cumsum(c(theta[1L], exp(theta[-1L]))), Inf)
+        eta <- offset
+        if (pc > 0)
+            eta <- eta + drop(x %*% beta[1L:pc])
+        pr <- pfun(gamm[y + 1] - eta) - pfun(gamm[y] - eta)
+        if (all(pr > 0))
+            -sum(wt * log(pr))
+        else Inf
+    }
+
+    gmin <- function(beta)
+    {
+        jacobian <- function(theta) { ## dgamma by dtheta matrix
+            k <- length(theta)
+            etheta <- exp(theta)
+            mat <- matrix(0 , k, k)
+            mat[, 1] <- rep(1, k)
+            for (i in 2:k) mat[i:k, i] <- etheta[i]
+            mat
+        }
+        theta <- beta[pc + 1L:q]
+        gamm <- c(-Inf, cumsum(c(theta[1L], exp(theta[-1L]))), Inf)
+        eta <- offset
+        if(pc > 0) eta <- eta + drop(x %*% beta[1L:pc])
+        pr <- pfun(gamm[y+1] - eta) - pfun(gamm[y] - eta)
+        p1 <- dfun(gamm[y+1] - eta)
+        p2 <- dfun(gamm[y] - eta)
+        g1 <- if(pc > 0) t(x) %*% (wt*(p1 - p2)/pr) else numeric(0)
+        xx <- .polrY1*p1 - .polrY2*p2
+        g2 <- - t(xx) %*% (wt/pr)
+        g2 <- t(g2) %*% jacobian(theta)
+        if(all(pr > 0)) c(g1, g2) else rep(NA, pc+q)
+    }
+
+    m <- match.call(expand.dots = FALSE)
+    method <- match.arg(method)
+    pfun <- switch(method, logistic = plogis, probit = pnorm,
+                   cloglog = pgumbel, cauchit = pcauchy)
+    dfun <- switch(method, logistic = dlogis, probit = dnorm,
+                   cloglog = dgumbel, cauchit = dcauchy)
+    if(is.matrix(eval.parent(m$data)))
+        m$data <- as.data.frame(data)
+    m$start <- m$Hess <- m$method <- m$model <- m$... <- NULL
+    m[[1L]] <- as.name("model.frame")
+    m <- eval.parent(m)
+    Terms <- attr(m, "terms")
+    x <- model.matrix(Terms, m, contrasts)
+    xint <- match("(Intercept)", colnames(x), nomatch=0L)
+    n <- nrow(x)
+    pc <- ncol(x)
+    cons <- attr(x, "contrasts") # will get dropped by subsetting
+    if(xint > 0) {
+        x <- x[, -xint, drop=FALSE]
+        pc <- pc - 1
+    } else warning("an intercept is needed and assumed")
+    wt <- model.weights(m)
+    if(!length(wt)) wt <- rep(1, n)
+    offset <- model.offset(m)
+    if(length(offset) <= 1) offset <- rep(0, n)
+    y <- model.response(m)
+    if(!is.factor(y)) stop("response must be a factor")
+    lev <- levels(y)
+    if(length(lev) <= 2) stop("response must have 3 or more levels")
+    y <- unclass(y)
+    q <- length(lev) - 1
+    Y <- matrix(0, n, q)
+    .polrY1 <- col(Y) == y
+    .polrY2 <- col(Y) == y - 1
+    if(missing(start)) {
+      # try something that should always work -tjb
+      u <- as.integer(table(y))
+      u <- (cumsum(u)/sum(u))[1:q]
+      zetas <-
+         switch(method,
+                "logistic"= qlogis(u),
+                "probit"=   qnorm(u),
+                "cauchit"=  qcauchy(u),
+                "cloglog"=  -log(-log(u)) )
+      s0 <- c(rep(0,pc),zetas[1],log(diff(zetas)))
+
+##         # try logistic/probit regression on 'middle' cut
+##         q1 <- length(lev) %/% 2
+##         y1 <- (y > q1)
+##         X <- cbind(Intercept = rep(1, n), x)
+##         fit <-
+##             switch(method,
+##                    "logistic"= glm.fit(X, y1, wt, family = binomial(), offset = offset),
+##                    "probit" = glm.fit(X, y1, wt, family = binomial("probit"), offset = offset),
+##                    ## this is deliberate, a better starting point
+##                    "cloglog" = glm.fit(X, y1, wt, family = binomial("probit"), offset = offset),
+##                    "cauchit" = glm.fit(X, y1, wt, family = binomial("cauchit"), offset = offset))
+##         if(!fit$converged)
+##             stop("attempt to find suitable starting values failed")
+##         coefs <- fit$coefficients
+##         if(any(is.na(coefs))) {
+##             warning("design appears to be rank-deficient, so dropping some coefs")
+##             keep <- names(coefs)[!is.na(coefs)]
+##             coefs <- coefs[keep]
+##             x <- x[, keep[-1L], drop = FALSE]
+##             pc <- ncol(x)
+##           }
+##         spacing <- logit((1L:q)/(q+1)) # just a guess
+##         if(method != "logistic") spacing <- spacing/1.7
+##         gammas <- -coefs[1L] + spacing - spacing[q1]
+##         thetas <- c(gammas[1L], log(diff(gammas)))
+##         s0 <- c(coefs[-1L], thetas)
+    } else if(length(start) != pc + q)
+	stop("'start' is not of the correct length")
+    else {
+        s0 <- if(pc > 0) c(start[seq_len(pc+1)], log(diff(start[-seq_len(pc)])))
+        else c(start[1L], log(diff(start)))
+      }
+    res <- optim(s0, fmin, gmin, method="BFGS", hessian = Hess, ...)
+    beta <- res$par[seq_len(pc)]
+    theta <- res$par[pc + 1L:q]
+    zeta <- cumsum(c(theta[1L],exp(theta[-1L])))
+    deviance <- 2 * res$value
+    niter <- c(f.evals=res$counts[1L], g.evals=res$counts[2L])
+    names(zeta) <- paste(lev[-length(lev)], lev[-1L], sep="|")
+    if(pc > 0) {
+        names(beta) <- colnames(x)
+        eta <- offset + drop(x %*% beta)
+    } else eta <- offset + rep(0, n)
+
+    cumpr <- matrix(pfun(matrix(zeta, n, q, byrow=TRUE) - eta), , q)
+    fitted <- t(apply(cumpr, 1L, function(x) diff(c(0, x, 1))))
+    dimnames(fitted) <- list(row.names(m), lev)
+    fit <- list(coefficients = beta, zeta = zeta, deviance = deviance,
+                fitted.values = fitted, lev = lev, terms = Terms,
+                df.residual = sum(wt) - pc - q, edf = pc + q, n = sum(wt),
+                nobs = sum(wt),
+                call = match.call(), method = method,
+		convergence = res$convergence, niter = niter, lp = eta)
+    if(Hess) {
+        dn <- c(names(beta), names(zeta))
+        H <- res$hessian
+        dimnames(H) <- list(dn, dn)
+        fit$Hessian <- H
+    }
+    if(model) fit$model <- m
+    fit$na.action <- attr(m, "na.action")
+    fit$contrasts <- cons
+    fit$xlevels <- .getXlevels(Terms, m)
+    class(fit) <- "polr"
+    fit
+}
+```
+
+\newpage
+
+# Introduction
+Increased technological sophistication has given rise to new modes of conflict as states have a growing number of "levers" or options through which to confront one another. These hostile interactions can take place symmetrically (like-for-like, within domain) or asymmetrically ("apples vs. oranges," across domain). Recent international crises in particular seem to demonstrate that asymmetric conflict is on the rise and may be a characteristic feature of a new era of conflict. Adversaries seem to be increasingly likely to respond to their opponent's military actions with dissimilar means. Hamas' cyber attacks in 2019 were met with Israeli airstrikes, Azerbaijani tanks clashed with Armenian drones in 2020 in the Nagorno-Karabakh region, Chinese malware attacks have recently joined the fray in an ongoing border skirmish with India, and Russian electoral inference in 2016 was met with the expulsion of Russian diplomats from the US and some sanctions rather than a military response due to concerns about the appropriateness of various kinetic and non-kinetic military operations. There is little consensus about whether to sound the alarm about dangerously escalatory cross-domain interactions or to caution against excess concern [@borghard_israelrespondedhamas_2019]. There also remains considerable ambiguity about whether recent cases of cross-domain conflict are emblematic of the future of warfare, or whether they are at most variations on a more durable set of themes [@gannon_shadowdeterrencewhy_2021]. As always with assessments of behavior, the question is "how new is new"?
+
+While recent events have motivated a growing interest in understanding the settings in which states take military action and the consequences those choices have for international stability, the larger context of cross- or multi-domain conflict has not been studied systematically. Part of this is due to difficulty identifying military domains --- is it simply geographic distinctions between land, air, and sea and their corresponding military commands? Where do new technologies like nuclear, space, and cyber fit into this typology? The second difficulty concerns limited empirical data concerning the conduct of conflict. While scholars have developed numerous detailed datasets of participants, duration, and outcome to understand conflict, empirically-oriented research concerning where contests take place, within which domain, has only recently received attention [@lindsay_crossdomaindeterrencestrategy_2019]. Researchers and analysts typically frame their inquiries around particular emerging technologies [@sechser_emergingtechnologiesstrategic_2019] or operations within individual domains, unable to address more formative questions about how domains interact [@allen_understandingimpactair_2017].
+
+This paper takes an inductive, data-driven approach to identify spatial and temporal patterns in the military domains in which states operate during conflict as well as the relationship between cross-domain interactions and the intensity and duration of international crises. Rather than come up with a new typology of military domains, I take a commonly agreed upon understanding shared by practitioners and scholars that contains the traditional domains of land, air, and sea as well as the recent domains of space, cyber, and weapons of mass destruction (WMD).^[While WMD is rarely a distinct military branch and has geographic overlap with the other domains, they do represent a distinct domain in how actors think about them in the international context. My concern here is less to get domains "right" and more to expose the diversity of options for conflict setting.] My motivation in gathering data on the conduct of conflict is driven by the recognition that the domains in which states fight are a reflection of actors' goals, resolve, and capability and subsequently shape important events like the severity and duration of conflict [@lindsay_politicsmanyother_2020]. In doing so, I developed and introduce a novel dataset of the military domains in which `r scales::comma(nrow(df_actor))` crisis actors operated during `r scales::comma(nrow(df_crisis))` international crises from `r min(df_crisis$yrtrig)` to `r max(df_crisis$yrtrig)`. These data expand on the existing virtues of the familiar and well-regarded International Crisis Behavior dataset [@brecher_studycrisis_2000].
+
+Two initial findings contribute to existing research on the consequences of conflict domains. First, cross-domain conflict is prevalent, but not novel. Some degree of cross-domain military actions occur in `r round(sum(df_crisis$crossdomain_jaccard > 0)/nrow(df_crisis), 2) * 100`% of crises over the past century, with `r round(sum(df_crisis$crossdomain_jaccard == 1)/nrow(df_crisis), 2) * 100`% of crises involving completely dissimilar military actions by belligerents. Moreover that is not a recent phenomenon, as the rate of "cross-domainness" has remained more-or-less constant over the past century despite the accumulation of new military domains during that time period. The number of domains available does not itself seem to have triggered a greater reliance on cross-domain operations. Second, crises in which belligerents engage in cross-domain military conflict are less violent and no more durable than crises in which states respond with like-means. This evidence seems to support optimistic interpretations of the effects of cross-domain conflict and mitigate against the fears of some pessimists. While data on the more salient new domains like cyber remains limited at this time, insight about cross-domain interactions in more traditional military domains should inform theories of conflict deterrence and spiral as they are being developed to apply to more novel domains.
+
+This paper proceeds in six parts. Section 2 identifies the existing state of the art concerning the domains in which states fight. Section 3 then identifies the theoretical basis underlying both the cross-domain pessimists and optimists, as applied to the intensity and duration of international crises. Section 4 provides an empirical test of these contrasting theories by introducing a novel dataset of the military domains in which states operated during international crises since `r min(df_crisis$yrtrig)`. Section 5 discusses the implications of these findings for theories of deterrence and the means of conflict, their application to contemporary foreign policy decisions, and avenues for future research. Section 6 concludes.
+
+# Existing theories of conflict escalation and how states fight
+The vast array of theorized determinants of conflict escalation -- defined here in terms of its intensity and scope -- are primarily devoted to factors present before a contest occurs [@morgan_untyingknotwar_1994; @fearon_rationalistexplanationswar_1995; @powell_stabilitydistributionpower_1996]. Since most wars end with some compromise rather than the total annihiliation of at least one of the warring sides, the actual conduct of conflict, its process, has much to tell us about when conflicts escalate [@wagner_bargainingwar_2000] and how long they last [@slantchev_howinitiatorsend_2004].
+
+There is a well developed literature on how different \textit{ways} conflicts are fought might influence conflict escalation. The ways in which militaries fight influences war's participants [@fordham_verysharpsword_2004], victors [@rosen_winningnextwar_1991; @lyall_ragemachinesexplaining_2009], severity [@talmadge_emergingtechnologyintrawar_2019], and duration [@martinezmachain_aircampaignduration_2015] as well as what states are able to project power [@beasley_closingpresencegap_2015] and the balance of power [@glaser_politicalconsequencesmilitary_1992]. Despite interest in the means by which state engage in conflict, there is little agreement about how to conceptualize and categorize those means.
+
+One broad framework for considering different means of conflict is in terms of the domains in which conflicts take place. There are many ways of thinking about domains, as they can be distinguished from one another by technology, tactic, geography, or purpose [@lindsay_crossdomaindeterrencestrategy_2019]. Some have questioned the utility of conceptualizing these domains as distinct, especially as new domains like space and cyber increasingly play the role of supplementing rather than supplanting operations in the more traditional domains [@libicki_cyberspacenotwarfighting_2012]. Rather than engage in ontological debates about the best way to typologize conflict behavior, I take domains here as a useful starting point for thinking about differences in the ways that nations choose to fight, and how these differences affect observable attributes of conflict, such as duration or intensity. Practitioners think about these domains as distinct and these domains have known advantages and disadvantages [@lindsay_crossdomaindeterrencestrategy_2019]. As already noted, I use the term "domain" here loosely to refer to land, air, sea, WMD, space, and cyber. Domains differ from one another in the constraints (and opportunities) they offer concerning power projection, movement, coordination, casualty risk, and cost -- all factors that produce unique cross-domain dynamics regarding conflict intensity and duration [@lindsay_politicsmanyother_2020, 9-10].
+
+If the problem of the security dilemma is to decide whether a particular response to an adversary's behavior will deter or escalate, the problem as applied to the conduct of conflict is whether the military means one chooses determine the likelihood of escalation. @snyder_balancepowerbalance_1965 [187] described the importance of new (nuclear) means and escalation long ago. “[N]uclear technology introduced a new form of intent-perception and a new form of uncertainty — that concerning what types of military capability the opponent was likely to use and what degree of violence he was willing to risk or accept”. This view is widely credited with originating discussion of the stability-instability paradox regarding the relationship between capabilities an actor possesses and the capabilities they use. The resulting debate created competing perspectives on escalation, characterized as deterrence and the spiral model. Snyder’s deterrence perspective contrasts with the spiral model espoused by @jervis_illogicamericannuclear_1984. @powell_nuclearbrinkmanshiplimited_2015's recent work represents the newest attempt to theorize the relationship between power and risk. As the challenger uses more power to achieve its ends, its chance of winning increases, but so to does the risk of escalation. Although an important contribution to understanding conflict escalation and the deterrence and spiral models of conflict, existing theories of power and the risk of escalation leave what it means to bring "more power to bear" in a crisis unspecified [@powell_nuclearbrinkmanshiplimited_2015, 598].
+
+Yet the amount of power is not synonymous with its type [@kreps_escalationfirebreakscyber_2019]. Just as the \textit{quantity} of capabilities a state devotes to a contest influences its outcome, the \textit{qualities} of those capabilities also matters [@carcelli_diversificationdeterrencenew_2017]. One might plausibly claim that different military domains have different inherent level of belligerence. A nuclear strike is likely to be interpreted as a more intense form of military violence than a non-nuclear attack, even if the costs borne by the target are comparable in both cases [@tannenwald_nucleartaboounited_1999]. Yet this intuition remains coarsely formulated and may even prove empirically problematic, due to multi-causality, strategic interaction, and other factors. Foundational escalation metaphors, such as "ladders" [@kahn_thermonuclearwar_2007] often parallel the distinction of domains, making separating out cause and coincidence more difficult. @libicki_cyberdeterrencecyberwar_2009 [28-29], for example, notes that belligerence increases as an actor shifts from diplomatic and economic aggression to cyber, then physical force, then nuclear force. But whether such patterns are more indicative of the effects of the form of competition or of the intentions of competitors remains unclear. Nor is the belligerence of each domain conceptually strategically, as the domains in this the opponent is operating are left out of the equation. Escalation may or may not be associated with whether responses are symmetric or asymmetric. Whether the move from one "physical force" domain to another is consistent with the deterrence or spiral model of conflict remains to be shown.
+
+With these issues in mind, evaluations of the importance of actions in domains has recently shifted to theorizing about interactions across domains [@lindsay_introductioncrossdomaindeterrence_2019]. There is suspicion that cross-domain interactions are more prevalent now because there are more (and newer) domains in which states can operate. While study on conventional-nuclear interactions is no longer in its infancy [@kissinger_limitedwarconventional_1960; @carver_conventionalwarfarenuclear_1986], this has recently expanded to cross-domain interactions involving space [@early_exploringfinalfrontier_2014; @lin-greenberg_privateeyessky_2021] and cyber [@schneider_informationrevolutioninternational_2017; @lindsay_coercioncyberspacestabilityinstability_2018; @kostyuk_invisibledigitalfront_2019]. Both researchers and policymakers have expressed concern that these and other new tools of warfare may strengthen or embolden revisionist forces in world affairs [@brands_paradoxesgrayzone_2016], although skepticism about the novelty and efficacy of these "new" forms of warfare has also cast some doubt on those concerns [@gannon_shadowdeterrencewhy_2021].
+
+Empirical evidence, however, remains limited due in large part to the very novelty and putative heterogeneity of these emerging domains [@horowitz_emergingmilitarytechnologies_2020]. Even where recent empirical research has made headway in identifying the ownership and use of new modes of warfare, the efforts are contained to a single capability or domain. As a result, existing research on cross-domain conflict tends to approach the "cross" component of the subject in terms of within-actor behavior, rather than across actors. As @nye_deterrencedissuasioncyberspace_2017 [46] notes, "it is a mistake to see the cyber realm in isolation. The term “cyber deterrence” can be confusing because theorists tend to focus on in-kind or in-domain deterrence rather than on a broad range of tools that can be used both actively and passively and with graduated effects. A response to a cyberattack need not be by cyber means any more than a response to a land attack need be by the army rather than naval or air forces."
+
+# The Dialectic Across Domains
+"A ship's a fool to fight a fort".^[The quote is generally (mis)credited to Admiral Lord Horatio Nelson, RN [@ferreiro_horationelsonnever_2016].] But is it wiser for a commander, or a nation, to attack a fort with a fort? Interpreting "foolish" actions as those that increase a conflict's violence and/or duration, perhaps unnecessarily, I identify two sets of disparate expectations about cross-domain interactions. Despite the contrasting predictions in the literature best characterized by the classical dialectical debate between deterrence theory and the spiral model, both perspectives share the assumption that the manner in which states engage in a crisis influences whether it is resolved peacefully or violently [@kydd_gametheoryspiral_1997; @zagare_deterrencetheoryspiral_1998]. For the spiral model, the threat of punishment backfires and causes one's opponent to escalate while for the deterrence model, the threat of punishment elicits compliance [@jervis_perceptionmisperceptioninternational_1976]. These perspectives thus differ in whether demonstrations of resolve and/or capability succeed or fail when they involve transporting actions to a military domain in which one's opponent is not operating.
+
+## Cross-domain escalation: the danger of taking an ear for an eye
+Crises in which actors interact in dissimilar military domains may be more violent and/or last longer because cross-domain interactions complicate interpretations of proportionality and the scope of disputed stakes, thus contributing to misinterpretation of resolve [@morrow_internationallawcommon_2019]. If a belligerent taking action with 100 ground troops is met with a defender deploying 200 ground troops, the belligerent could reasonable interpret the defender's action as a "raise" indicating the defender places a high value on the issue(s) in dispute. But if the defender responds to a deployment of 100 troops with 5 aircraft, it is less clear whether that is a raise, or instead is an effort to achieve something different, such as saving face. Cross-domain conflict thus presents actors with an apples to oranges comparison, making it more difficult to assess relative resolve or an opponent's value for the issue(s) at stake. This injection of (additional) ambiguity could make a negotiated settlement more difficult by clouding evaluations of the bargaining range.
+
+Uncertainty can cause, or worsen, a contest by creating incompatible expectations about a contest's likely outcome or utility [@fearon_rationalistexplanationswar_1995; @gartzke_warerrorterm_1999]. Asymmetry in the military domains in which belligerents are taking actions can be a source of that uncertainty. Cross-domain interactions may be perceived by the adversary as shifting to a domain where one has escalation dominance because you highly value the stakes of the conflict. Since each military domains has different strengths and weaknesses concerning outcomes like credibility, costs, signaling, and relative war fighting ability, operating in a different domain that your adversary may signal a difference in one's tolerance for cost and risk [@gartzke_signalingforeignpolicy_2017]. One can represent this aspect of military domains in terms of a game of rock, paper, scissors, where each domain's characteristics bring advantages against some of your opponent's chosen domains, but disadvantages against others [@lindsay_crossdomaindeterrencestrategy_2019 16]. In discussing the dangers of Chinese power projection from land, former US National Security Adviser H.R. @mcmaster_harbingersfuturewar_2016 advised practitioners recognize the synergy "between joint force capabilities and how, you know, really joint operations - it's rock, paper, scissors, you know? So if you can - if you have all of those tools available - maritime, aerospace, cyberspace, land capabilities - then you're able to pose that enemy with multiple dilemmas."
+
+While presenting your enemy with multiple dilemmas --- responding to your adversaries "rock" with "paper" --- may help you win the conflict, it could also produce an incentive for your opponent to do the same --- respond again with "scissors" --- thus encouraging escalation. Responding in-kind --- playing rock against rock --- may be de-escalatory because it represents a symbolic gesture to opt against one's most efficient response (paper), since doing do would require the opposing side to engage in a new, even more efficient response (scissors) [@biddle_futurewarfarewestern_2016]. By responding in-kind, states can agree to call it a draw in a way that represents an explicit or tactic compromise [@carson_facingsavingface_2016]. Conversely, engaging in a new military domain may unintentionally create an "escalatory updraft" if the opponent misinterprets what should be a tit-for-tat response that ends aggression with one that instead escalates it [@oneill_conflictualmovesbargaining_1991, 104]. To return to @powell_nuclearbrinkmanshiplimited_2015's logic about bringing more power to bear, taking action in a new domain may help one side secure victory by represent a reduction in cost, but the very logic of escalation dominance that generates that outcome also means interacting in the new domain represents an increase in cost for your opponent, with adverse consequences for the likelihood of a peaceful settlement. Cheap and easy can be attractive, but it sends mixed messages. An opponent may be cowed by superior capabilities across domains, but they may also be encouraged by limited evidence of an opponent's willingness to pay the high price of a larger contest.
+
+|   \textbf{\textit{Pessimist Hypothesis 1:}}\textit{ Interstate crises in which belligerents act in dissimilar military domains should be more violent than those in which belligerents act in similar military domains.}
+
+|   \textbf{\textit{Pessimist Hypothesis 2:}}\textit{ Interstate crises in which belligerents act in dissimilar military domains should be longer in duration than those in which belligerents act in similar military domains.}
+
+States often share an assumption that opponents will "follow precedent by responding in kind with similar weapons against a similar target set", so failing to do so risks un-calibrated escalation [@warden_limitednuclearwar_2018, 24]. Scholars have raised this concern in the US-China context in arguing "war at sea could thus quickly become a war on land, potentially even raising risks of nuclear escalation if the US starts to erode potential capabilities relevant to China's nuclear arsenal" [@talmadge_emergingtechnologyintrawar_2019, 880-881]. In the cyber context, scholars have argued retaliating to physical force with a cyber attack may raise issues of proportionality [@libicki_cyberdeterrencecyberwar_2009]. While China thinks that cyber attacks are a proportional response to US trade pressure given the stakes each place on the sectors being harmed by the other actions, the United States disagrees. "The U.S. approach to Chinese gray zone tactics seems to be consistently several steps behind the threat. As in the Russia case, this is likely due in large part to the absence of a coherent strategic approach, leading to ad hoc U.S. responses from one crisis point or domain of interaction to the next." [@hicks_othermeanspart_2019, 8].
+
+## Cross-domain deterrence: the safety of playing chess while your opponent is playing checkers
+Just as deterrence and the spiral model make contrasting claims from similar priors, the opposite (optimist) logic could also be at play in assessing cross-domain escalation. Crises involving states taking military actions in dissimilar domains could be less likely to escalate by communicating a change in the stakes and a willingness to escalate or by giving one side the upper hand if conflict actually breaks out [@rovner_giveinstabilitychance_2020]. The apples to oranges analogy may be backwards; rather than creating confusion about resolve and the opponent's evaluation of the stakes, a willingness to play a different game entirely may sharpen that logic in a way that signals it may be better to try to resolve the conflict without fighting. The discriminability of moving to a new domain is a way for an actor to simultaneously signal resolve and restraint in a way that reduces the intensity and duration of a conflict logically similar to coordinating focal points as seen with covert operations [@carson_facingsavingface_2016].
+
+Rather than simply thinking of military domains as playing rock, paper, or scissors, the different virtues of various domains also creates distinctions in what it means to "play" one of them. Threats differ from forward deployments which are further different from seizing territory or discharging a rocket [@lai_effectsdifferenttypes_2004]. In this way, operating in a new domain could deter rather than inflame by providing an avenue to graduated escalation [@cashman_introductioncauseswar_2007]. Reinforcing an army unit by putting bombers on alert or forward deploying a naval unit could be a graduated way of signaling resolve and a willingness to escalate without necessarily increasing the number of army troops already on the battlefield [@slantchev_militarycoercioninterstate_2005]. Using the same assumption of escalation dominance, action in a new domain in which your opponent is not operating because they do not have escalation dominance in that domain can be a costly signal that makes a negotiated settlement more likely [@cimbala_militarypersuasiondeterrence_1994; @quek_arecostlysignals_2013]. In the same way that children on a playground may yell 'hotter' or 'colder' as their blindfolded classmate tries to find some object, operating in new domains can add credibility to verbal statements about whether an actor perceived an offered negotiation as preferable to continuing to fight. Furthermore, deterrence may work not because of mutual vulnerability, but because of one-sided fear about overwhelming punishment [@green_revolutionthatfailed_2020; @lieber_mythnuclearrevolution_2020]. If operating in a new domain during a crisis is indicative of a state's willingness to take action in a domain where they have escalation dominance, that may convey to the other side that the state is willing to incur a higher cost and they are thus better off backing down.
+
+|   \textbf{\textit{Optimist Hypothesis 1:}}\textit{ Interstate crises in which belligerents act in dissimilar military domains should be less violent than those in which belligerents act in similar military domains.}
+
+|   \textbf{\textit{Optimist Hypothesis 2:}}\textit{ Interstate crises in which belligerents act in dissimilar military domains should be shorter in duration than those in which belligerents act in similar military domains.}
+
+Historically, Nixon placing bombers on nuclear alert during the 1969 Giant Lance operation demonstrated the introduction of a new domain as a way to signal a willingness to gradually escalate or de-escalate based on their opponent's actions [@sagan_madmannuclearalert_2003; @burr_nixonadministrationhorror_2005]. This case is consistent with existing theories of signaling in finding that some domains are better suited to turning the dial incrementally rather than all at once [@post_flyingfailcostly_2019; @montgomery_signalsstrengthcapability_2020]. President Kennedy had a similar rationale behind the "flexible response" doctrine in 1961, which aimed to provide more options for controlled escalation. In the event of more limited Soviet aggression like an attempt to hold Berlin hostage, proponents of flexible response hoped the more credible threat of responding with other conventional forces would be sufficient to get the Soviet Union to back down [@duffield_evolutionnatostrategy_1991].^[There is disagreement concerning whether Kennedy actually believed in --- and would have implemented --- "flexible response" or whether it was political theater [@gavin_mythflexibleresponse_2001]. I use this example simply to illustrate the strategic logic held by proponents of the policy.] Similarly, a ceasefire was declared between Israel and Hamas the day after Israel responded to Hamas' cyberattacks with an airstrike [@morris_israelgazamilitants_2019]. One way to interpret this event is the very conditions that make a cross-domain response a threat of immediate escalation make it conducive to medium and long-term de-escalation. By showing that an opponent has crossed a red line in the intensity of their aggression, an unexpected cross-domain response could convey that there are significant costs to be had if they do not pull back [@altman_advancingattackingstrategic_2018].
+
+As an aside, cross-domain interactions may not be the direct cause of escalation (or de-escalation), but rather an observable indicator for different motives to escalate in a way that masks the stakes [@slantchev_militarythreatscosts_2011]. States with more at stake may be more willing to escalate, but cross-domain interactions may communicate that poorly since it relies on your opponent identifying the costs of your action when that same action would generate different costs for them [@dafoe_reputationstatusmotives_2014; @renshon_statusdeficitswar_2016; @lupton_signalingresolveleaders_2018.] Rather than try to empirically identify whether the underlying causes of cross-domain interactions are directly or indirectly determinants of conflict intensity, I simply hope to shed light on the association between the use of these domains --- whatever their origins --- and crisis outcomes.
+
+# Empirics
+## Research Design
+The study's primary empirical contribution is a new dataset detailing the domains in which military actions or conflict occurred during `r scales::comma(nrow(df_crisis))` distinct crises from `r min(df_crisis$yrtrig)` to `r max(df_crisis$yrtrig)`. In sum, the new data contains information on `r scales::comma(nrow(df_actor))` crisis actors, the majority of which are states.^[International organizations and non-state actors sometimes deploy military or quasi-military capabilities like peacekeepers or foreign aid distributors. I do not consider the military logic of these actors here, but the data is available for future work.] This crisis-domain dataset represents -- to the best of my knowledge -- the most extensive data collection available on the domains in which militaries operate during conflict.
+
+Doing so involved three distinct steps. First, a research team event coded the `r scales::comma(nrow(df_crisis))` crises in the International Crisis Behavior (ICB) dataset, identifying the military domains in which crisis actors acted. Second, I re-organized that data to the crisis-dyad level using pre-existing work on ICB crisis-dyads as well as new coding for crisis-dyads post-2010 -- the most recent year coded in pre-existing efforts. Third, I create a new measure of the dissimilarity of the domains in which each side in the crisis took military actions, a numeric measure that I refer to as "cross-domainness". I discuss these steps in greater detail below.
+
+### Event coding
+A research team extended the ICB dataset by gathering extensive data on how actors interacted during crises. A crisis is defined as an international event where 1) an actor perceives a threat to one or more of its basic values, 2) there is a finite timeline for responsing, and 3) there is a heightened probability of military hostilities [@brecher_studycrisis_2000]. A crisis can escalate to an actual military dispute, but that does not always happen. This provides variation in the dependent variable since I can compare cases where a crisis did violently escalate to cases where the crisis did not. The dataset introduced here contains detailed information on the military domains used by each actor during every international crises. As such, the unit of analysis is the crisis-actor and the newly coded variables are binary values representing whether that actor took military action in a given domain during the crisis.
+
+The data source used by the coders was the ICB crisis narratives that provide qualitative descriptions of each crisis. Unlike other event datasets that pool from multiple news sources with various data generating processes, the ICB narratives are written in a systematic fashion, contain comparable levels of detail, and were written by the same research team at the University of Maryland. This reduces concerns that variation among crisis variables is due to variation in the measurement process. For example, more recent crises do not have more detailed crisis narratives which is not the case for the reporting of militarized interstate disputes captured by scraping news sources. The ICB narratives are also accompanied by the widely-used and well-regarded ICB dataset, allowing the newly coded domain variables to be integrated into the broader ICB data project.
+
+The data created here involves the domains in which states took actions during international crises.^[This is a subset of a broader project producing event data using the ICB narratives. For the complete event data and more detailed explanation of the underlying ontology, see (cite redacted for anonymization).] I define the domains in which a crisis-actor can take a military action based on the military units that undertook the action, as described in Table \@ref(tab:domains). The coders distinguished actions, speech acts, and thoughts for consistency with pre-existing event datasets like CAMEO and Phoenix [@schrodt_cameoconflictmediation_2005; @althaus_clinecenterhistorical_2020]. Actions are defined as physical acts performed by one of more actors. Examples of military actions include raises in alert level, mobilizations, fortification, military exercises, weapons tests, deployments, shows of force, blockades, border violations, attacks, invasions, and bombardments. Planning to take an action does not constitute an action unless this action is subsequently carried out. For example, a state making a verbal threat to send tanks into a neighboring country is not coded as a ground action unless the state deployed, attacked, or otherwise took a subsequent physical action with land units.
+
+\begin{table}[]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Domain} & \textbf{Description} \\
+\hline
+Air & Bombers, fighters, and missiles \\
+Cyber & Information operations and cyber disruption \\
+Land & Armored vehicles, artillery, and troops \\
+Sea & Aircraft carriers, submarines, and surface ships \\
+Space & Satellites and surveillance beyond the earth's atmosphere \\
+WMD & Nuclear, chemical, and biological weapons \\ 
+\hline
+\end{tabular}
+\caption{Military domains coded for each crisis actor. Codings are binary with 1 indicating the actor took an action in that domain during the crisis and 0 otherwise.}
+\label{tab:domains}
+\end{table}
+
+For each crisis, two research assistants coded the events that occurred sentence by sentence as a series of actions undertaken by an actor along with supporting details like when the action took place, where, and to what effect. The domain codings were then double checked, with particular attention paid to the less common domains of WMD, space, and cyber. The final version of the data includes an aggregation of the multiple different codings that exist for each case. Figure \@ref(fig:domain-count) shows the distribution of actions taken in each domain by each crisis actor. Consistent with expectations, the past century witnessed crisis-actors most often operating in the land domain, with significantly fewer WMD, cyber, and space actions taking place. Even so, the prevalence of WMD events may appear higher than expected. This is because the domain variables refer to where the action took place, rather than what was used during the action. As a result actions like raising nuclear alert levels or forward deploying nuclear bombers constitute WMD "actions" even if nuclear bombs were not subsequently detonated. The low number of space and cyber actions do not reflect the rarity of military action in the space and cyber domains, but rather the rarity of those domains \textit{in international crises}. This distinction is important, as existing work has documented numerous cases of cyber attacks that occur outside the universe of international crises defined by the International Crisis Behavior project [@valeriano_dynamicscyberconflict_2014].
+
+```{r domain-count, fig.cap = "Distribution of domains by crisis-actor", fig.width = 4, fig.height = 4}
+df_allnew %>% 
+  dplyr::select(dplyr::ends_with("_action")) %>%
+  dplyr::rename_at(vars(dplyr::ends_with("_action")),
+                   dplyr::funs(stringr::str_replace(., "_action", ""))) %>%
+  tidyr::gather() %>%
+  dplyr::mutate(key = stringr::str_to_title(key)) %>%
+  dplyr::mutate(key = dplyr::recode(key, "Wmd" = "WMD")) %>%
+  dplyr::group_by(key) %>%
+  dplyr::filter(!is.na(value)) %>%
+  dplyr::summarise(value = sum(value == 1)) %>%
+  ggplot(aes(x = reorder(key, -value), 
+             y = value)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = value, 
+                y = value + 20), 
+            vjust = 0, 
+            size = 5
+            ) +
+  ylim(0, 1500) +
+  labs(title = "Crisis-Actors per Domain (1918-2015)",
+       x = "Domain",
+       y = "Number of Crisis-Actors") +
+  theme_bw() +
+  theme(panel.grid = element_blank(), 
+        text = element_text(size = 12)
+        )
+```
+
+Of course, actors do not always contain their military activities to a single domain. Conventional wisdom surrounding the efficacy of full-spectrum military forces rightly leads to the suspicion that actors often engage in multiple military domains simultaneously, especially as the stakes of a conflict heighten. Figure \@ref(fig:domain-combos) describes the combination of military domains that each crisis-actor undertook. While the sole deployment of land forces still remains by far the most common form of military action, combined land- and air operations is the second most common, followed by land, sea, and air being used in unison.
+
+```{r domain-combos, fig.cap = "Combination of domains for each crisis actor. Each bar represents the number of crises with that unique intersection of domain values present", fig.width = 5, fig.height = 3.5}
+df_actor %>% 
+  dplyr::select(dplyr::ends_with("_action")) %>%
+  dplyr::rename_at(vars(dplyr::ends_with("_action")),
+                   dplyr::funs(stringr::str_replace(., "_action", ""))) %>%
+  janitor::clean_names("title") %>%
+  dplyr::rename('WMD' = "Wmd") %>%
+  UpSetR::upset(number.angles = 0, 
+                point.size = 2.5, 
+                line.size = 1,
+                mainbar.y.label = "Number of Crisis-Actors", 
+                order.by = "freq", 
+                set_size.show = TRUE, 
+                set_size.scale_max = 1250, 
+                sets.x.label = "Domain Count", 
+                text.scale = c (1.5, 1.5, 1.5, 1, 1.5, 1.5))
+
+```
+
+### Identifying crisis-dyads
+The original ICB data exists at two levels of analysis, the crisis-level and the crisis-actor level. While the actor-level data latter contains more granularity, it leaves the role of each actor unspecified. So after identifying the military domains in which crisis-actors took actions, this new data was merged with existing data on ICB crisis-dyads [@hewitt_dyadicprocessesinternational_2003; @beardsley_winningbomb_2009; @levin-banchik_precrisismilitaryhostility_2020]. An ICB crisis-dyad is an ICB crisis in which both sides are sovereign states, at least one state meets the original three ICB crisis conditions, and at least one actor perceives that the other has directed a threat or hostile threat against it. The pre-existing crisis-dyad data ends at 2010, so new coding of crisis-dyads was done on the post-2010 crises. The coding followed the same rules and procedures outlined by @hewitt_dyadicprocessesinternational_2003. The end result is actor-level dyad information for `r scales::comma(nrow(df_crisis))` ICB crises.
+
+Numerous crises involve multiple dyads if, for example, military coalitions were involved. To simplify coding, when multiple actors participated on the same side in the conflict, that side was coded as having taken actions in a given military domains if any actor on that side took actions in that domain. For example, if both France and the United States were coded as side A in a crisis and France deployed naval assets and the United States deployed ground forces, side A is simply coded as having taken action in both the naval and land domains.
+
+### Measuring cross-domainness
+The third and final step involves identifying the dissimilarity of the domains in which each side of each crisis-dyad took actions. I call this measure "cross-domainness", which is a variable at the crisis level of analysis bounded between 0 and 1. For each crisis, if the two sides took actions in identical domains, cross-domainess is low. If the two sides took actions in entirely distinct domains, cross-domainness is high.
+
+I produce this measuring by using a Jaccard similarity coefficient to compare the military domains in which each side in a crisis-dyad operated. This measure identifies the union of domains in which each side took actions as a ratio of those in which only one side took action, such that for a crisis-dyad with two sides A and B, $J_{(A, B)} = \frac{A \cap B}{A + B - (A \cap B)}$. Table \@ref(tab:jaccard) provides descriptive examples of how domain similarity in various crises is measured. During North Korea's nuclear test in 2009, North Korea launched a satellite followed by an underground nuclear test. The United States, Japan, and South Korea mobilized naval forces as a part of military drills and kept interceptor-capable ships in the region following those drills. Since North Korea (side A) took action in the space and WMD domain while the US, South Korea, and Japan (side B) responded in the naval domain, this crisis had an entirely cross-domain interaction -- the two sides took no military action in the same domain. By contrast, the 1965 Kashmir crisis involving India, Pakistan, and China only involved land forces being deployed. India (side A) sent troops across the ceasefire line in response to infiltration by Pakistani "freedom fighters" (side B). China (also side B) then responded with troop movements near the border. In this case, the two sides responded exclusively "in-kind", so this crisis was entirely within-domain.
+
+  \begin{table}[]
+  \centering
+  \begin{tabular}{|l|l|cccccc|c|}
+  \hline
+    \textbf{Crisis} & \textbf{Belligerents} & \multicolumn{1}{l}{\textbf{Land}} & \multicolumn{1}{l}{\textbf{Air}} & \multicolumn{1}{l}{\textbf{Sea}} & \multicolumn{1}{l}{\textbf{WMD}} & \multicolumn{1}{l}{\textbf{Space}} & \multicolumn{1}{l|}{\textbf{Cyber}} & \multicolumn{1}{l|}{\textbf{Jaccard}} \\ 
+    \hline
+    \multirow{2}{*}{N Korea Nuclear IV (2009)} & US, Japan, S Korea & - & - & 1 & - & - & - & \multirow{2}{*}{1} \\
+     & N Korea & - & - & - & 1 & 1 & - & \\
+    \hline
+    \multirow{2}{*}{Yemen War IV (1967)} & Yemen, Egypt & 1 & 1 & - & 1 & - & - & \multirow{2}{*}{0.67} \\
+      & Saudi Arabia & 1 & - & - & - & - & - & \\ 
+    \hline
+    \multirow{2}{*}{Kashmir I (1947)} & India & 1 & 1 & - & - & - & - & \multirow{2}{*}{0.5} \\
+      & Pakistan & 1 & - & - & - & - & - & \\ 
+    \hline
+    \multirow{2}{*}{Gulf of Tonkin (1964)} & S. Vietnam, U.S. & 1 & 1 & 1 & - & - & - & \multirow{2}{*}{0.33} \\
+      & N. Vietnam & 1 & - & 1 & - & - & - & \\ 
+    \hline
+    \multirow{2}{*}{Kashmir II (1965)} & India & 1 & - & - & - & - & - & \multirow{2}{*}{0} \\
+     & Pakistan, China & 1 & - & - & - & - & - & \\ 
+    \hline
+  \end{tabular}
+  \caption{Example of cross-domainness measure at the crisis-level using the Jaccard similarity coefficient. The measure is bounded between 0 and 1, with 0 indicating the two sides took actions in identical domains and 1 meaning complete dissimilarity.}
+  \label{tab:jaccard}
+  \end{table}
+
+The Jaccard measure is appropriate because each crisis contains precisely two sides (two vectors to compare), the values are binary, and I am concerned with the similarity of measures that were employed as opposed to those that were not. Similar measures like the simple matching coefficient (SMC) are less appropriate since there is variation across space and time about what 0's mean. In some cases, 0's are an omission by choice (states chose not to act in this domain) but in others they represent omission by necessity (states lacked the capacity to act in this domain). Although neither the US nor Vietnam used WMDs during the Vietnam war, that doesn't make their military strategy similar because the US could have done so but did not, while Vietnam could not have. Thus, 0's mean different things. I avoid this problem by measuring similarity in terms of what they did use, in which domain.^[For an overview comparing different similarity measures and criteria for their appropriate application, see @egghe_goodpropertiessimilarity_2010.] This measurement also appropriately tests the theories presented here since they concern the consequences of states interacting in unlike means. Similar concepts like the number of domains in which actors take military action are important, but are not the criteria of interest here since this paper is not investigating whether full-spectrum conflicts are more violent or longer than single-domain conflicts. 
+
+Figure \@ref(fig:cddness) represents the distribution of cross-domainness for all ICB crises. This figure demonstrates that cross-domain military crises are not unusual, just the opposite. Some amount of cross-domain conflict behavior represents the modal form of crisis interaction over the past century. Of the `r scales::comma(nrow(df_crisis))` ICB crises, `r round(sum(df_crisis$crossdomain_jaccard == 1)/nrow(df_crisis), 2) * 100`% are entirely cross-domain, meaning the two side had zero overlap in what military domains they operated in during the crisis, and `r round(sum(df_crisis$crossdomain_jaccard > 0)/nrow(df_crisis), 2) * 100`% had at least some amount of cross-domain interaction. In only `r round(sum(df_crisis$crossdomain_jaccard == 0)/nrow(df_crisis), 2) * 100`% did both sides behave in-kind. Figure \@ref(fig:cddness-time) shows that the temporal trend of cross-domain interactions runs contrary to conventional wisdom. Despite the common demarcation of the nuclear age and advent of new domains like cyber and space, cross-domain conflict is not an emerging property of new, technological conflict domains (at least not within crises). Although new military tools have become available to states at an arguably ever greater pace, they have not led to an increase in cross-domain activities. Either these domains are not being utilized in international crises, or they are being utilized in about the same way that older domains of conflict were and continue to be exercised. There is no evidence in these data of a transformation of military affairs related to cross-domain conflict. Rather, cross-domain conflict has been, and continues to be, a common feature of conflict behavior generally, at least within crises.
+
+```{r cddness, fig.cap = "Distribution of cross-domainness in international crises. Higher values represent higher cross-domain interactions between adversaries", results = 'asis', out.width = '80%'}
+df_crisis %>%
+  ggplot(aes(x = crossdomain_jaccard)) +
+  geom_histogram(binwidth = 0.1) +
+  labs(title = "Cross-domainness Across Crises (1918-2015)",
+       x = "Cross-domainness",
+       y = "Number of crises"
+       ) +
+  theme_minimal() +
+  theme(text = element_text(size = 14))
+```
+
+```{r cddness-time, fig.cap = "Distribution of cross-domainness over time. Points represent each observation (ICB crisis) and the line represents a bivariate generalized linear model with the shaded area corresponding to the 95\\% confidence interval. The slope is statistically insignificant. The first crises involving land, air, and sea are in the earliest year in the data (1918), while the first crises involving the other domains are labeled.", results = 'asis', out.width = '80%'}
+# create a new variable to identify the earliest crisis in which each domain was used
+first <- df_allnew %>%
+  dplyr::select(crisno, crisname, year, dplyr::ends_with("_action")) %>%
+  tidyr::pivot_longer(cols = dplyr::ends_with("_action"),
+                      names_to = "first") %>%
+  dplyr::filter(value == 1) %>%
+  dplyr::select(crisno, year, first) %>%
+  dplyr::distinct() %>%
+  dplyr::group_by(first) %>%
+  dplyr::filter(crisno == min(crisno)) %>%
+  dplyr::mutate(first = stringr::str_remove(first, "_action")) %>%
+  dplyr::mutate(first = stringr::str_to_title(first)) %>%
+  dplyr::mutate(first = dplyr::recode(first, "Wmd" = "WMD")) %>%
+  dplyr::mutate(year = paste0(" (", year, ")")) %>%
+  dplyr::mutate(first = stringr::str_c(first, year)) %>%
+  dplyr::select(crisno, first) %>%
+  dplyr::filter(crisno > 5)
+
+# merge
+df_crisis <- dplyr::left_join(df_crisis, first)
+
+df_crisis %>%
+  ggplot(aes(x = yrtrig,
+             y = crossdomain_jaccard)) +
+  geom_point() +
+  stat_smooth(method = "glm") +
+  ggrepel::geom_text_repel(aes(x = yrtrig,
+                               y = 0,
+                               seed = 100,
+                               label = first,
+                               direction = "y",
+                               nudge_y = 0.1,
+                               hjust = 0,
+                               vjust = 2,
+                               box.padding = 0,
+                               point.size = NA,
+                               min.segment.length = 0)) +
+  ylim(0, 1) +
+  scale_x_continuous(breaks = seq(1920, 2010, 10)) +
+  labs(title = "Cross-domainness Over Time (1918-2015)",
+       x = "Year",
+       y = "Cross-domainness") +
+  theme_minimal() +
+  theme(text = element_text(size = 14))
+```
+
+## Model
+To test the hypotheses about the relationship between cross-domain military interactions and crisis escalation, I model the relationship using two separate dependent variables --- intensity of violence and crisis duration. These are common observable indicators for conflict escalation and intensity [@levy_frequencyseriousnesswar_1984; @allen_timebombsestimating_2007; @asal_proliferationinternationalcrisis_2007]. The unit of analysis is the international crisis which has been collapsed down from the crisis-dyad level using the method described above.
+
+Two different model classes are required to estimate the impact of cross-domainness on intensity of violence and crisis duration. The dependent variable for the first model --- intensity of violence --- is measured on an ordinal 1-4 scale with 1 describing no violence and 4 describing-full scale war. The dependent variable for the second model is crisis duration measured in days. Figure \@ref(fig:dv) shows the distribution of the dependent variables, both of which come from the original ICB crisis-level data. Because Model 1 has an ordinal dependent variable, the appropriate model specification is an ordered probit [@johnston_generalizedorderedprobit_2020]. Because Model 2 is a duration variable operationalized as the days from crisis initiation to crisis termination, I estimate a time accelerated hazard model with a log-normal parametric specification [@box-steffensmeier_eventhistorymodeling_2004]. Time accelerated hazard models have been used to estimate factors associated with the duration of interstate or intrastate conflict by @slantchev_howinitiatorsend_2004, @martinezmachain_aircampaignduration_2015, and @caverley_militarytechnologyduration_2017 among others.^[Although other scholars have estimated a Cox proportional hazard model [@allen_timebombsestimating_2007; @beardsley_winningbomb_2009], the Schoenfeld residuals for my model (shown in the appendix) show that it fails the proportional hazard assumption test and is thus inappropriate [@box-steffensmeier_nonproportionalhazardsevent_2003].]
+
+```{r dv, fig.cap = "Distribution of dependent variables", results = 'asis', fig.show = "hold", out.width = "80%"}
+df_crisis %>%
+  dplyr::mutate(intensity = dplyr::recode_factor(sevviosy,
+                                                 "1" = "No violence",
+                                                 "2" = "Minor clash",
+                                                 "3" = "Serious clash",
+                                                 "4" = "Full-scale war")) %>%
+  ggplot(aes(x = intensity)) +
+  geom_bar() +
+  labs(title = "Dependent Variable: Severity of Violence",
+       x = "Severity of Violence",
+       y = "Number of crises"
+       ) +
+  theme_minimal() +
+  theme(text = element_text(size = 14))
+
+df_crisis %>%
+  ggplot(aes(x = brexit)) +
+  geom_histogram() +
+  geom_vline(aes(xintercept = median(brexit)), col = 'red', size = 2) +
+  geom_text(aes(x = median(brexit) + 150, 
+                label = paste0("Median: ", median(brexit), " days"), 
+                y = 100)) +
+  labs(title = "Dependent Variable: Crisis Duration",
+       x = "Crisis Duration (Days)",
+       y = "Number of crises"
+       ) +
+  scale_x_continuous(breaks = seq(00, 1500, by = 250)) +
+  theme_minimal() +
+  theme(text = element_text(size = 14))
+```
+
+One challenge in using the crisis as the unit of analysis is conventional control variables at the actor level cannot be appropriately measured given difficulty in theoretically motivating the appropriate means of aggregation [@petersen_multipartydisputesprobability_2004, 91].^[This includes state-level variables like regime type and dyad-level variables like rivalry. There is a vast and well-developed literature on micro-foundations associated with the intensity and duration of conflict like leader traits. See, among others, @mcdermott_prospecttheorypolitical_2004, @saunders_transformativechoicesleaders_2009, @chiozza_leadersinternationalconflict_2011, and @horowitz_howpriormilitary_2014. I bracket discussion of the relationship between individual attributes and the choice of military domains for future research.] Nonetheless, both models include a battery of theoretically grounded control variables that influence the intensity and duration of international crises. I include a control for the number of crisis actors; more participants in an international crisis may make it more difficult to bargain peacefully, thus increasing the intensity and duration of a crisis [@petersen_multipartydisputesprobability_2004]. I include a control for whether or not a crisis is part of a protracted conflict. Researchers have hypothesized that ongoing, embedded conflicts lead to more violent crises since they are part of a process that is more difficult to resolve [@azar_protractedsocialconflict_1978].^[ICB defines a protracted conflict as "an environment of ongoing disputes among adversaries, with fluctuating interaction ranging from violence to near-tranquility, multiple issues and spillover effects on all aspects of their relations, and the absence of mutually-recognized or anticipated termination (the Arab-Israeli conflict, 1947-)" [@brecher_internationalcrisisbehavior_2020].] I also include a control for whether the value that a crisis actor felt was threatened was territorial in nature since territorial conflicts like border wars are more violent and difficult to resolve [@vasquez_whyneighborsfight_1995; @owsiak_clearinghurdleborder_2013]. Territorial conflicts could also involve more similar capabilities by opposing belligerents since land and air forces may be most relevant in holding or taking territory. I include a control for whether the crisis was motivated by ethnic differences since ethnic conflicts have been shown to be more violent and difficult to resolve [@ben-yehuda_ethnicactorsinternational_2006]. I include a control for the degree of power disparities between each side of a crisis, which is a composite measure of population, GNP, major power alliances, territorial size, military capability, and nuclear capability [@quinn_powerplaymediation_2006]. I further include a control for whether one of the two superpowers, the United States or Soviet Union, was involved in the crisis [@colaresi_strategicrivalriesprotracted_2002]. Lastly, I control for contiguity which identifies whether or not the primary crisis actors share a border [@vasquez_distinguishingrivalsthat_1996].
+
+## Results
+The full model results are detailed in Table \@ref(tab:model). For each dependent variable I first estimate a bivariate model containing only "cross-domainness" as an independent variable. I then estimate full models that include all control variables. For the first two models concerning crisis intensity, the results show that cross-domainness is negatively associated with the intensity of violence with statistical significance of at least the 0.01 standardized level. As the coefficients of ordered logistic regression are difficult to interpret, the odds ratio coefficient for the cross-domainness variable (0.65) indicates that the odds of a crisis with a serious clash or full scale war are 45% lower than the odds of a crisis containing a minor clash or no violence if the actors use completely dissimilar means.^[A complete table of the odds ratios is provided in the appendix.] These results provide evidence consistent with theories of cross-domain deterrence rather than cross-domain escalation --- crises in which opponents take military actions in dissimilar domains are less violent than those in which opponents take military actions in the same domains.
+
+As models 3 and 4 are parametric time accelerated hazard models, the coefficients detail the likelihood of a crisis ending on a given day. Positive coefficients indicate a variable is associated with a longer crisis while negative coefficients mean the variable is associated with a shorter crisis duration. The coefficients for cross-domainness are negative, but not statistically significant at the 0.01 level once control variables are added to the model, meaning I cannot reject the null hypothesis that cross-domainness has no discernable effect on the duration of a crisis. The only statistically significant coefficients for crisis duration relate to the number of crisis actors and ethnic conflict. Both are statistically significant at the 0.01 level and positive, meaning that --- consistent with prior research --- crises with more actors and that are ethnic disputes are longer than crises with fewer actors or that involved other-than-ethnic issues.
+
+```{r, model, results = 'asis'}
+# model 1 bivariate severity
+df_m1 <- df_crisis %>%
+  dplyr::select(sevviosy, crossdomain_jaccard) %>%
+  dplyr::mutate(sevviosy = as.factor(sevviosy))
+
+m1 <- polr(sevviosy ~ .,
+           data = df_m1,
+           method = "probit",
+           Hess = TRUE)
+
+# model 2 full severity
+df_m2 <- df_crisis %>%
+  dplyr::select(sevviosy, crossdomain_jaccard, noactr, powdissy, protrac, territ, majpwrinv, ethnic, contig) %>%
+  dplyr::mutate(sevviosy = as.factor(sevviosy))
+
+m2 <- polr(sevviosy ~ .,
+           data = df_m2,
+           method = "probit",
+           Hess = TRUE)
+
+# model 3 bivariate
+df_m3 <- df_crisis %>%
+  dplyr::select(brexit, crossdomain_jaccard)
+
+m3 <- survival::survreg(survival::Surv(brexit) ~ .,
+                      dist = 'lognormal',
+                      data = df_m3)
+
+# model 4 full duration
+df_m4 <- df_crisis %>%
+  dplyr::select(brexit, crossdomain_jaccard, noactr, powdissy, protrac, territ, majpwrinv, ethnic, contig)
+
+m4 <- survival::survreg(survival::Surv(brexit) ~ .,
+                        dist = 'lognormal',
+                        data = df_m4)
+
+# Table of results
+models <- list(m1, m2, m3, m4)
+
+texreg::texreg(models,
+               stars = c(0.01, 0.05, 0.1),
+               omit.coef = "(1|2|3|4)",
+               custom.coef.names = c("Cross-domainness",
+                                     "No. of actors",
+                                     "Power Dissimilarity",
+                                     "Protracted Crisis",
+                                     "Territorial Crisis",
+                                     "Major Power Involv.",
+                                     "Ethnic Crisis",
+                                     "Contiguity",
+                                     "Intercept",
+                                     "Log (scale)"),               
+               custom.header = list("Violence Intensity" = 1:2, "Crisis Duration" = 3:4),
+               custom.note = ("\\parbox{.75\\linewidth}{\\vspace{2pt}%stars. \\\\ 
+                              Models 1 and 2 are ordered probit models and models 3 and 4 are log-normal accelerated failure time models.}"),
+               float.pos = "h!",
+               label="tab:model",
+               use.packages = FALSE)
+```
+
+These findings are robust across a range of alternate modeling decisions detailed in the appendix. Consistent with prior work on ICB crisis violence, I run additional models using a binary dependent variable for violence severity [@hewitt_democraciesinternationalcrisis_1996]. Despite the appropriateness of ordered probit and a log-normal parametric specification for the duration model, I also find consistent results using ordered logistic and OLS regression for the severity of violence variable and using other parametric specifications for the crisis duration dependent variable. Given the relative rarity of WMD, space, and cyber domains, I also run all models with "cross-domainness" measured excluding those three domains which produces results consistent with the original model specification.
+
+Crises in which belligerents interact in dissimilar military domains are less violent, but neither longer nor shorter, than crises in which belligerents interact with like-means. While contemporary cross-domain conflicts with new modes of conflicts have ignited pessimism about the escalatory potential of new modes of conflict, the empirical evidence should give observers some confidence that they can respond to adversarial' "apples" with their own "oranges" without needing to be overly worried that this decision itself will result in a longer and bloodier contest. As this is a large-n observational study, it is difficult to determine the causal direction of the relationships I characterize here. This paper has proposed one mechanism by which cross-domain interactions could reduce the severity and duration of a crisis. The causal arrow may of course run the other way. It could be that the more a state cares about the outcome of a crisis, the more likely they are to bring their best military assets to the fight. Doing so may cause less blood to be spilled since bringing mobility, stealth, and complexity to the battlefield signals to one's opponent that they are better off resolving the dispute without resorting to violence.
+
+# Implications of bringing a knife to a gun fight
+Emerging interest in understanding cross-domain military interactions is well-deserved, given the frequency with which these interactions occur. But this research need not be spurred by, not limited to, the study of new domains made possible because of emerging technologies. Crises have always been cross-domain. Indeed, contrary to the convictions of many observers, this evidence seems to show that cross-domainness is both common and has not risen appreciably over the past century. Importantly, this suggests that theories concerning new domains of conflict need not reinvent the wheel since cross-domain interactions have themselves been a consistent regularity for the past century. At the same time, these findings point both to the need, and the ability, to better theorize cross-domain conflict. It can no longer be an excuse to claim that cross-domain conflict is too "new" to be understood even as its modality makes its understanding critical for a comprehensive appreciation of conflict processes more broadly. Different ways of defining and thinking about domains may produce new insights and certainly new domains should be compared to more traditional ones, but the findings here represent an important and thus far underrepresented contribution to that discussion.
+
+Concerns about the escalation dynamic of cyber-kinetic interactions are loosely based off of theories of deterrence and spiral models of conflict that have rarely accounted for the strategic interaction of the military domains used by opposing sides. The common assumption held by pessimists is that cross-domain interactions risk a dangerous spiral because of potential miscommunication over proportionality, stake, and resolve. In contrast, the evidence provided here suggests that cross-domain interactions contain elements of the stability-instability paradox, where one side's willingness to operate in a new domain of conflict---a potential indicator of a willingness to escalate---creates conditions that lessen observed crisis escalation. This paper builds on the state of the art by furthering our understanding of conflict escalation. At least one part of the story in explaining why some conflicts spiral while others deter concerns the interaction between the domains in which each side's military is taking action. Although we have not witnessed many military operations in the new domains of WMD, space, and cyber in international crises, these insights help us answer the question about whether emerging technologies will make conflicts worse or whether they will prove stabilizing [@talmadge_emergingtechnologyintrawar_2019]. Attempts to use full-spectrum combined arms forces may make sense from a strategic standpoint if they increase the probability of victory --- an outcome not examined here --- but those doing so should consider preparing for a bloodier war if their opponents is not already using, or is unlikely to respond with, their own full-spectrum combined arms forces.
+
+The escalatory effects of the tools used in a crisis are fundamental to understanding the evolution of conflict in the 21\textsuperscript{st} century. These findings have implications for a number of contemporary policy debates. Recent work has investigated how other states can best combat Chinese naval expansion [@beckley_emergingmilitarybalance_2017; @cunningham_maritimerungescalation_2020]. As the United States considers anti-access/anti-denial (A2/AD) in East Asia vis-a-vis competition with China, strategies that seek to take advantage of full-spectrum combined-arms forces where China does not, blending multiple military tools together as done with AirSea Battle, may invoke a less bloody contest than mirroring China's moves and operating in the same military domains that they do. As NATO considers how to respond to Russian gray zone aggression, whether "little green men" in Crimea or cyber attacks against Estonia, responding with other non-cyber or non-special operations capabilities may not be as escalatory as alarmists argued after Israel responded to Hamas cyberattacks with missile strikes. At the very least, responding to cyber attacks with actions in kinetic domains -- whether raising alert levels, military mobilizations, training exercises, or shows of force -- could present an ideal way to signal resolve and intent in a way that prompts a de-escalatory response rather than an escalatory one. This is not to suggest that operations in any particular domain are inherently escalatory or de-escalatory, but rather that the degree to which operations in a particular domain are escalatory or de-escalatory is at least in part a function of the domains in which one's opponent is operating.
+
+There is much more to be studied and learned about how states fight, both as an independent variable explaining other outcomes of interest and also as a dependent variable itself. As the primary contribution of this paper concerns new data on domain-interactions over the past century, I hope part of its value comes in opening up many other avenues for research concerning questions this paper raises but does not answer. Not all cross-domain interactions are created equal. While the theories tested here concern general cross-domain escalation dynamics, a land vs air conflict may turn out differently than a land vs sea conflict, although both are quantitatively measured here as identically "cross-domain". Future work should also examine the sequence of when actors take actions in different domains, since that matters for theories of first-mover advantage and unintended escalation [@reiter_howwarsend_2009]. Furthermore, the data as presented here makes simplifying aggregations regarding the domains in which states take actions during international crises. Future work can disaggregate both domains and actions. By looking at military units instead of domains, theories can be further refined since, for example, submarines and aircraft carriers serve different strategic purposes [@gartzke_influenceseapower_2020]. "Actions" can also be further disaggregated, as further work with the underlying data could parse out and evaluate differences between things like mobilizations, raises in alert level, bombardments, and occupations as well as evaluating non-actions like speeches and cognitions. The theory and findings here are also limited to military domains, but the interaction between a state's use of military, economic, and diplomatic tools would also contribute to our collective understanding of crisis escalation and duration [@rosenau_comparativeforeignpolicy_1968; @morgan_modelforeignpolicy_2000; @starr_substitutabilityforeignpolicy_2000]. Lastly, this paper investigates military domains as an independent variable in the hopes of furthering our understanding of how the choice of military domains is associated with crisis intensity and duration. I have not explained why states choose to operate in some military domains as opposed to others. Future work should think of the military domains or crisis behavior as a dependent variable and use this novel data to explain why states choose the operate in the domains that they do.
+
+# Conclusion
+Epidemiologists spend much of their time identifying factors that increase the risk of particular health problems in individuals. An important component of their work relies on the proper identification of events and conditions that serve as an indicator that health problems will soon follow. Similarly, scholars of international relations are interested in identifying factors that indicate that the outbreak of conflict is increasingly likely. The goal in this case is not only to causally identify factors that make war more likely so that we can better understand events of the past, but also to improve our ability to forecast the likelihood of conflict in the future. The military domains in which states contest one another and the characteristics of those domains constitutes an important piece of that puzzle. Cross-domain contests in which states engage each other with dissimilar military means are less violent and endure no longer than crises in which states respond to each other in-kind. There may be other reasons to sound the alarm over emerging technologies, but the historical record shows that responding to aggression in a new and unfamiliar domain in itself does not constitute a higher risk of conflict. Contrary to the rising sense of concern among policy practitioners and military experts, cross-domain interactions are more often associate with deterring conflict than inflaming it.
+
+Much more needs to be done to better understand why nations invest, operate, and compete in particular domains. Often, they choose to fight in some domains and not others, despite the ability to do so. Why do some nations build big navies while others rely more heavily on land or air power? Does cyber (or space) offer significant advantages to challengers or to status quo actors? When does it make sense to pursue multi-domain conflict and when are nations better off limiting the horizontal spread of their uses of force? All of these questions require additional assessment, but begin to be within empirical reach, given the data I have presented and utilized here.
+
+\newpage
+
+# References

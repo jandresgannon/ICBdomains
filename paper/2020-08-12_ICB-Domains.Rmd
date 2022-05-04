@@ -1,0 +1,346 @@
+---
+title: One, if by land, and two, if by sea Identifying the Military Domains of International Crisis Behavior
+runninghead: Gannon
+author:
+- name: J Andres Gannon
+  num: 1
+address:
+- num: 1
+  org: University of California, San Diego
+corrauth: "J Andres Gannon"
+email: jagannon@ucsd.edu
+abstract: "The military capabilities a nation employs during a crisis -- known as domains -- is widely believed to be important in the study of international relations, yet scholarly research on this topic remains limited. This paper introduces a new dataset on the military domains and units employed by state actors during 455 international crises from 1918 to 2007. It discusses the coding procedures, describes global trends, and provides one empirical application of the dataset to show how the study of the means used during international crises contributes to our understanding of international relations. We provide preliminary evidence that crisis outcomes are more likely to favor actors that deploy naval units."
+keywords: International Crisis Behavior; international security; escalation
+classoption:
+  - Royal
+  - times
+bibliography: icbdomains
+bibliographystyle: sageh
+output:
+  rticles::sage_article:
+    number_sections: yes
+    keep_tex: no
+header-includes:
+- \usepackage{ctable}
+- \usepackage{titlesec}
+- \usepackage[parfill]{parskip}
+- \usepackage{makecell}
+- \titleformat{\subsubsection}{\normalfont\normalsize\itshape}{\thesubsubsection}{1em}{}
+- \titlespacing*{\subsubsection}{0pt}{3.25ex plus 1ex minus .2ex}{0ex plus .2ex}
+---
+
+\renewcommand{\thefootnote}{\arabic{footnote}}   <!-- added to template -->
+
+```{r knitr_options, echo = FALSE, warning = FALSE}
+# added to indicate that the home holder is the repo folder
+library(knitr)
+library(magrittr)
+library(ggplot2)
+knitr::opts_knit$set(root.dir = normalizePath(here::here()))
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, echo = FALSE)
+```
+
+```{r load data}
+df <- readRDS(file = paste0(here::here(), '/data/01a_icb_domains_monadic.rds'))
+```
+
+# Introduction
+Vignette about Russian cyber attacks and how the West should respond.
+
+Policymakers don't know whether to respond in kind or in a different domain because not enough is known about the impact of domain decisions on things like the intensity and duration of a contest.
+	
+Unfortunately, much of the nuance in the conduct of how these conflicts were fought is lost by the inattention that quantitative scholars of international conflict give to the means countries employ to resolve international disputes. The domains deployed by each actor provide important information about crisis escalation that is rarely examined outside of detailed case studies about a particular international conflict. Despite recognition that the domains used during conflict are important, we lack comprehensive information about the process and conduct of conflict.
+
+This paper seeks to fill that gap by producing the first dataset that includes information about the military domains and units used during international conflict to identify patterns that emerge in the conduct of conflict, thus allowing scholars to test theories about military innovation and the evolution of war fighting. Introduces a new cross-national dataset on military domains during international crises from 1918 to 2007, this study analyzes variation in the means used during international conflict. To our knowledge, this is the first attempt to collect information on not just what actors are involved in international disputes, but \textit{how} did they interact over the span of over 450 international crises. Our motivation in gathering data on the conduct of conflict is driven by the view that the means used to fight are a reflection of actors' goals, priorities, resolve, and capability.
+
+This paper will proceed in six parts.
+
+# Literature Review
+Political scientists have long been concerned with the importance of technological dominance in military domains and its effects on international conflict and negotiation \citep{adamsky_lookingglasssoviet_2008, biddle_militarypowerexplaining_2005, caverley_militarytechnologyduration_2017, cheung_fortifyingchinastruggle_2013, dombrowski_buyingmilitarytransformation_2006, grauer_whatdeterminesmilitary_2012, lieber_warengineersprimacy_2005, posen_commandcommonsmilitary_2003, press_lessonsgroundcombat_1997, reiter_militarystrategyoutbreak_1999, rosen_militaryeffectivenesswhy_1995}. A seminal contribution to this literature is that of Brooks and Wolforth \citep{brooks_risefallgreat_2016} which examines . They find that .
+
+# Theory
+Defining domains. We know the boundaries are fuzzy and future work will disaggregate them more, but for now we choose these 6 based on the DoD categories and add nukes because of their unique multi-domain characteristics
+
+Domain and means matter
+
+Debates over the degree to which technology determined conflict outcomes motivated inquiry into the types of military technologies states possessed. The inability to explain military outcomes as a simple function of technology turned the debate towards the impact of other factors like military culture, political institutions, alliances, and military doctrine as determinants of who wins and loses wars \citep{lieber_warengineersprimacy_2005, brooks_creatingmilitarypower_2007}. Without denying the importance of these other factors, inconsistent findings about the role of technology in conflict stem not from the fact that technology does not matter, but rather it has been improperly identified and measured \citep{vancreveld_technologywar2000_2010, brooks_risefallgreat_2016}.
+
+At its core military technology matters because it is an instrument of military power \citep{morgenthau_politicsnations_1948}. Yet identifying the resources a state could convert into military capabilities -- its latent military power -- has proven a challenging task. The current literature on military technology has either approach it by looking at a subset of technology or analyzing a specific country's portfolio. The nuclear technology literature, for example, is very well-developed. Newly produced data sets for nuclear latency have focused on enrichment facility production over the past 70 years, giving a clearer picture of nuclear development over time and variation by country \citep{fuhrmann_almostnuclearintroducing_2015}. Other nuclear work has looked at the resource and organizational predecessors of particular nuclear force structures and platforms \citep{gartzke_determinantsnuclearforce_2014, smith_introducingnclearlatent_2018} or the relationships between broader categories of weapons of mass destruction (WMDs) like nuclear weapons and chemical and biological weapons (CBWs) \citep{horowitz_poormanatomic_2014}. The most disaggregated work on military power looks at naval power but it measures naval outputs as opposed to inputs and does not specifically examine the technology component \citep{crisher_inequalityequalitymilitary_2014}.
+
+# Research Design
+The game of chess has 20 possible opening moves for the first player, resulting in 400 possible board configurations after both players have moved once. By the time each side has taken their second turn, there are 197,742 possible board configurations. By the third turn, approximately 121 million. Despite this overwhelming number of openings to the ancient game, 70\% of recorded professional chess games since 1850 have used the same 30 opening configurations. The 12 regular matches between Magnus Carlsen and Fabiano Caruana in the 2018 world chess championship saw only 4 unique openers with the most common, the Sicilian Defence, being the move of choice in 6 of the 12 matches. Despite a lack of innovation in opening moves, the world championship quickly entered uncharted territory. In the second match, by move 10, the board configuration had only been seen in recorded competition once before. The third match was identical to the first for the first 6 moves, but by the 7th move produced a board last seen in 1995. Game 7 was a repeat of the second game for the first 9 moves, but by move 11 had entered entirely uncharted territory.
+
+In a simplified sense, international disputes share some similarity with the ancient game of chess. There are two sides in dispute in a zero-sum competition engaging in a series of strategic moves with the ultimate goal of victory over the opponent. Each side considers the moves that maximize their chance of achieving the desired outcome given the likely responses of the other player. Much like chess players prepare for future games by studying the past, actors engaged in war -- whether we think of them as states, politicians, or military generals -- (should) similarly study past wars to understand patterns of moves and their attendant consequences.
+
+Of course, international disputes may be better represented by a game of chess between two adolescents who try to move simultaneously, take multiple consecutive moves, and introduce foreign objects onto the board to obtain an unanticipated advantage. And yet, there is a finite set of actions (moves) each actor can take and the ultimate goal remains victory. The question then becomes whether scholars can identify the actors, actions and context of wars in ways that map onto the players, moves, and board of a game of chess. If so, the sequence of "play" can be identified and patterns in the conduct of conflict can be identified. Two of the greatest chess masters in history repeated the same opening sequence in half of their contests. Yet states who fight the next war the way they fought the last one are accused of being 'prisoners of the past', giving rise to the adage "generals who do not study the past are doomed to repeat it".
+
+## Data
+Previous analysis has noted the importance of looking at the conduct of war, but the current data is limited. The domains countries use during conflict -- traditionally understood as land, air, sea, space, and cyber -- are important in understanding the causes and consequences of war. Regarding its causes, if, as Clausewitz noted, war is the continuation of politics with other means, then the tools used for war are the tools used for the continuation of politics with other means. The wide body of literature studying the causes of war has recognize the importance of \textit{how} nations fight in specific contexts like conflict initiation \citep{beckley_emergingmilitarybalance_2017}, the balance of power \citep{horowitz_diffusionmilitarypower_2010}, whether a show of force is a deterrent to conflict or encourages a spiral \citep{glaser_politicalconsequencesmilitary_1992}, when and why treaties are chosen instead of war \citep{allison_armamentsarmscontrol_1975}, when coups against autocratic leaders are successful \citep{talmadge_differentthreatsdifferent_2016}, and the type of negotiated settlement a country is able to get given how an opponent feels about the prospect of winning that war. It goes without saying that the consequences of war also depend on its conduct including who wins \citep{rosen_winningnextwar_1991, lyall_ragemachinesexplaining_2009} and the costs in treasure and in blood \citep{caverley_democraticmilitarismvoting_2014}.
+
+This crisis-domain dataset represents -- to the best of our knowledge --  the most extensive data collection available on the means used during conflict. The means of conflict can be used as either a dependent or independent variable in the study of international relations. Our contribution to the research is twofold. First, the military domains used during a crisis can influence its outcome and whether a crisis escalates or it resolved peacefully. In the first Gulf of Sidra incident, Libya responding to US aircraft carriers by deploying their own fighter aircraft which was predictably met with a similar fighter aircraft response that resolved the situation rather quickly. But when Syria responded to aircraft carriers with surface-to-air missiles in the second incident, the crisis escalated to a higher level of intensity and resulted in damage to Libyan military installations.
+
+Our dataset allows scholars to test theories about how countries respond to different means of attack and what those responses mean for the propensity of a crisis to escalate. We draw from an existing international relations dataset, the International Crisis Behavior (ICB) dataset, which makes it easy for conflict scholars to use. The list of crises used to populate our dataset comes from the ICB data and the ICB crisis narratives provided the text needed to code what military domains and units were used by each actor during each crisis. This increases the utility of our dataset since it can be used alongside current datasets; much scholarly work has already tested theories about international conflict using the previously published ICB data. Second, many studies about the conduct of international conflict have looked at particular cases like the Korean War \citep{slantchev_feigningweakness_2010} or nuclear alerts during the Vietnam War \citep{sagan_madmannuclearalert_2003}. In contrast, this project is about the means used during all international crises from 1918 to 2007 which allows scholars to examine the degree to which the conduct of particular international crises can by generalized to validate or disprove broader theories of international relations.
+
+Our exploratory analysis sheds light on what domains actors mobilize during a crisis and which of those domains are present in conflicts that escalate as opposed to those that have relatively low levels of violence. This dataset potentially plays a central role in answering fundamental questions about international relations like how the conduct of war is changing over time, how responses to particular forms of aggression are met, which responses to particular forms of warfare are successful, and how can international actors dissuade adversaries from employing particular tools during conflict.
+
+We extend the ICB dataset by gathering extensive data on the tools utilized during crises. The dataset introduced here contains data on the military domains and units used by each actor during these international crises. As such, the unit of analysis is the crisis-actor and the newly coded variables are binary true/false values representing whether that actor employed that domain and unit during the crisis.
+
+The data source used by the coders was the ICB crisis narratives that provide qualitative descriptions of the crises. This has a few benefits over other events datasets. First, the ICB crisis narratives are written in a systematic fashion. They are all approximately the same length, contain the same level of detail, and were written by the same research team at the University of Maryland. This reduces concerns that variation among crisis variables is due to variation in the data generating process. For example, more recent crises do not have more detailed crisis narratives which is not the case for the reporting of militarized interstate disputes captured by scraping news sources. Second, the ICB narratives are accompanied by the more commonly used ICB dataset that codes important international relations variables in the dataset. This helps verify the coding effort since the information that coders extract from the crisis narratives should be consistent with previous codings that populate the quantitative ICB dataset.
+
+The first set of codings were done by graduate students at the University of Maryland that were overseen by the ICB directors who helped construct the original ICB datasets and narratives. For each crisis, two research assistants coded the ICB crisis narratives at the sentence level for a series of variables created by the Cross-Domain Deterrence Initiative. A third coder was used to break ties or when there were discrepancies about how to code the events in a sentence. Undergraduate political science students at the University of California, San Diego also coded the crisis narratives for course credit. Coders could not make reference to the existing codings and the raw coding includes a measure of uncertainty for each coder. The data collection process took approximately two years which included the development of a Graphic User Interface (GUI) for data entry, the development of an ontology for the actors, actions, and supporting details to describe each event, the data entry itself, and pre-processing of the raw coder data. An example of the GUI the coders used to enter the data. Coders selected one of the 455 ICB crises and for each individual sentence in the corresponding ICB crisis narrative, they coded the events that occurred as a series of actions undertaken by an actor along with supporting details like when the action took place, where, and to what effect. The final version of the data includes an aggregation of the multiple different codings that exist for each case. This paper only focuses on the military domains and units used during these crises since the other variables concerning the sequence of international crises and non-military moves are still being processed. This represents an improvement over current efforts to analyze aggregate analysis of crisis behavior by including fine-grained information about how actors behaved as well as capturing the sequence and timing of their behavior. In this way, theories like deterrence and the spiral models of conflict that rely on action-reaction cycles can be tested in more thorough ways.
+
+```{r domain count, fig.width = 4, fig.height = 4}
+df %>% 
+  dplyr::select(dplyr::ends_with("_action")) %>%
+  dplyr::rename_at(vars(dplyr::ends_with("_action")),
+                   dplyr::funs(stringr::str_replace(., "_action", ""))) %>%
+  tidyr::gather() %>%
+  dplyr::mutate(key = stringr::str_to_title(key)) %>%
+  dplyr::group_by(key) %>%
+  dplyr::summarise(value = sum(value == 1)) %>%
+  ggplot(aes(x = key, 
+             y = value)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = value, 
+                y = value + 20), 
+            vjust = 0, 
+            size = 5
+            ) +
+  labs(title = "Crisis-Actors per Domain (1918-2012)",
+       x = "Domain",
+       y = "Number of Crisis-Actors") +
+  theme_bw() +
+  theme(panel.grid = element_blank(), 
+        text = element_text(size = 12)
+        )
+```
+
+The two sets of variables coded here, military domains and units, concern escalatory interactions. Table describes the newly created variables. Escalatory interactions involve another actor, possibly as a target, and are hostile and risk an increase in the degree or probability of violence. This includes preparations for war (mobilizations, exercises, weapons tests), maneuvers (deployment, show of force, blockade), and/or combat (battles, bombardments, invasions, occupations). When a coder indicated that an escalatory interaction had occurred in a crisis, they specified the type of escalatory interaction and then coded the military domains and units that were involved in that escalatory interaction. This version of the data does not specify what kind of escalatory interaction the domains and units were since that information is still being processed.
+
+The domain variables refer to where the interaction took place. This does not refer to what was used during the interaction, but where the interaction happened. Coders were able to choose more than one answer. The unit variable is coded as an answer to the question ``what type of military units were involved in the interaction?" Coders were again able to choose more than one answer.In both cases, coding decisions were made by reading the ICB crisis narrative and coding how the qualitative narrative described the behavior by each actor during the crisis.
+
+\begin{table}
+	\centering
+	\begin{tabular}{|l|p{10cm}|}
+		\hline
+		\textbf{Variable} & \textbf{Description} \\ 
+		\hline
+		\hline
+		Crisis Name & Taken from the ICB2 actor dataset \\
+		Crisis Actor & Taken from the ICB2 actor dataset \\
+		\hline
+		\textbf{Domains} & Where did this interaction occur? This refers to where the interaction happened, not what was used during the interaction \\
+		Air &  The interaction occurred in the air \\
+		Land & The interaction occurred on the dry portion of the earth's surface \\
+		Sea & The interaction occurred in the ocean or a large body of water \\
+		WMD & Nuclear, chemical, or biological weapons. The physical domain where the WMD interaction occurred is separately coded \\
+		Cyber & Insert definition \\
+		Space & Insert definition \\
+		\hline
+		\textbf{Type} & How was this domain used by the crisis actor? \\
+		Action & A physical act performed by one of more actors. Planning to take an action does not constitute an action unless the sentence indicates this action is carried out \\
+		Speech & A communication exchanged between two or more actors. The speech can be about an action, but a thought that is not communicated outright does not constitute a speech \\
+		Thought & Cognition by an actor. The cognition can be about a speech act or about an action, but it is not immediately communicated to another actor. If there is a physical exchange between two actors, the event is not a thought. \\
+		\hline
+	\end{tabular}
+\captionof{table}{Variable Description for ICB}\label{tab:variable_summary}
+\end{table}
+
+Some summary statistics from the newly assembled data are presented here. The unit of analysis is the crisis-actor. 1000 crisis actors are represented in our dataset covering 455 distinct crises from 1918 to 2007.
+
+The aggregation of domains used by the five countries that have been involved in at least 20 crises from 1918-2007. These include crises where these domains and units were threatened, mobilized, deployed, or used. Here, we use the traditional military domains of land, air, and sea and add a separate domain for weapons of mass destruction (nuclear, chemical, and biological). The results are consistent with our intuition that the United States, given its geographic location and where it fights its wars, tends to invoke sea units in most of the crises it participated in. Israel and Libya, by contract, rely much more heavily on land and air units.
+
+There is also interesting variation that depends on where wars are fought. Figure shows the number of times a particular military domain and unit was invoked in a crisis in a particular region. Here, the region refers to where the crisis occurred which could be proximate with some of the actors involved but not others. Even though the Taiwan Straits Crisis of 1996 involved the United States, for example, it took place in East Asia and is thus represented in the Asia category.
+
+The data also gives us an idea of how the frequency with which particular domains and units of conflict has changed over time. Figure shows the cumulative distribution of military domains over crises that occurred from 1918 until 2007. This distribution is insightful in light of research about the evolution from land to sea to air and potentially now to space and cyber forms of conflict. Further work could examine which states are driving the temporal trends noted here to test theories about comparative military doctrine and why some states evolve their forms of warfare while others do not.
+
+## Conflict Outcome
+Here we show variation in conflict outcome.
+
+```{r outcome, fig.width = 5.5, fig.height = 4}
+df %>%
+  dplyr::select(outcom, dplyr::ends_with("_action")) %>%
+  dplyr::rename_at(vars(dplyr::ends_with("_action")),
+                   dplyr::funs(stringr::str_replace(., "_action", ""))) %>%
+  tidyr::gather(domain, count, -outcom) %>%
+  dplyr::mutate(outcome = ifelse(count == 1, outcom, NA)) %>%
+  dplyr::select(-outcom) %>%
+  dplyr::filter(!is.na(outcome)) %>%
+  dplyr::filter(outcome < 5) %>%
+  dplyr::group_by(domain, outcome) %>%
+  dplyr::summarise(count = dplyr::n()) %>%
+  dplyr::group_by(domain) %>%
+  dplyr::mutate(total = sum(count)) %>%
+  dplyr::mutate(outcome = as.factor(outcome)) %>%
+  dplyr::ungroup(domain) %>%
+  dplyr::mutate(domain = stringr::str_to_title(domain)) %>%
+  dplyr::mutate(domain = paste0(gsub("/","-\n", domain, fixed=T), "\n(n=", total, ")" , sep="")) %>%
+  dplyr::select(-total) %>%
+  dplyr::mutate(outcome = dplyr::recode_factor(outcome,
+                                               "1" = "Victory",
+                                               "2" = "Compromise",
+                                               "3" = "Stalemate",
+                                               "4" = "Defeat")) %>%
+  dplyr::mutate(domain = as.factor(domain)) %>%
+  dplyr::mutate(domain = forcats::fct_relevel(domain, c("Land\n(n=661)", "Sea\n(n=167)", "Air\n(n=263)", "Wmd\n(n=31)", "Space\n(n=3)", "Cyber\n(n=1)"))) %>%
+  dplyr::group_by(domain) %>%
+  dplyr::mutate(percent = round(count/sum(count), 2)) %>%
+  ggplot(aes(x = domain,
+             y = percent,
+             fill = outcome,
+             label = paste0(percent*100), "%"
+             )
+         ) +
+  geom_bar(position = position_stack(reverse = TRUE), 
+           stat = "identity") +
+  geom_text(aes(label = paste0(percent*100, "%")),
+            position = position_stack(reverse = TRUE,
+                                      vjust = 0.5),
+            size = 3.5) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_brewer(palette = "Purples") +
+  labs(title = "Crisis Outcomes (1918-2012)",
+       x = "",
+       y = "Percent of crises",
+       fill = "Outcome"
+       ) +
+  guides(fill = guide_legend(reverse = TRUE)) +
+  theme_dark() +
+  theme(panel.grid = element_blank(), 
+        legend.position = "right",
+        legend.text = element_text(size = 9),
+        text = element_text(size = 14)
+        )
+```
+
+## Conflict Intensity
+Here we show variation in conflict intensity.
+
+```{r intensity, fig.width = 5.5, fig.height = 4}
+df %>%
+  dplyr::select(sevvio, dplyr::ends_with("_action")) %>%
+  dplyr::rename_at(vars(dplyr::ends_with("_action")),
+                   dplyr::funs(stringr::str_replace(., "_action", ""))) %>%
+  tidyr::gather(domain, count, -sevvio) %>%
+  dplyr::mutate(intensity = ifelse(count == 1, sevvio, NA)) %>%
+  dplyr::select(-sevvio) %>%
+  dplyr::filter(!is.na(intensity)) %>%
+  dplyr::group_by(domain, intensity) %>%
+  dplyr::summarise(count = dplyr::n()) %>%
+  dplyr::group_by(domain) %>%
+  dplyr::mutate(total = sum(count)) %>%
+  dplyr::mutate(intensity = as.factor(intensity)) %>%
+  dplyr::ungroup(domain) %>%
+  dplyr::mutate(domain = stringr::str_to_title(domain)) %>%
+  dplyr::mutate(domain = paste0(gsub("/","-\n", domain, fixed=T), "\n(n=", total, ")" , sep="")) %>%
+  dplyr::select(-total) %>%
+  dplyr::mutate(intensity = dplyr::recode_factor(intensity,
+                                                 "1" = "No violence",
+                                                 "2" = "Minor clash",
+                                                 "3" = "Serious clash",
+                                                 "4" = "Full-scale war")) %>%
+  dplyr::mutate(domain = as.factor(domain)) %>%
+  dplyr::mutate(domain = forcats::fct_relevel(domain, c("Land\n(n=670)", "Sea\n(n=173)", "Air\n(n=270)", "Wmd\n(n=31)", "Space\n(n=3)", "Cyber\n(n=1)"))) %>%
+  dplyr::group_by(domain) %>%
+  dplyr::mutate(percent = round(count/sum(count), 2)) %>%
+  ggplot(aes(x = domain,
+             y = percent,
+             fill = intensity,
+             label = paste0(percent*100), "%"
+             )
+         ) +
+  geom_bar(position = position_stack(reverse = TRUE), 
+           stat = "identity") +
+  geom_text(aes(label = paste0(percent*100, "%")),
+            position = position_stack(reverse = TRUE,
+                                      vjust = 0.5),
+            size = 3.5) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_brewer(palette = "Reds") +
+  labs(title = "Intensity of Violence (1918-2012)",
+       x = "",
+       y = "Percent of crises",
+       fill = "Intensity"
+       ) +
+  guides(fill = guide_legend(reverse = TRUE)) +
+  theme_bw() +
+  theme(panel.grid = element_blank(), 
+        legend.position = "right",
+        legend.text = element_text(size = 9),
+        text = element_text(size = 14)
+        )
+```
+
+## Conflict Duration
+Here we show variation in conflict duration
+
+```{r duration, fig.width = 5.5, fig.height = 4}
+df %>%
+  dplyr::select(resterra, dplyr::ends_with("_action")) %>%
+  dplyr::rename_at(vars(dplyr::ends_with("_action")),
+                   dplyr::funs(stringr::str_replace(., "_action", ""))) %>%
+  dplyr::rename(duration = resterra) %>%
+  tidyr::gather(domain, used, -duration) %>%
+  dplyr::filter(used > 0) %>%
+  dplyr::select(-used) %>%
+  dplyr::mutate(domain = stringr::str_to_title(domain)) %>%
+  dplyr::filter(!is.na(duration)) %>%
+  dplyr::filter(domain != "Cyber") %>%
+  dplyr::mutate(domain = forcats::fct_relevel(domain, c("Land", "Sea", "Air", "Wmd", "Spac"))) %>%
+  dplyr::group_by(domain) %>%
+  dplyr::mutate(groupavg = round(mean(duration, na.rm = T), 0)) %>%
+  ggplot(aes(x = duration,
+             y = forcats::fct_rev(domain),
+             color = domain
+             )
+         ) +
+  geom_jitter(size = 2, 
+              alpha = 0.2, 
+              width = 2) +
+  stat_summary(fun = mean, 
+               geom = "point", 
+               size = 4) +
+  geom_vline(aes(xintercept = df %>%
+                   dplyr::summarize(allavg = round(mean(duration, na.rm = T), 0)) %>%
+                   dplyr::pull(allavg)),
+             color = "gray70",
+             size = 0.6) +
+  geom_segment(aes(x = df %>%
+                     dplyr::summarize(allavg = round(mean(duration, na.rm = T), 0)) %>%
+                     dplyr::pull(allavg),
+                   xend = groupavg,
+                   y = domain,
+                   yend = domain),
+               size = 0.8) +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  ggsci::scale_color_uchicago() +
+  labs(title = "Crisis Duration (1918-2012)",
+       x = "Crisis Duration (Days)",
+       y = "") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        axis.text = element_text(size = 14),
+        text = element_text(size = 14),
+        legend.position = "none"
+        )
+```
+
+# Implications
+Epidemiologists spend much of their time identifying factors that increase the risk of particular health problems in individuals. An important component of their work relies on the proper identification of events and conditions that serve as an indicator that health problems will soon follow. Similarly, scholars of international relations are interested in identifying factors that indicate that the outbreak of conflict is increasingly likely \citep{senese_stepswarempirical_2008}. The goal in this case is not only to causally identify factors that make war more likely so that we can better understand events of the past, but also to improve our ability to forecast the likelihood of conflict in the future \citep{valeriano_pathwaysinterstatewar_2010}.
+
+The relationship between domains and crisis escalation is potentially important for a few reasons. First, we cannot understand crisis escalation without understand the tools that were used (as combat or as threat) during that crisis. When an actor decides to escalate a conflict because the expected benefits of a negotiated settlement are exceeded by the expected benefits of going to war, the manner in which that war was fought is a direct factor influencing the cost of that war and its expected outcome. In the case of the second Gulf of Sidra incident, the United States calculated that the amount of damage that Syrian military forces could do to the US naval fleet was low enough that it preferred instigating conflict given what it knew it was up against. Second, prior evidence suggests that military domains directly interact with the propensity to negotiate and de-escalate a conflict. Recent work has investigated how East Asian countries can best combat Chinese naval expansion \citep{beckley_emergingmilitarybalance_2017}. This is an example of a broader question about when powerful weapons like aircraft carriers may be more likely to prompt the defender to negotiate rather than risk fighting against a unit of this strength. Our data can shed light on these debates by investigating the relationship between A2/AD missile deployment as a response to naval carrier deployment by an aggressor. This example demonstrates that the escalatory effects of the tools used in a crisis are fundamental to understanding the evolution of conflict in the 21\textsuperscript{st} century.
+
+```{r upset, fig.width = 6, fig.height = 6}
+df %>% 
+  dplyr::select(dplyr::ends_with("_action")) %>%
+  dplyr::rename_at(vars(dplyr::ends_with("_action")),
+                   dplyr::funs(stringr::str_replace(., "_action", ""))) %>%
+  as.data.frame(sapply(upset, as.numeric)) %>%
+  UpSetR::upset(number.angles = 0, point.size = 3, line.size = 1,
+      mainbar.y.label = "Number of Crisis-Actors", order.by = "freq", set_size.show = TRUE, set_size.scale_max = 1000, sets.x.label = "Domain Count", text.scale = c (2, 2, 2, 1.5, 2, 2))
+```
+
+The ICB data provides a unique opportunity to examine conflict escalation because it is not limited to cases where conventional military conflict occurred. Rather, the data examines crises -- some of which escalated to militarized interstate conflict with some degree of violence and others which did not. As a result, this data provides variation in the dependent variable since we can compare cases where a crisis did violently escalate to cases where the crisis did not. Examining patterns in the military domains and units involved in each of these cases can shed light on when a crisis is likely to escalate.
+
+# Conclusion
+Insert

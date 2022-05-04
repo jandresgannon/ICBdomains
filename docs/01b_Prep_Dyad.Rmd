@@ -1,0 +1,355 @@
+---
+title: "01b ICB - Prep Dyadic Data"
+author: "J Andres Gannon"
+date: "May 19, 2020"
+output:
+  html_document:
+    theme: flatly
+    code_download: true
+    df_print: paged
+    number_sections: yes
+    toc: yes
+    toc_depth: '5'
+    toc_float:
+      collapsed: yes
+editor_options:
+  chunk_output_type: inline
+---
+
+```{r setup, include = FALSE}
+library(magrittr)
+library(ggplot2)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, echo = FALSE)
+```
+
+This document loads in the dyadic ICB data identifying the two sides in each crisis
+
+# Prior dyadic datasets
+## Hewitt data
+Hewitt 2016 coded the ICB data as dyads from 1917-1994. We start by loading and examining that data to see what is included and how it merges with our crisis-actor level data.
+
+```{r}
+# Load
+df_hewitt <- foreign::read.spss(file = paste0(here::here(), '/inst/extdata/Hewitt_JCR_2003/icb_dyads_233.sav'), to.data.frame = TRUE)
+
+# We only need the columns of the crisis actors and their sides. Make it long
+df_hewitt <- df_hewitt %>% 
+  dplyr::select(CRISNO, STATEA, STATEB) %>%
+  tidyr::gather(side, gwcode, c("STATEA", "STATEB")) %>%
+  dplyr::rename(crisno = CRISNO) %>% 
+  dplyr::mutate(side = dplyr::recode(side, STATEA = "side_A", STATEB = "side_B")) %>%
+  dplyr::distinct()
+```
+
+## Beardsley and Asal data
+Beardsley and Asal 2009 updated Hewitt 2003 to be consistent with version 8 of ICB and code it for 1945-2002. They also make the data directed-dyads instead of just dyads and identify the targeted states as the actor that perceived the crisis first.
+
+```{r}
+# Load
+df_ba <- foreign::read.dta(file = paste0(here::here(), '/inst/extdata/Beardsley_2009_JCR/nukevictory-JCRfinal.dta'))
+
+# Subset to columns of crisis actors and side
+df_ba <- df_ba %>% 
+  dplyr::select(crisno, ccode, ccode2) %>%
+  dplyr::filter(ccode > ccode2) %>%
+  dplyr::rename(side_A = ccode, side_B = ccode2) %>%
+  tidyr::gather(side, ccode, c("side_A", "side_B")) %>%
+  dplyr::rename(gwcode = ccode) %>%
+  dplyr::distinct()
+```
+
+## Levin-Banchik data
+Levin-Banchik has updated the Hewitt 2003 data up until 2015. It includes all prior crises, although whether it includes all prior crisis actors will have to be determined
+```{r}
+# Load
+df_lb <- readstata13::read.dta13(file = paste0(here::here(), '/inst/extdata/Levin-Banchik_CMPS_2020/precrisis.dta'))
+
+# Subset to columns of crisis actors and side
+df_lb <- df_lb %>% 
+  dplyr::select(crisno, stateacr, statebcr) %>%
+  dplyr::rename(side_A = stateacr, side_B = statebcr) %>%
+  tidyr::gather(side, ccode, c("side_A", "side_B")) %>%
+  dplyr::distinct() %>%
+  dplyr::rename(gwcode = ccode) %>%
+  dplyr::select(crisno, gwcode, side) %>%
+  dplyr::arrange(crisno)
+
+# Check cases where the same actor is on both sides of the crisis...these pose a problem. Since actor sides are determines by numeric order, we need to manually fix that so the same actor does not appear on both sides of a crisis
+flip <- df_lb %>%
+  dplyr::group_by(crisno, gwcode) %>%
+  dplyr::mutate(dupe = dplyr::n() > 1) %>%
+  dplyr::filter(dupe == "TRUE") %>%
+  dplyr::select(-dupe) %>%
+  dplyr::arrange(crisno, gwcode) %>%
+  dplyr::mutate(flip = dplyr::if_else(side == "side_A", 1, 0)) %>%
+  dplyr::filter(flip == 1) %>%
+  dplyr::select(-side) %>%
+  dplyr::rename(side_A = gwcode)
+
+# For those actors listed on both sides of the crisis, flip half of them
+df_lb <- readstata13::read.dta13(file = paste0(here::here(), '/inst/extdata/Levin-Banchik_CMPS_2020/precrisis.dta'))
+
+df_lb <- df_lb %>%
+  dplyr::select(crisno, stateacr, statebcr) %>%
+  dplyr::rename(side_A = stateacr, side_B = statebcr)
+
+df_flip <- dplyr::left_join(df_lb, flip)
+
+df_flip <- df_flip %>%
+  dplyr::mutate(side_A_new = ifelse(flip == 1, side_B, side_A),
+                side_B_new = ifelse(flip == 1 , side_A, side_B),
+                side_A = side_A_new,
+                side_B = side_B_new) %>%
+  dplyr::rename(side_B = side_A, side_A = side_B)
+
+# Re-join so now we have a column marking if the original sides should be flipped. We use similar code to what is above to do those flips
+df_lb <- dplyr::left_join(df_lb, df_flip) %>%
+  dplyr::mutate(side_A_new = dplyr::coalesce(side_A_new, side_A), 
+                side_B_new = dplyr::coalesce(side_B_new, side_B)) %>%
+  dplyr::select(-flip, -side_A, -side_B)%>%
+  dplyr::rename(side_A = side_A_new,
+                side_B = side_B_new) %>%
+  tidyr::gather(side, ccode, c("side_A", "side_B")) %>%
+  dplyr::distinct() %>%
+  dplyr::rename(gwcode = ccode) %>%
+  dplyr::select(crisno, gwcode, side) %>%
+  dplyr::arrange(crisno)
+
+df_lb_triadic <- df_lb %>%
+  dplyr::group_by(crisno, gwcode) %>%
+  dplyr::mutate(dupe = dplyr::n() > 1) %>%
+  dplyr::filter(dupe == "TRUE") %>%
+  dplyr::select(-dupe) %>%
+  dplyr::arrange(crisno, gwcode) %>%
+  dplyr::mutate(triadic = 1) %>%
+  dplyr::ungroup() %>%
+  dplyr::select(crisno, triadic) %>%
+  dplyr::distinct()
+
+df_lb <- dplyr::left_join(df_lb, df_lb_triadic) %>%
+  dplyr::filter(is.na(triadic)) %>%
+  dplyr::select(-triadic)
+```
+
+## New dyads
+The existing data only codes dyads for ICB crises up to 2010. Since we have domain data for crises up to 2015, we code the dyadic sides for actors in those crises to temporally expand the data. These were coded in accordance with the original ICB dyad coding criteria established by Hewitt 2003. To quality check the coding, the codings were independently done by the author and two research assistants. This allows us to see discrepancies in the coding that we want to double check
+```{r}
+# Load the 3 new codings and relabel the coded column by coder
+df_newdyad <- read.csv(file = paste0(here::here(), '/data/dyads_new.csv')) %>%
+  dplyr::select(-notes)
+
+# Filter out rows for non-state actors, since those were not coded by anyone since they cannot be participants in crisis-dyads
+df_newdyad <- df_newdyad %>%
+  dplyr::filter(!is.na(gwcode)) %>%
+  replace(is.na(.), "no_side")
+
+# Check inter-rate reliability by converting to numeric and transposing so each row is a coder and each column is a crisis-actor
+df_irr <- df_newdyad %>%
+  dplyr::select(dplyr::starts_with("coder")) %>%
+  dplyr::mutate_all(dplyr::funs(dplyr::recode(. ,
+                                       'side_A' = 1,
+                                       'side_B' = 2))) %>%
+  replace(is.na(.), 0)
+
+irr::kappam.fleiss(df_irr, detail = TRUE)
+
+# Subset to the tie broken codings
+df_newdyad <- df_newdyad %>%
+  dplyr::select(crisno, crisname, gwname, gwcode, side) %>%
+  dplyr::filter(!side == "no_side")
+```
+
+# Merge with crisis-actor data
+We merge these to confirm they are consistent and create a single dataframe of the dyads in every applicable ICB crisis
+
+```{r}
+# Start with blank list of all ICB crises
+df_icb <- read.csv(file = paste0(here::here(), '/inst/extdata/icb1v13.csv'))
+
+df_merge <- df_icb %>%
+  dplyr::select(crisno, crisname, yrtrig)
+
+# Merge
+df_merge <- dplyr::left_join(df_hewitt, df_merge) %>%
+  dplyr::rename(side_hewitt = side)
+
+df_merge <- dplyr::full_join(df_merge, df_ba) %>%
+  dplyr::rename(side_ba = side)
+
+df_merge <- dplyr::full_join(df_merge, df_lb) %>%
+  dplyr::rename(side_lb = side)
+
+df_merge <- dplyr::full_join(df_merge, df_newdyad) %>%
+  dplyr::rename(side_newdyad = side)
+
+# Fix side_a and side_b codings from BA which are sometimes flipped
+df_merge$side_ba[df_merge$side_hewitt == "side_A" |
+                   df_merge$side_lb == "side_A" &
+                   df_merge$side_ba == "side_B"] <- "side_A"
+
+df_merge$side_ba[df_merge$side_hewitt == "side_B" |
+                   df_merge$side_lb == "side_B" &
+                   df_merge$side_ba == "side_A"] <- "side_B"
+
+# Add column indicating whether any sides are coded for that crisis
+df_merge$dyad_data[!is.na(df_merge$side_hewitt) |
+                     !is.na(df_merge$side_ba) |
+                     !is.na(df_merge$side_lb) |
+                     !is.na(df_merge$side_newdyad)] <- 1
+
+# Create new master column for sides
+df_merge$side[df_merge$side_hewitt == "side_A" |
+                df_merge$side_ba == "side_A" |
+                df_merge$side_lb == "side_A" |
+                df_merge$side_newdyad == "side_A"] <- "side_A"
+
+df_merge$side[df_merge$side_hewitt == "side_B" |
+                df_merge$side_ba == "side_B" |
+                df_merge$side_lb == "side_B" |
+                df_merge$side_newdyad == "side_B"] <- "side_B"
+
+# Re-sort columns
+df_merge <- df_merge %>% 
+  dplyr::select(crisno, crisname, gwcode, side)
+
+# Fix missing crisis names
+df_icb <- df_icb %>%
+  dplyr::select(crisno, crisname, yrtrig) %>%
+  dplyr::rename(crisname_icb = crisname)
+
+df_merge <- dplyr::left_join(df_merge, df_icb) %>%
+  dplyr::select(-crisname) %>%
+  dplyr::rename(crisname = crisname_icb) %>%
+  dplyr::select(crisno, crisname, gwcode, side) %>%
+  dplyr::arrange(crisno)
+```
+
+We now have a dataset of all crisis-dyad actors in ICB crises
+```{r}
+df_merge %>%
+  DT::datatable()
+```
+
+We can now add the crisis-actor domain data to this, producing a dataframe of the domains used as actions by each crisis-actor along with their dyad information
+```{r}
+df_domain <- readRDS(file = paste0(here::here(), '/data/01a_icb_domains_monadic.rds')) %>%
+  dplyr::rename(gwcode = gwid)
+
+df <- dplyr::left_join(df_merge, df_domain) %>%
+  dplyr::arrange(crisno) %>%
+  dplyr::select(crisno, crisname, actor, gwname, gwcode, side, dplyr::ends_with("_action"))
+
+icb_actor <- read.csv(file = paste0(here::here(), '/inst/extdata/icb2v13.csv')) %>%
+  dplyr::rename(gwname = actor,
+                gwcode = cracid)
+
+df <- dplyr::left_join(df, icb_actor) %>%
+  dplyr::filter(!is.na(actor))
+
+df %>%
+  DT::datatable()
+```
+
+## Merge into crisis-dyads
+We have multiple side A and side B actors on each side. Unify that so we only have 2 sides per crisis and a single row for each side with binary values indicating whether action was taken in each domain.
+```{r}
+df_dyads <- df %>%
+  dplyr::select(crisno, crisname, side, dplyr::ends_with("_action")) %>%
+  dplyr::group_by(crisno, crisname, side) %>%
+  dplyr::summarise(dplyr::across(everything(), sum)) %>%
+  dplyr::mutate_at(vars(dplyr::ends_with("_action")), ~ replace(., which(. > 1), 1))
+```
+
+## Create cross-domainness measure for each side
+We use the Jaccard similarity coefficient since each crisis-dyad can be represented as two binary vectors of equal length. Each domain is coded as 1 if the side took action in that domain and is coded 0 otherwise. The Jaccard similarity measure is simply the ratio of the intersection to the union for each side in a conflict [@chung_jaccardtanimotosimilarity_2019].
+
+```{r}
+## Jaccard full
+df_test <- df_dyads %>%
+  dplyr::ungroup() %>% 
+  tidyr::replace_na(list(land_action = 0, 
+                         air_action = 0, 
+                         sea_action = 0, 
+                         wmd_action = 0, 
+                         space_action = 0, 
+                         cyber_action = 0))
+
+jaccard_results <- df_test %>% 
+  dplyr::select(crisno) %>% 
+  unique() %>% 
+  dplyr::mutate(jaccard = NA)
+
+for(i in 1:nrow(jaccard_results)){
+  jaccard_results$jaccard[i] <- df_test %>% 
+    dplyr::filter(crisno == jaccard_results$crisno[i]) %>% 
+    dplyr::select(-one_of(c("crisno", "crisname", "side"))) %>%
+    philentropy::distance(method = "jaccard")
+}
+
+## Jaccard traditional domains
+df_test_traditional <- df_dyads %>%
+  dplyr::ungroup() %>% 
+  dplyr::select(-wmd_action, -space_action, -cyber_action) %>%
+  tidyr::replace_na(list(land_action = 0, 
+                         air_action = 0, 
+                         sea_action = 0))
+
+jaccard_results_traditional <- df_test_traditional %>% 
+  dplyr::select(crisno) %>% 
+  unique() %>% 
+  dplyr::mutate(jaccard_traditional = NA)
+
+for(i in 1:nrow(jaccard_results_traditional)){
+  jaccard_results_traditional$jaccard_traditional[i] <- df_test_traditional %>% 
+    dplyr::filter(crisno == jaccard_results_traditional$crisno[i]) %>% 
+    dplyr::select(-one_of(c("crisno", "crisname", "side"))) %>%
+    philentropy::distance(method = "jaccard")
+}
+
+jaccard_results$crossdomain_jaccard <- round(jaccard_results$jaccard, 2)
+jaccard_results_traditional$crossdomain_jaccard_traditional <- round(jaccard_results_traditional$jaccard_traditional, 2)
+
+jaccard_results_traditional$jaccard_traditional <- NULL
+
+# Merge into one
+df_cdd <- dplyr::left_join(jaccard_results, jaccard_results_traditional)
+
+df_cdd <- df_cdd  %>%
+  dplyr::select(crisno, dplyr::starts_with("crossdomain_"))
+```
+
+## Merge original ICB crisis
+We merge the original ICB crisis data with covariates like intrawar crisis or civil war since we suspect that explains the missingness
+```{r}
+# Load original ICB data
+icb <- read.csv(file = paste0(here::here(), '/inst/extdata/icb1v13.csv'))
+
+# Subset to covariates of interest, merge, and rename columns
+df_cdd <- dplyr::left_join(df_cdd, icb) %>%
+  dplyr::distinct()
+```
+
+# Transform variables
+Some variable should be transformed to be theoretically motivated and in alignment with modeling done in existing literature
+```{r}
+df_cdd <- df_cdd %>%
+  dplyr::mutate(protrac = dplyr::case_when(protrac > 1 ~ 1, # protracted conflict coded 1 if protracted, 0 otherwise
+                                           protrac == 1 ~ 0),
+                territ = dplyr::case_when(gravcr == 3 ~ 1, # territorial conflict coded 1 if gravity of threat = 3, 0 otherwise
+                                          gravcr != 3 ~ 0),
+                trigmil = dplyr::case_when('break' > 6 ~ 1, # military trigger coded 1 if break = 6-9, 0 otherwise
+                                           'break' < 7 ~ 0),
+                majpwrinv = dplyr::case_when(powinv < 3 ~ 0, # great power involvement coded 1 if powinv greater than 3, 0 otherwise
+                                             powinv > 2 ~ 1),
+                ethnic = dplyr::case_when(ethnic < 3 ~ 1, # ethnic conflict coded 1 if ethnic 1-2, 0 otherwise
+                                          ethnic > 2 ~ 0),
+                contig = dplyr::case_when(geogrel == 1 ~ 1, # contiguity coded 1 if geogrel = 1, 0 otherwise
+                                          geogrel > 1 ~ 0)) 
+```
+
+# Save
+Save dataframes
+```{r}
+saveRDS(df, paste0(here::here(), "/data/","01b_icb_domains_monadic.rds"))
+saveRDS(df_cdd, paste0(here::here(), "/data/","01b_icb_domains_crisis.rds"))
+```

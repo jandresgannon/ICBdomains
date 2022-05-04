@@ -1,0 +1,212 @@
+---
+title: "02 Summary Stats - Crisis-Actor Level"
+author: "J Andres Gannon"
+date: "August 4, 2020"
+output:
+  html_document:
+    theme: flatly
+    code_download: true
+    df_print: paged
+    number_sections: yes
+    toc: yes
+    toc_depth: '5'
+    toc_float:
+      collapsed: yes
+editor_options:
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, echo = FALSE)
+library(magrittr)
+library(ggplot2)
+```
+
+# Prep
+Start by loading the cleaned ICB data. For this data, each row is a crisis-actor. The newly created columns are binary variables indicating whether that crisis-actor used each domain (land, air, sea, wmd, cyber, space) as an action during that crisis. We also include other covariates from the original ICB crisis-actor dataset (ICB2v13) for things like crisis location, duration, severity, and outcome.
+```{r load}
+df <- readRDS(file = paste0(here::here(), '/data/01a_icb_domains_monadic.rds'))
+```
+
+# Univariate
+## Counts
+### Crises and actors
+Temporal distribution of the crises by year
+```{r year}
+plotly::ggplotly(df %>% 
+                   dplyr::select(year) %>%
+                   dplyr::group_by(year) %>%
+                   tidyr::gather(count, year) %>%
+                   ggplot(aes(x = year)) +
+                   geom_bar() +
+                   labs(title = "Crisis Frequency Over Time (1918-2012)",
+                        x = "Year",
+                        y = "Number of Crises-Actors") +
+                   theme_bw() +
+                   theme(panel.grid = element_blank(), 
+                         text = element_text(size = 16)
+                         )
+                 )
+```
+
+Number of crises each actor participated in throughout the full dataset, sorted from most to least. Of the 136 actors that appear in the dataset, 30 of them only appear as an actor in a single crisis.
+```{r}
+plotly::ggplotly(df %>% 
+                   dplyr::select(actor) %>%
+                   dplyr::mutate(actor = stringr::str_to_title(actor)) %>%
+                   dplyr::group_by(actor) %>%
+                   dplyr::summarise(count = dplyr::n()) %>%
+                   ggplot(aes(x = count)) +
+                   geom_bar() +
+                   labs(title = "Crisis Participation by Actor (1918-2012)",
+                        x = "Number of Crises",
+                        y = "Number of Actors") +
+                   theme_bw() +
+                   theme(panel.grid = element_blank(),
+                         text = element_text(size = 16)
+                         )
+                )
+
+df %>% 
+  dplyr::select(actor) %>%
+  dplyr::mutate(actor = stringr::str_to_title(actor)) %>%
+  dplyr::group_by(actor) %>%
+  dplyr::summarise(count = dplyr::n()) %>%
+  dplyr::arrange(desc(count)) %>%
+  DT::datatable()
+```
+
+### Domains
+We identify how frequently actors operated in each domain.
+```{r domains}
+plotly::ggplotly(df %>% 
+                   dplyr::select(dplyr::ends_with("_action")) %>%
+                   dplyr::rename_at(vars(dplyr::ends_with("_action")),
+                                    dplyr::funs(stringr::str_replace(., "_action", ""))) %>%
+                   tidyr::gather() %>%
+                   dplyr::mutate(key = stringr::str_to_title(key)) %>%
+                   dplyr::group_by(key) %>%
+                   dplyr::summarise(value = sum(value == 1)) %>%
+                   ggplot(aes(x = key, 
+                              y = value)) +
+                   geom_bar(stat = "identity") +
+                   geom_text(aes(label = value, 
+                                 y = value + 20), 
+                             vjust = 0, 
+                             size = 5
+                             ) +
+                   labs(title = "Number of Crisis-Actors per Domain (1918-2012)",
+                        x = "Domain",
+                        y = "Number of Crisis-Actors") +
+                   theme_bw() +
+                   theme(panel.grid = element_blank(), 
+                         text = element_text(size = 16)
+                         )
+                 )
+```
+
+### Domains per Crisis-Actor
+We can identify the number of crisis actors using each domain to identify the relative frequency of each domain over time.
+```{r}
+df %>%
+  dplyr::select(crisname, dplyr::ends_with("_action")) %>%
+  dplyr::rename_at(vars(dplyr::ends_with("_action")),
+                   dplyr::funs(stringr::str_replace(., "_action", ""))) %>%
+  dplyr::mutate(crisname = stringr::str_to_title(crisname)) %>%
+  tidyr::gather(domain, count, -crisname) %>%
+  dplyr::group_by(domain) %>%
+  dplyr::mutate(crisis_prop = sum(as.numeric(count)),
+                crisis_prop = round(crisis_prop/dplyr::n(), 3)) %>%
+  dplyr::select(-crisname, -count) %>%
+  dplyr::distinct() %>%
+  DT::datatable() %>%
+  DT::formatPercentage('crisis_prop', 1)
+```
+
+### Domains per Actor
+This shows the distribution of domains by actor, as a table. The table is listed alphabetically. The total number of crises in which an actor participates is not accounted for here
+```{r}
+df %>%
+  dplyr::select(actor, dplyr::ends_with("_action")) %>%
+  dplyr::rename_at(vars(dplyr::ends_with("_action")),
+                   dplyr::funs(stringr::str_replace(., "_action", ""))) %>%
+  dplyr::mutate(actor = stringr::str_to_title(actor)) %>%
+  dplyr::group_by(actor) %>%
+  dplyr::summarise_all(sum) %>%
+  DT::datatable()
+```
+
+For actors engaged in at least 20 crises, show how their domain use varies as a percent of their overall domain usage
+```{r domains per actor}
+plotly::ggplotly(df %>%
+                   dplyr::select(actor, dplyr::ends_with("_action")) %>%
+                   dplyr::rename_at(vars(dplyr::ends_with("_action")),
+                                    dplyr::funs(stringr::str_replace(., "_action", ""))) %>%
+                   dplyr::mutate(actor = stringr::str_to_title(actor)) %>%
+                   dplyr::group_by(actor) %>%
+                   dplyr::filter(dplyr::n() > 20) %>%
+                   dplyr::summarise_all(sum) %>%
+                   tidyr::gather(domain, count, -actor) %>%
+                   dplyr::mutate(domain = stringr::str_to_title(domain)) %>%
+                   ggplot(aes(x = domain,
+                              y = count,
+                              fill = domain)) +
+                   geom_bar(stat = "identity") +
+                   geom_text(aes(label = count, 
+                                 y = count + 1), 
+                             vjust = 0, 
+                             size = 3
+                             ) +
+                   facet_grid(. ~ actor) +
+                   labs(title = "Domains Used per Crisis Actor (1918-2012)",
+                        x = "",
+                        y = "Number of Crises",
+                        caption = "Actors involved at least 20 crises") +
+                   theme_bw() +
+                   theme(panel.grid = element_blank(), 
+                         legend.position = "none",
+                         axis.text.x = element_text(angle = 30, hjust = 1, vjust = 1),
+                         text = element_text(size = 12)
+                         )
+                )
+```
+
+Distribution of each domain over time
+```{r}
+plotly::ggplotly(df %>%
+                   dplyr::select(year, dplyr::ends_with("_action")) %>%
+                   dplyr::rename_at(vars(dplyr::ends_with("_action")),
+                                    dplyr::funs(stringr::str_replace(., "_action", ""))) %>%
+                   dplyr::group_by(year) %>%
+                   dplyr::summarise_all(sum) %>%
+                   tidyr::gather(domain, count, -year) %>%
+                   dplyr::mutate(domain = stringr::str_to_title(domain)) %>%
+                   dplyr::group_by(domain) %>%
+                   dplyr::mutate(todate = cumsum(count)) %>%
+                   ggplot(aes(x = year,
+                              y = todate,
+                              color = domain)) +
+                   geom_line() +
+                   labs(title = "Crisis Domains Over Time (1918-2012)",
+                        x = "Year",
+                        y = "Number of Crises") +
+                   theme_bw() +
+                   theme(panel.grid = element_blank(), 
+                         legend.position = "bottom",
+                         axis.text.x = element_text(angle = 30, hjust = 1, vjust = 1),
+                         text = element_text(size = 12)
+                         )
+                )
+```
+
+## Combinations
+Domains are not used in isolation. Actors often deploy multiple domains in a conflict. We can visualize how many times each domain-permutation is used by a crisis-actor in the ICB data.
+```{r}
+df %>% 
+  dplyr::select(dplyr::ends_with("_action")) %>%
+  dplyr::rename_at(vars(dplyr::ends_with("_action")),
+                   dplyr::funs(stringr::str_replace(., "_action", ""))) %>%
+  as.data.frame(sapply(upset, as.numeric)) %>%
+  UpSetR::upset(number.angles = 0, point.size = 3, line.size = 1, text.scale = 2,
+      mainbar.y.label = "Number of Crisis-Actors", order.by = "freq", set_size.show = TRUE, set_size.scale_max = 3000)
+```
