@@ -3,7 +3,7 @@
 
 This is a package, documentation, and replication repository for the paper "One if by land, and two if by sea: Cross-domain contests and the escalation of international crises" (accepted for publication at *International Studies Quarterly*). This paper is part of the broader International Crisis Behavior Events (ICBe) project which can be found [here](https://www.crisisevents.org/).
 
-* [Paper](https://github.com/CenterForPeaceAndSecurityStudies/ICBdomains/blob/main/paper/2022-05-03_ICB-Domains.pdf)
+* [Paper](https://github.com/CenterForPeaceAndSecurityStudies/ICBdomains/blob/main/paper/2022-05-04_ICB-Domains-preprint.pdf)
 
 * [Appendix](https://github.com/CenterForPeaceAndSecurityStudies/ICBdomains/blob/main/docs/03_Appendix.Rmd)
 
