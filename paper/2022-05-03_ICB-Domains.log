@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Debian) (preloaded format=pdflatex 2021.11.2)  4 MAY 2022 13:03
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Debian) (preloaded format=pdflatex 2021.11.2)  4 MAY 2022 13:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1067,11 +1067,11 @@ LaTeX Warning: No positions in optional float specifier.
 [9] [10]
 Package epstopdf Info: Source file: <2022-05-03_ICB-Domains_files/figure-latex/
 fig-1-1.eps>
-(epstopdf)                    date: 2022-05-04 13:02:58
+(epstopdf)                    date: 2022-05-04 13:22:45
 (epstopdf)                    size: 25275 bytes
 (epstopdf)             Output file: <2022-05-03_ICB-Domains_files/figure-latex/
 fig-1-1-eps-converted-to.pdf>
-(epstopdf)                    date: 2022-05-04 13:03:01
+(epstopdf)                    date: 2022-05-04 13:22:48
 (epstopdf)                    size: 24479 bytes
 (epstopdf)             Command: <repstopdf --outfile=2022-05-03_ICB-Domains_fil
 es/figure-latex/fig-1-1-eps-converted-to.pdf 2022-05-03_ICB-Domains_files/figur
@@ -1099,11 +1099,11 @@ Overfull \hbox (35.06004pt too wide) in paragraph at lines 275--295
 [12]
 Package epstopdf Info: Source file: <2022-05-03_ICB-Domains_files/figure-latex/
 fig-2-1.eps>
-(epstopdf)                    date: 2022-05-04 13:02:58
+(epstopdf)                    date: 2022-05-04 13:22:45
 (epstopdf)                    size: 7208 bytes
 (epstopdf)             Output file: <2022-05-03_ICB-Domains_files/figure-latex/
 fig-2-1-eps-converted-to.pdf>
-(epstopdf)                    date: 2022-05-04 13:03:02
+(epstopdf)                    date: 2022-05-04 13:22:49
 (epstopdf)                    size: 12082 bytes
 (epstopdf)             Command: <repstopdf --outfile=2022-05-03_ICB-Domains_fil
 es/figure-latex/fig-2-1-eps-converted-to.pdf 2022-05-03_ICB-Domains_files/figur
@@ -1123,11 +1123,11 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 Package epstopdf Info: Source file: <2022-05-03_ICB-Domains_files/figure-latex/
 fig-3-1.eps>
-(epstopdf)                    date: 2022-05-04 13:02:59
+(epstopdf)                    date: 2022-05-04 13:22:46
 (epstopdf)                    size: 17871 bytes
 (epstopdf)             Output file: <2022-05-03_ICB-Domains_files/figure-latex/
 fig-3-1-eps-converted-to.pdf>
-(epstopdf)                    date: 2022-05-04 13:03:02
+(epstopdf)                    date: 2022-05-04 13:22:49
 (epstopdf)                    size: 26393 bytes
 (epstopdf)             Command: <repstopdf --outfile=2022-05-03_ICB-Domains_fil
 es/figure-latex/fig-3-1-eps-converted-to.pdf 2022-05-03_ICB-Domains_files/figur
@@ -1165,8 +1165,8 @@ rocks.com/2020/07/give-
 [23] [24] (./2022-05-03_ICB-Domains.aux) ) 
 Here is how much of TeX's memory you used:
  36964 strings out of 480659
- 824578 string characters out of 5903153
- 1238033 words of memory out of 5000000
+ 824563 string characters out of 5903153
+ 1238012 words of memory out of 5000000
  53009 multiletter control sequences out of 15000+600000
  491969 words of font info for 198 fonts, out of 8000000 for 9000
  309 hyphenation exceptions out of 8191
@@ -1226,7 +1226,7 @@ usr/share/texmf/fonts/type1/public/lm/lmri8.pfb></usr/share/texmf/fonts/type1/p
 ublic/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy5.pfb></usr/sha
 re/texmf/fonts/type1/public/lm/lmsy7.pfb></usr/share/texmf/fonts/type1/public/l
 m/lmtt8.pfb>
-Output written on 2022-05-03_ICB-Domains.pdf (24 pages, 497022 bytes).
+Output written on 2022-05-03_ICB-Domains.pdf (24 pages, 496106 bytes).
 PDF statistics:
  490 PDF objects out of 1000 (max. 8388607)
  428 compressed objects within 5 object streams
