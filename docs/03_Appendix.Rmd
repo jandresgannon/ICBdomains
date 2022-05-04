@@ -1,7 +1,7 @@
 ---
 title: "Online Appendix: Supporting Information for _One if by land, and two if by sea: Cross-domain contests and the escalation of international crises_"
-author: "J Andr$\'{e}$s Gannon"
-date: "`May 4, 2022)`"
+author: "J Andr$\\'{e}$s Gannon"
+date: "`May 4, 2022`"
 site: bookdown::bookdown_site
 output:
   bookdown::pdf_document2:
