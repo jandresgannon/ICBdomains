@@ -7,7 +7,7 @@ This is a package, documentation, and replication repository for the paper "One 
 
 * [Appendix](https://github.com/CenterForPeaceAndSecurityStudies/ICBdomains/blob/main/docs/03_Appendix.Rmd)
 
-For any questions, please email the author, [J Andres Gannon](https://jandresgannon.com/), at: [jagannon@hks.harvard.edu](mailto:jagannon@hks.harvard.edu).
+For any questions, please email the author, [J Andres Gannon](https://jandresgannon.com/), at: [andres.gannon@gmail.com](mailto:andres.gannon@gmail.com).
 
 ## Replication Code and Analysis
 
