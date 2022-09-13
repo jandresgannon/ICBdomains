@@ -1,0 +1,53 @@
+---
+title: '\singlespacing One if by land, and two if by sea: Cross-domain contests and the escalation of international crises'
+author: |
+  | J Andr$\'{e}$s Gannon^[Email: \texttt{jagannon@ucsd.edu}. Web: \texttt{jandresgannon.com}. \newline The author thanks Erik Gartzke and Jon Lindsay who were Principal Investigators on Office of Naval Research Grant N00014-14-1-0071 and the Department of Defense Minerva Research Initiative grant that organized the data collection for this project. Rex Douglass and Thomas Leo Scherer are responsible for the underlying ontology and event data and ICB project managers Jonathan Wilkenfeld and David Quinn oversaw the coding effort. Tom Brailey, Erin Ling, David McCrum, James McCullough, Matthew Miltimore, Cole Reynolds, Cailen Rodriguez, Woong Suh, and Erin Werner provided excellent research assistance. The author is also grateful for constructive feedback from Shannon Carcelli, Jasen Castillo, James Fowler, Patrick Hulme, Nadiya Kstyuk, Igor Kovak, Kendrick Kuo, Nicole Letourneau, Sara Plana, Laura Resnick Samotin, Ryan Shandler, Branislav Slantchev, Rachel Schoner, Jordan Tama, Sanne Verschuren, and workshop participants at UC San Diego and the Charles Koch Foundation working groups. Previous versions were presented at the 2017 Peace Science Society (International) conference and 2018 and 2021 International Studies Association conferences. Any opinions, findings, or recommendations do not necessarily reflect the view of the Office of Naval Research. Data and code for the empirical analysis can be found at \texttt{https://github.com/CenterForPeaceAndSecurityStudies/ICBdomains}.]
+  | Belfer Center for Science and International Affairs
+  | Harvard Kennedy School
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+  bookdown::pdf_document2:
+    number_sections: yes
+    toc: no
+    keep_tex: yes
+  bookdown::html_notebook2:
+    fig_height: 8
+    fig_width: 12
+    number_sections: yes
+    theme: flatly
+    toc: yes
+    toc_depth: 5
+    toc_float:
+      collapsed: yes
+  bookdown::word_document2: default
+  bookdown::word_document:
+    toc: no
+site: bookdown::bookdown_site
+editor_options:
+  chunk_output_type: inline
+abstract: \singlespacing \noindent New domains of military conflict like space and cyber arguably increase opportunities for conflict across, as well as within, domains. Cross-domain conflict is thus seen by many as an emerging source of international instability. Yet, existing systematic empirical research has little to say about how domains interact. This study introduces a new dataset of the domains in which nations took military action during 412 international crises between 1918 and 2015. Analysis of these data yields several surprises. Far from being rare, cross-domain interactions are the modal form of conflict in crises during this period. Nor is cross-domain conflict "new:" crises that play out in more than one domain were about as frequent (proportionately) in decades past as they are today. Cross-domain crises are also less violent and of no greater duration than crises between belligerents using similar means. This study thus presents evidence that fears about cross-domain escalation are empirically unsubstantiated. \linebreak \linebreak Word count - 7,964
+header-includes:
+- \usepackage{tikz}
+- \usepackage{pgfplots}
+- \pgfplotsset{compat=newest}
+- \usetikzlibrary{plotmarks}
+- \usetikzlibrary{arrows.meta}
+- \usepgfplotslibrary{patchplots}
+- \usepackage{grffile}
+- \usepackage{caption}
+- \usepackage[utf8]{inputenc}
+- \usepackage[doublespacing]{setspace}
+- \usepackage{float}
+- \usepackage{multirow}
+bibliography: icbdomains.bib
+---
+
+```{r knitr_options, echo = FALSE, warning = FALSE}
+# added to indicate that the home holder is the repo folder
+library(knitr)
+library(magrittr)
+library(ggplot2)
+knitr::opts_knit$set(root.dir = normalizePath(here::here()))
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, fig.pos = "h!", out.extra = "", fig.align = "center")
+```
+
